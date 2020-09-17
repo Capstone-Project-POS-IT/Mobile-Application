@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "828894725805",
+    "firebase_url": "https://pos-it-81acb.firebaseio.com",
+    "project_id": "pos-it-81acb",
+    "storage_bucket": "pos-it-81acb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828894725805:android:b3fde7708df0ceee422824",
+        "android_client_info": {
+          "package_name": "com.example.pos_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828894725805-mu2m1n8ih1a9iv05q2vsgduj8rc90atk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC87OTHbpoodWLq9bvzoN90S6Y1xS20q5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828894725805-mu2m1n8ih1a9iv05q2vsgduj8rc90atk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
