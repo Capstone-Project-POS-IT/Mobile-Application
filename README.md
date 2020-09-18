@@ -1,5 +1,3 @@
-This will be Anthony Baron's branch
-
 # pos_it
 
 Flutter Mobile Application to track people's happiness
