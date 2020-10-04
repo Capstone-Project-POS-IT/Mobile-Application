@@ -11,6 +11,9 @@ void main(){
 
   //test function call
   APICall.testAPI();
+  APICall.getInspirationalQuote();
+
+
 
 
 }
