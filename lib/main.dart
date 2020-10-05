@@ -22,7 +22,10 @@ void main(){
   //Firebase.initializeApp().whenComplete(() =>testAPI());
   //sleep(const Duration(seconds:2));
   //Firebase.initializeApp().whenComplete(() => testDatabase());
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 }
 
@@ -66,6 +69,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+<<<<<<< Updated upstream
 /*
 //calender view
 class CalendarView extends StatelessWidget {
@@ -88,12 +92,49 @@ class CalendarView extends StatelessWidget {
         ),
         body: Center(
           child: Text('test'),
+=======
+//home view
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Menu'),
+        ),
+        drawer: new Drawer(
+          child: ListView(
+            children: <Widget>[
+              new ListTile(
+                title: new Text('Calendar View'),
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new CalendarView())
+                  );
+                },
+              ),
+              new ListTile(
+                title: new Text('News View'),
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new NewsView())
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        body: Center(
+          child: Text('Hello World'),
+>>>>>>> Stashed changes
         ),
       ),
     );
   }
 }
 
+<<<<<<< Updated upstream
 //News view
 void newsView(BuildContext context) {
   Navigator.push(context, MaterialPageRoute(
@@ -121,6 +162,8 @@ void newsView(BuildContext context) {
 
 
 
+=======
+>>>>>>> Stashed changes
 //*****************************************Test Start **********************************************************/
 Future<void> testAPI() async {
 
