@@ -23,11 +23,14 @@ void main(){
   //sleep(const Duration(seconds:2));
   //Firebase.initializeApp().whenComplete(() => testDatabase());
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 =======
 >>>>>>> Stashed changes
 
 }
+=======
+>>>>>>> Stashed changes
 
 //home view
 class MyApp extends StatelessWidget {
@@ -154,6 +157,7 @@ void newsView(BuildContext context) {
   ));
 }
 
+<<<<<<< Updated upstream
 */
 
 
@@ -163,6 +167,48 @@ void newsView(BuildContext context) {
 
 
 =======
+>>>>>>> Stashed changes
+=======
+//home view
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Menu'),
+        ),
+        drawer: new Drawer(
+          child: ListView(
+            children: <Widget>[
+              new ListTile(
+                title: new Text('Calendar View'),
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new MainCalendarView())
+                  );
+                },
+              ),
+              new ListTile(
+                title: new Text('News View'),
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new NewsView())
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        body: Center(
+          child: Text('Hello World'),
+        ),
+      ),
+    );
+  }
+}
+
 >>>>>>> Stashed changes
 //*****************************************Test Start **********************************************************/
 Future<void> testAPI() async {

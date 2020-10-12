@@ -239,7 +239,10 @@ packages:
     source: hosted
     version: "1.0.5"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   table_calendar:
     dependency: "direct main"
     description:
@@ -247,6 +250,9 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.3"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   term_glyph:
     dependency: transitive
