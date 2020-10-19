@@ -18,7 +18,15 @@ class _HomeView extends State<HomeView> {
         title: Text('Home Screen'),
       ),
       body: SingleChildScrollView(
-        child: new Text('Inspiring quote here')
+        child: Padding(
+          padding: const EdgeInsets.all(100.0),
+          child: Center(
+            child: Text(
+              "inspiring quote here.",
+              textAlign: TextAlign.center,
+            ),
+         ),
+        ),
       )
     );
   }
