@@ -102,4 +102,40 @@ class _MainCalendarView extends State<MainCalendarView> {
       )
     );
   }
+
+  //simple function that takes a number as a string input (1 -10) and returns a color
+  Color getColor(String mood) {
+    Color c10 = const Color(0xfafa6e);
+    Color c9 = const Color(0xc4ec74);
+    Color c8 = const Color(0x92dc7e);
+    Color c7 = const Color(0x64c987);
+    Color c6 = const Color(0x39b48e);
+    Color c5 = const Color(0x089f8f);
+    Color c4 = const Color(0x00898a);
+    Color c3 = const Color(0x08737f);
+    Color c2 = const Color(0x215d6e);
+    Color c1 = const Color(0x2a4858);
+
+    if(mood == '1') {
+      return c1;
+    } else if (mood == '2') {
+      return c2;
+    } else if (mood == '3') {
+      return c3;
+    } else if (mood == '4') {
+      return c4;
+    } else if (mood == '5') {
+      return c5;
+    } else if (mood == '6') {
+      return c6;
+    } else if (mood == '7') {
+      return c7;
+    } else if (mood == '10') {
+      return c8;
+    } else if (mood == '9') {
+      return c9;
+    } else {
+      return c10;
+    }
+  }
 }
