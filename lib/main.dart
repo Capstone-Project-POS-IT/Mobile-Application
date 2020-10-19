@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/APICall.dart';
 
+//Views
+import './Navibar.dart';
 
 void main(){
   runApp(MyApp());
@@ -18,15 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to POS.IT!!!'),
-        ),
-        body: Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      home: NaviView(),
     );
   }
 }
