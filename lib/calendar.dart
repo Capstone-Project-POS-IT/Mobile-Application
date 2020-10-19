@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+
 //mainCalendarView will be the view that shows the current day and allows the user to
 //select how they felt throughout the day.
 class MainCalendarView extends StatefulWidget {
@@ -73,6 +75,7 @@ class _MainCalendarView extends State<MainCalendarView> {
       ),
     );
   }
+  //function for the dialog box that appears when the user clicks on the floating button.
   _showAddDialog() {
     showDialog(
       context: context,
@@ -130,7 +133,7 @@ class _MainCalendarView extends State<MainCalendarView> {
       return c6;
     } else if (mood == '7') {
       return c7;
-    } else if (mood == '10') {
+    } else if (mood == '8') {
       return c8;
     } else if (mood == '9') {
       return c9;
