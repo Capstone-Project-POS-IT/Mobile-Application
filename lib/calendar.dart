@@ -17,7 +17,6 @@ class _MainCalendarView extends State<MainCalendarView> {
   Map<DateTime, List<dynamic>> _events;
   double _currentSliderValue = 1;
   TextEditingController _eventController;
-  AnimationController _animationController;
 
   @override
   void initState() {
