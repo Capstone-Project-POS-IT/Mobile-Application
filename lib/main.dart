@@ -10,8 +10,7 @@ void main(){
   runApp(MyApp());
 
   //test function call
-  APICall.testAPI();
-  APICall.getInspirationalQuote();
+  APICall.getNewsHeadlinesSentiBased(5);
 
 
 
