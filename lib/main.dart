@@ -8,11 +8,10 @@ import 'package:pos_it/APICall.dart';
 //Views
 import './Navibar.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 
   //test function call
-  //APICall.getNewsHeadlinesSentiBased(5);
 }
 
 class MyApp extends StatelessWidget {

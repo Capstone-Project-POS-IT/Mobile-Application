@@ -63,7 +63,9 @@ class APICall {
         functionName: 'randomChosenInspirationalQuote'
     );
     var resp = await callable.call();
-    print(resp.data);
+    Future<List<String>> test = resp.data;
+    //print(resp.data);
+    return resp.data;
   }
 
   /* Get all top headlines
