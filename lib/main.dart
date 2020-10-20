@@ -12,10 +12,9 @@ void main(){
   runApp(MyApp());
 
   //test function call
-  APICall.testAPI();
-
-
+  //APICall.getNewsHeadlinesSentiBased(5);
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
