@@ -12,7 +12,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeView extends State<HomeView> {
-  //var _quote = _getQuote();
+  @override
+  Widget build(context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Screen'),
+      ),
+      body: FutureBuilder<String> (
+          future: APICall.getInspirationalQuote(),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data, textAlign: TextAlign.center);
+            } else {
+              return CircularProgressIndicator();
+            }
+          }
+      ),
+    );
+  }
+}
+
+/*
+class _HomeView extends State<HomeView> {
+  var quote = 'placeholder';
+  var test = HomeView.getQuote();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +47,7 @@ class _HomeView extends State<HomeView> {
         child: Padding(
           padding: const EdgeInsets.all(100.0),
           child: Center(
-            child: Text("placeholder",
+            child: Text(test,
               textAlign: TextAlign.center,
             ),
          ),
@@ -32,9 +55,5 @@ class _HomeView extends State<HomeView> {
       )
     );
   }
-  Future<dynamic> _getQuote() async {
-    final Future<List<dynamic>> _futureList = APICall.getInspirationalQuote();
-    final _list = await _futureList;
-    return _list;
-  }
 }
+*/
