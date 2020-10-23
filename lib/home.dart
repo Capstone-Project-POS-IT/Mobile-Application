@@ -18,11 +18,11 @@ class _HomeView extends State<HomeView> {
       appBar: AppBar(
         title: Text('Home Screen'),
       ),
-      body: FutureBuilder<List<String>> (
+      body: FutureBuilder<String> (
           future: APICall.getInspirationalQuote(),
-          builder: (context, AsyncSnapshot<List<String>> snapshot) {
+          builder: (context, AsyncSnapshot<String> snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data.join());
+              return Text(snapshot.data, textAlign: TextAlign.center);
             } else {
               return CircularProgressIndicator();
             }

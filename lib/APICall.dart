@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,15 +58,18 @@ class APICall {
   - Parameters: None
   - Output JSON: {author:____,text:____}
   */
-  static Future<List<String>> getInspirationalQuote() async {
+  static Future<String> getInspirationalQuote() async {
     await _initializeFirebase();
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
         functionName: 'randomChosenInspirationalQuote'
     );
     var resp = await callable.call();
-    Future<List<String>> test = resp.data;
     //print(resp.data);
-    return resp.data;
+    var data = resp.data;
+    var quote = data.values.toList();
+    print(quote[1]);
+   //print(quote[1].runtimeType);
+    return quote[1];
   }
 
   /* Get all top headlines
