@@ -18,6 +18,37 @@ class _HomeView extends State<HomeView> {
       appBar: AppBar(
         title: Text('Home Screen'),
       ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(100.0),
+            child: Center(
+              child: FutureBuilder<String> (
+                  future: APICall.getInspirationalQuote(),
+                  builder: (context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(snapshot.data,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}
+
+/*
+
+Widget build(context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Screen'),
+      ),
       body: FutureBuilder<String> (
           future: APICall.getInspirationalQuote(),
           builder: (context, AsyncSnapshot<String> snapshot) {
@@ -30,9 +61,7 @@ class _HomeView extends State<HomeView> {
       ),
     );
   }
-}
 
-/*
 class _HomeView extends State<HomeView> {
   var quote = 'placeholder';
   var test = HomeView.getQuote();
