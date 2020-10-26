@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:pos_it/APICall.dart';
+import 'package:pos_it/Authentication/Login.dart';
 
 //Views
 import './calendar.dart';
 import './news.dart';
+import 'ExternalCalls.dart';
 
 class HomeView extends StatefulWidget {
   @override

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_it/Login.dart';
+import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/Login.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -95,7 +95,6 @@ class _SignUpState extends State<SignUp> {
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-
                       onPressed: _doSomething,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),

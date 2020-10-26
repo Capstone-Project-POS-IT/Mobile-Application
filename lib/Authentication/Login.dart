@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:pos_it/SignUp.dart';
+import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/SignUp.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -29,7 +29,7 @@ class _LoginState extends State<Login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(padding: EdgeInsets.fromLTRB(0, 70, 0, 0)),
+                SizedBox(height: 70),
                 Text("Login",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),
