@@ -151,4 +151,15 @@ class Authentication{
     print(resp.data);
 
   }
+
+  static Future<void> createEmailAuthenticationCode() async {
+    await APICall._initializeFirebase();
+    print("Running func");
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "createEmailAuthenticationCode");
+    dynamic resp = await callable.call();
+    print("Resp");
+    print(resp.data);
+
+  }
 }

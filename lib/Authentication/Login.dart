@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                  child: Text("Username",
+                  child: Text("Email",
                       textAlign: TextAlign.left,
                       style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
                   )
                 ),
                 Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    child: Text("Don't have an account?",
+                    child: Text("Forgot Password?",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white,fontSize: 25))),
                 ButtonTheme(

@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
+import 'package:pos_it/Authentication/SignUp.dart';
 import 'package:pos_it/ExternalCalls.dart';
 //Views
 import './Navibar.dart';

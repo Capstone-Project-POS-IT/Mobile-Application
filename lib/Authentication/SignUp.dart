@@ -5,17 +5,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:intl/intl.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/Login.dart';
+import 'package:pos_it/Authentication/EmailAuthentication.dart';
+import 'package:pos_it/ExternalCalls.dart';
+//inputs
+final TextEditingController _emailController = new TextEditingController();
+final TextEditingController _passwordController = new TextEditingController();
 
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
+
 }
 
 class _SignUpState extends State<SignUp> {
 
-  void _doSomething(){
+  bool _obscurePassword = true;
 
+  void toggleObscurePassword(){
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
   }
 
   @override
@@ -52,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text("Username",
+                        child: Text("Email:",
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -62,6 +71,7 @@ class _SignUpState extends State<SignUp> {
                   height: 40,
                   color: Colors.white,
                   child: TextField(
+                    controller: _emailController,
                     style: TextStyle(
                         fontSize: 17,
                         height: 2,
@@ -72,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text("Password",
+                        child: Text("Password:",
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -82,6 +92,8 @@ class _SignUpState extends State<SignUp> {
                   height: 40,
                   color: Colors.white,
                   child: TextField(
+                    controller: _passwordController,
+                    obscureText: false,
                     style: TextStyle(
                         fontSize: 17,
                         height: 2,
@@ -95,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-                      onPressed: _doSomething,
+                      onPressed: ()=>_createUserAccount(_emailController.text,_passwordController.text,context),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
@@ -112,12 +124,8 @@ class _SignUpState extends State<SignUp> {
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
+                        Navigator.pop(context);
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -135,5 +143,23 @@ class _SignUpState extends State<SignUp> {
             child: Image.asset("lib/assets/images/posit_logo.png"))
       ],
     );
+  }
+}
+
+//Create the user account (currently based more on email)
+void _createUserAccount(String userEmail, String userPassword,BuildContext context) async{
+  await Firebase.initializeApp();
+  try{
+    User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userEmail, password: userPassword)).user;
+    if(user!=null){
+      //will update the user information here
+      Authentication.createEmailAuthenticationCode();
+      Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
+    }
+  }
+  catch(error){
+    print(error);
+    _emailController.text = "";
+    _passwordController.text = "";
   }
 }

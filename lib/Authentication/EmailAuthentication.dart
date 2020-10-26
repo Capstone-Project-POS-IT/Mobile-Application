@@ -34,8 +34,8 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
                 Padding(padding: EdgeInsets.all(25),
-                child:Text("Please verify your email by typing in the six digit code received in your inbox",
-                    textAlign: TextAlign.left,
+                child:Text("Please verify your email by typing in the six digit code received in your email inbox",
+                    textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white,fontSize: 20))),
                 Align(
                     alignment: Alignment.centerLeft,
@@ -87,7 +87,9 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                   height: 50,
                   child: FlatButton(
                     color: Color(0xffabd0a8),
-                    onPressed: _doSomething,
+                    onPressed: ()=>{
+
+                    },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
@@ -95,6 +97,22 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                         style: TextStyle(color: Color(0xff000080),fontSize: 20)),
                   )
               ),
+                SizedBox(height: 50),
+                ButtonTheme(
+                    minWidth: 150,
+                    height: 50,
+                    child: FlatButton(
+                      color: Color(0xffabd0a8),
+                      onPressed: ()=>{
+
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      child: Text("Resend Email",
+                          style: TextStyle(color: Color(0xff000080),fontSize: 20)),
+                    )
+                ),
               ],
             ),
           ),
