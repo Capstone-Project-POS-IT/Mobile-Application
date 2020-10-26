@@ -10,16 +10,13 @@ import 'package:pos_it/SignUp.dart';
 //Views
 import './Navibar.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 
   //test function call
 
-
-
-
-
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
