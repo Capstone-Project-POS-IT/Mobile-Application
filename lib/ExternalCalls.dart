@@ -34,7 +34,7 @@ class APICall {
   }
 
   /*Test the API with Parameters
-  - Parameters: name, date (as a string)
+  - Parameters: name (string), date (string)
   - Output: Returns Hello from firebase message with name and string date.
             Will state API with Params succeeded if success
    */
@@ -94,16 +94,6 @@ class APICall {
     print(resp.data);
   }
 
-
-  static Future<void> createAccountId() async {
-    await _initializeFirebase();
-    /*will get a new id for which the user can use to send data.
-    User ID will be saved to a temporary ID created location with a 24 hour timestamp. Is deleted afterwards
-    if user does not use the ID.
-    Returns the users chosen 6 digit ID.
-     */
-  }
-
   static Future<void> addUserData(List data, String password) async {
     await _initializeFirebase();
     int hashcodedPassword = password.hashCode;
@@ -120,8 +110,39 @@ class APICall {
 
   }
 
+  /* Send feedback to database about the application.
+  - Parameters: subject (string), message (string)
+  - Output: {msg: Feedback sent!, subject: [subject], message: [message]} printed in console
+   */
+  static Future<void> sendUserFeedback(String subject, String message) async {
+    await _initializeFirebase();
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "sendFeedback");
+    dynamic resp = await callable.call(<String, String>{
+      "subject": subject,
+      "message": message
+    });
+    print("Resp");
+    print(resp.data);
+  }
 
+}
 
+/***************************Authentication Related Function Calls************************************************/
 
+class Authentication{
 
+  static Future<void> createNewUserWithEmailAndPassword(String name,String email,String password) async {
+    await APICall._initializeFirebase();
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "createNewUser");
+    dynamic resp = await callable.call(<String, String>{
+      "name" : name,
+      "email": email,
+      "password": password
+    });
+    print("Resp");
+    print(resp.data);
+
+  }
 }
