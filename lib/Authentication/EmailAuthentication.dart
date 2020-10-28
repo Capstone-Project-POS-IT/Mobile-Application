@@ -21,10 +21,6 @@ class EmailAuthentication extends StatefulWidget {
 
 class _EmailAuthenticationState extends State<EmailAuthentication> {
 
-  void _doSomething(){
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -91,7 +87,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                     ),
                   ),
                 ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
               ButtonTheme(
                   minWidth: 200,
                   height: 50,
@@ -105,13 +101,17 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                         style: TextStyle(color: Color(0xff000080),fontSize: 20)),
                   )
               ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
+                Padding(padding: EdgeInsets.all(20),
+                child: Text("Didn't receive an email or misplaced it?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20,color: Colors.white,))),
                 ButtonTheme(
                     minWidth: 150,
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-                      onPressed: ()=>{},
+                      onPressed: ()=>{_resendEmailAuthCode()},
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
@@ -139,5 +139,9 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
    else{
      //say there was an error.... say what the error is.
    }
+  }
+
+  void _resendEmailAuthCode(){
+
   }
 }
