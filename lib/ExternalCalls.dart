@@ -138,28 +138,20 @@ class APICall {
 
 class Authentication{
 
-  static Future<void> createNewUserWithEmailAndPassword(String name,String email,String password) async {
+  static Future<dynamic> emailAuthenticationAndAddDisplayName(String userAuthCodeInput, String name ) async {
+    print("THE FUNCTION IS RUNNING!");
     await APICall._initializeFirebase();
+    int userAuthCodeInputInt = int.parse(userAuthCodeInput);
+
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
-        functionName: "createNewUser");
-    dynamic resp = await callable.call(<String, String>{
-      "name" : name,
-      "email": email,
-      "password": password
+        functionName: "verifyEmailAuthCodeAndAddDisplayName");
+    dynamic resp = await callable.call(<String, dynamic>{
+      "userAuthCodeInput": userAuthCodeInputInt,
+      "name": name
     });
     print("Resp");
     print(resp.data);
 
-  }
-
-  static Future<void> createEmailAuthenticationCode() async {
-    await APICall._initializeFirebase();
-    print("Running func");
-    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
-        functionName: "createEmailAuthenticationCode");
-    dynamic resp = await callable.call();
-    print("Resp");
-    print(resp.data);
-
+    return resp.data;
   }
 }

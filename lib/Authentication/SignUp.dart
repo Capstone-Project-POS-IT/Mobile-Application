@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text("Email:",
+                        child: Text("Email",
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text("Password:",
+                        child: Text("Password",
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -153,7 +153,7 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
     User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userEmail, password: userPassword)).user;
     if(user!=null){
       //will update the user information here
-      Authentication.createEmailAuthenticationCode();
+      //Authentication.sendWelcomeAndAuthenticationEmail(); //this is temporary until authentication trigger issue is solved
       Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
     }
   }

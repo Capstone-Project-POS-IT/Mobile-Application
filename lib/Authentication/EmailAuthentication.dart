@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/SignUp.dart';
+import 'package:pos_it/ExternalCalls.dart';
+
+import '../home.dart';
+
+//inputs
+final TextEditingController _inputAuthenticationCode = new TextEditingController();
+final TextEditingController _inputDisplayName = new TextEditingController();
 
 class EmailAuthentication extends StatefulWidget {
   @override
@@ -50,6 +58,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                   height: 40,
                   color: Colors.white,
                   child: TextField(
+                    controller: _inputAuthenticationCode,
                     maxLength: 6,
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.number,
@@ -74,6 +83,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                   height: 40,
                   color: Colors.white,
                   child: TextField(
+                    controller: _inputDisplayName,
                     style: TextStyle(
                         fontSize: 17,
                         height: 2,
@@ -87,9 +97,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                   height: 50,
                   child: FlatButton(
                     color: Color(0xffabd0a8),
-                    onPressed: ()=>{
-
-                    },
+                    onPressed: ()=>{_confirmEmailAuthCodeAndName() },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
@@ -103,9 +111,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-                      onPressed: ()=>{
-
-                      },
+                      onPressed: ()=>{},
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
@@ -123,5 +129,15 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
             child: Image.asset("lib/assets/images/posit_logo.png"))
       ],
     );
+  }
+
+  void _confirmEmailAuthCodeAndName() async{
+   dynamic response =  await Authentication.emailAuthenticationAndAddDisplayName(_inputAuthenticationCode.text, _inputDisplayName.text);
+   if(response["emailAuthenticated"]==true){
+     Navigator.push(context,MaterialPageRoute(builder: (context) => HomeView()));
+   }
+   else{
+     //say there was an error.... say what the error is.
+   }
   }
 }
