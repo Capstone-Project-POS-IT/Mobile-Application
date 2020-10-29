@@ -69,7 +69,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text("Enter your name for the app (optional):",
+                        child: Text("Enter your name for the app",
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Colors.white,fontSize: 20)))
                 ),
@@ -142,6 +142,6 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
   }
 
   void _resendEmailAuthCode(){
-
+    Authentication.resendEmailAuthentication();
   }
 }

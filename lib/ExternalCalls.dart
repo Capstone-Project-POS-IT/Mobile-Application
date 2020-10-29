@@ -138,6 +138,7 @@ class APICall {
 
 class Authentication{
 
+  //send email authentication along with user wanted name.
   static Future<dynamic> emailAuthenticationAndAddDisplayName(String userAuthCodeInput, String name ) async {
     print("THE FUNCTION IS RUNNING!");
     await APICall._initializeFirebase();
@@ -154,4 +155,16 @@ class Authentication{
 
     return resp.data;
   }
+
+  //resend email authentication if user lost email or if email wasnt received. Currently only for sign up
+  static Future<void> resendEmailAuthentication() async {
+    await APICall._initializeFirebase();
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "resendEmailAuthentication");
+    dynamic resp = await callable.call();
+    print("Resp");
+    print(resp.data);
+  }
+
+
 }
