@@ -16,15 +16,26 @@ class _MainCalendarView extends State<MainCalendarView> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   double _currentSliderValue = 1;
-  TextEditingController _eventController;
+  final children = <Widget>[];
+  double sliderValue;
+  List<dynamic> _selectedEvents;
+  var eventMoods = new Map();
 
-  @override
   void initState() {
     _controller = CalendarController();
-    _eventController = TextEditingController();
     _events = {};
+    _selectedEvents = [];
+
+    super.initState();
   }
 
+  void _onDaySelected(DateTime day, List events, _) {
+    List events = [];
+    events.add(eventMoods[day].toString());
+    setState(() {
+      _selectedEvents = events;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -38,39 +49,15 @@ class _MainCalendarView extends State<MainCalendarView> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 TableCalendar(
-                  /*builders: CalendarBuilders(
-                    selectedDayBuilder: (context, date, events) =>
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                          ),
-                        ),
-                  ), */
                   events: _events,
                   calendarController: _controller,
                   initialCalendarFormat: CalendarFormat.week,
                   formatAnimation: FormatAnimation.slide,
                   startingDayOfWeek: StartingDayOfWeek.sunday,
                   availableGestures: AvailableGestures.all,
-                  /*
-                  builders: CalendarBuilders(
-                    selectedDayBuilder: (context, date, _) {
-                      return FadeTransition(
-                        opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                        child: Container(
-                          margin: const EdgeInsets.all(4.0),
-                          padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-                          color: Colors.deepOrange[300],
-                          width: 100,
-                          height: 100,
-                          child: Text(
-                            '${date.day}',
-                            style: TextStyle().copyWith(fontSize: 16.0),
-                          ),
-                        ),
-                      );
-                    },
-                  ), */
+                  onDaySelected: (date, events, _) {
+                    _onDaySelected(date, events, _);
+                  },
                 ),
                 Slider(
                   value: _currentSliderValue,
@@ -81,8 +68,30 @@ class _MainCalendarView extends State<MainCalendarView> {
                   onChanged: (double value) {
                     setState(() {
                       _currentSliderValue = value;
-                    });
+                      sliderValue = value;
+                      }
+                    );
                   },
+                ),
+                ... _selectedEvents.map((event) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 100.0,
+                      height: 20.0,
+                      child: new Text('Mood: ' + event,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+
+                      decoration: BoxDecoration(
+                        //color: getColor(double.parse(event)),
+                        //color: Colors.greenAccent,
+                        shape:  BoxShape.rectangle,
+                        border: Border.all(width: 2.0, color: Colors.greenAccent),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                  ),
                 ),
               ]
             )
@@ -90,102 +99,45 @@ class _MainCalendarView extends State<MainCalendarView> {
         ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: _showAddDialog,
-
-      ),
-    );
-  }
-  //function for the dialog box that appears when the user clicks on the floating button.
-  _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: _eventController,
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("Save"),
-            onPressed: (){
-              if(_eventController.text.isEmpty) return;
-              setState(() {
-                if(_events[_controller.selectedDay] != null) {
-                  _events[_controller.selectedDay].add
-                    (_eventController.text);
-                }else{
-                  _events[_controller.selectedDay] =
-                      [_eventController.text];
+          onPressed: (){
+            setState(() {
+              if(_events[_controller.selectedDay] == null) {
+                if (_events[_controller.selectedDay] != null) {
+                  _events[_controller.selectedDay].add(sliderValue.toString());
+                } else {
+                  _events[_controller.selectedDay] = [sliderValue.toString()];
                 }
-                _eventController.clear();
-                Navigator.pop(context);
-              });
-            },
-          )
-        ]
-      )
-    );
-  }
-
-  /*
-  Widget _buildEventsMarker(DateTime date, List events) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: _controller.isSelected(date)
-            ? Colors.brown[500]
-            : _controller.isToday(date)
-            ? Colors.brown[300]
-            : Colors.blue[400],
-      ),
-      width: 16.0,
-      height: 16.0,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: 12.0,
-          ),
-        ),
+              }
+            });
+            eventMoods[_controller.selectedDay] = sliderValue;
+          },
       ),
     );
   }
-  */
 
-  //simple function that takes a number as a string input (1 -10) and returns a color
-  Color getColor(String mood) {
-    Color c10 = const Color(0xfafa6e);
-    Color c9 = const Color(0xc4ec74);
-    Color c8 = const Color(0x92dc7e);
-    Color c7 = const Color(0x64c987);
-    Color c6 = const Color(0x39b48e);
-    Color c5 = const Color(0x089f8f);
-    Color c4 = const Color(0x00898a);
-    Color c3 = const Color(0x08737f);
-    Color c2 = const Color(0x215d6e);
-    Color c1 = const Color(0x2a4858);
-
-    if(mood == '1') {
-      return c1;
-    } else if (mood == '2') {
-      return c2;
-    } else if (mood == '3') {
-      return c3;
-    } else if (mood == '4') {
-      return c4;
-    } else if (mood == '5') {
-      return c5;
-    } else if (mood == '6') {
-      return c6;
-    } else if (mood == '7') {
-      return c7;
-    } else if (mood == '8') {
-      return c8;
-    } else if (mood == '9') {
-      return c9;
+  //simple function that takes a number as a double input (1 -10) and returns a color
+  Color getColor(double mood) {
+    
+    if(mood == 1.0) {
+      return const Color(0x2a4858);
+    } else if (mood == 2.0) {
+      return const Color(0x215d6e);
+    } else if (mood == 3.0) {
+      return const Color(0x08737f);
+    } else if (mood == 4.0) {
+      return const Color(0x00898a);
+    } else if (mood == 5.0) {
+      return const Color(0x089f8f);
+    } else if (mood == 6.0) {
+      return const Color(0x39b48e);
+    } else if (mood == 7.0) {
+      return const Color(0x64c987);
+    } else if (mood == 8.0) {
+      return const Color(0x92dc7e);
+    } else if (mood == 9.0) {
+      return const Color(0xc4ec74);
     } else {
-      return c10;
+      return const Color(0xfafa6e);
     }
   }
 }
