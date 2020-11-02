@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+<<<<<<< Updated upstream
 import '../ExternalCalls.dart';
 import '../home.dart';
 import 'EmailAuthentication.dart';
 import 'UserInformation.dart';
 import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/SignUp.dart';
+=======
+import 'SignUp.dart';
+>>>>>>> Stashed changes
 
 //inputs
 final TextEditingController _emailController = new TextEditingController();
