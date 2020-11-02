@@ -22,6 +22,7 @@ class APICall {
 
   /* Test the API
   - Parameters: None
+  - Return: Void
   - Output: Prints API SUCCEEEDED if API connection works
    */
   static Future<void> testAPI() async {
@@ -40,6 +41,7 @@ class APICall {
 
   /*Test the API with Parameters
   - Parameters: name (string), date (string)
+  - Return: Void
   - Output: Returns Hello from firebase message with name and string date.
             Will state API with Params succeeded if success
    */
@@ -60,6 +62,7 @@ class APICall {
 
   /*Get a randomly chosen quote
   - Parameters: None
+  - Return: JSON with author and quote
   - Output JSON: {author:____,text:____}
   */
   static Future<String> getInspirationalQuote() async {
@@ -68,17 +71,15 @@ class APICall {
         functionName: 'randomChosenInspirationalQuote'
     );
     var resp = await callable.call();
-    //print(resp.data);
     var data = resp.data;
     var quote = data.values.toList();
-    print(quote[1]);
-   //print(quote[1].runtimeType);
     return quote[1]+" -"+quote[0];
   }
 
   /* Get all top headlines
   - Parameters: None
-  - Output: Returns list of all main headlines
+  - Return: Void
+  - Output: Returns list of all main headlines in JSON
    */
   static Future<void> getNewsHeadlines() async {
     await _initializeFirebase();
@@ -91,6 +92,7 @@ class APICall {
 
   /* Get Headlines based on sentiment of the user
   - Parameters: User sentiment (value between 1-10)
+  - Return: Currently Void. Will change later
   - Output: Returns list of all headlines that follow the sentiment guidelines
    */
   static Future<void> getNewsHeadlinesSentiBased(int userSentiment) async {
@@ -104,11 +106,24 @@ class APICall {
     print(resp.data);
   }
 
-  static Future<void> addUserData(List data, String password) async {
-    await _initializeFirebase();
-    int hashcodedPassword = password.hashCode;
-
-    /*Will add data of user to the database. Will be saved under the ID of the user*/
+  /* Send user data sentiment to the backend
+  - Parameters: todaySentiment (int between 1-10), description (string)
+  - Return: Void
+  - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
+   */
+  static Future<void> sendUserDaySentimentData(int todaySentiment, String description) async {
+    APICall._initializeFirebase();
+    DateTime current = DateTime.now();
+    DateTime dayStart = new DateTime(current.year,current.month,current.day);
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "sendUserDaySentimentData");
+    dynamic resp = await callable.call(<String, dynamic>{
+      "todaySentiment": todaySentiment,
+      "description": description,
+      "userDate":  dayStart.toString()
+    });
+    print("Resp");
+    print(resp.data);
 
   }
 
@@ -136,6 +151,8 @@ class APICall {
     print(resp.data);
   }
 
+
+
 }
 
 /***************************Authentication Related Function Calls************************************************/
@@ -144,7 +161,6 @@ class Authentication{
 
   //send email authentication along with user wanted name.
   static Future<dynamic> emailAuthenticationAndAddDisplayName(String userAuthCodeInput, String name ) async {
-    print("THE FUNCTION IS RUNNING!");
     await APICall._initializeFirebase();
     int userAuthCodeInputInt = int.parse(userAuthCodeInput);
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import '../ExternalCalls.dart';
 import '../home.dart';
 import 'EmailAuthentication.dart';
 import 'UserInformation.dart';
@@ -171,6 +172,7 @@ void _LoginViaEmail(String userEmail,String userPassword, BuildContext context) 
   try {
     User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: userEmail, password: userPassword)).user;
     if (user != null) {
+      APICall.sendUserDaySentimentData(5, "It is a gorgeous day");
       //will update the user information hereade
       UserInformation.initiateFirebaseUser(user);
       if(user.emailVerified){
