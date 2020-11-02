@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
+import 'package:pos_it/Authentication/UserInformation.dart';
 import 'package:pos_it/ExternalCalls.dart';
 //inputs
 final TextEditingController _emailController = new TextEditingController();
@@ -54,9 +55,12 @@ class _SignUpState extends State<SignUp> {
                     Padding(padding: EdgeInsets.all(20),
                         child: Image(image: AssetImage("lib/assets/images/facebook_logo.png"),width: 80,height: 80)
                     ),
-                    Padding(padding: EdgeInsets.all(20),
-                        child: Image(image: AssetImage("lib/assets/images/google_logo.png"),width: 80,height: 80)
-                    ),
+                    GestureDetector(
+                      onTap:()=>_createUserAccountViaGoogle(),
+                      child:Padding(padding: EdgeInsets.all(20),
+                          child: Image(image: AssetImage("lib/assets/images/google_logo.png"),width: 80,height: 80,)
+                      ),
+                    )
                   ],),
                 Align(
                     alignment: Alignment.centerLeft,
@@ -152,7 +156,8 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
   try{
     User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userEmail, password: userPassword)).user;
     if(user!=null){
-      //will update the user information here
+      //will update the user information hereade
+      UserInformation.initiateFirebaseUser(user);
       //Authentication.sendWelcomeAndAuthenticationEmail(); //this is temporary until authentication trigger issue is solved
       Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
     }
@@ -163,3 +168,9 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
     _passwordController.text = "";
   }
 }
+
+void _createUserAccountViaGoogle() async{
+  Authentication.signInWithGoogle();
+}
+
+

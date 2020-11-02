@@ -6,6 +6,10 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+//for google
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 class APICall {
 
   //initialize the firebase if not initialized
@@ -69,7 +73,7 @@ class APICall {
     var quote = data.values.toList();
     print(quote[1]);
    //print(quote[1].runtimeType);
-    return quote[1];
+    return quote[1]+" -"+quote[0];
   }
 
   /* Get all top headlines
@@ -158,12 +162,43 @@ class Authentication{
 
   //resend email authentication if user lost email or if email wasnt received. Currently only for sign up
   static Future<void> resendEmailAuthentication() async {
-    await APICall._initializeFirebase();
+    // await APICall._initializeFirebase();
+    await Firebase.initializeApp();
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
         functionName: "resendEmailAuthentication");
     dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
+  }
+
+
+  /*Google Sign in */
+  static Future<String> signInWithGoogle() async{
+    await APICall._initializeFirebase();
+    final FirebaseAuth mAuth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential authResult = await mAuth.signInWithCredential(credential);
+    final User user = authResult.user;
+
+    if (user != null) {
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User currentUser = mAuth.currentUser;
+      assert(user.uid == currentUser.uid);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return '$user';
+    }
+    return null;
   }
 
 

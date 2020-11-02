@@ -23,13 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.5.0
-  firebase_database: ^4.0.0
-  cloud_functions: ^0.6.0
+  firebase_core: ^0.5.1
+  firebase_database: ^4.2.0
+  cloud_functions: ^0.6.0+1
   intl: ^0.16.1
   table_calendar: ^2.2.3
   shared_preferences: ^0.5.4+5
-  firebase_auth: ^0.18.1+2  #Firebase authentication
+  firebase_auth: ^0.18.2  #Firebase authentication
   google_sign_in: ^4.5.5  #Google sign-in authentication
   flutter_facebook_login: ^3.0.0 #Facebook sign-in authentication
   firebase_auth_web: ^0.3.1+1 #Web authentication for firebase

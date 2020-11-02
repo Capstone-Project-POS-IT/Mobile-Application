@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import '../home.dart';
+import 'EmailAuthentication.dart';
+import 'UserInformation.dart';
 import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/SignUp.dart';
+
+//inputs
+final TextEditingController _emailController = new TextEditingController();
+final TextEditingController _passwordController = new TextEditingController();
 
 class Login extends StatefulWidget {
   @override
@@ -12,11 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
-  void _doSomething(){
-
-  }
-
+  void _doSomething() {}
 
   @override
   Widget build(BuildContext context) {
@@ -30,100 +33,127 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 70),
-                Text("Login",
+                Text(
+                  "Login",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.all(20),
-                    child: Image(image: AssetImage("lib/assets/images/facebook_logo.png"),width: 80,height: 80)
-                    ),
-                    Padding(padding: EdgeInsets.all(20),
-                        child: Image(image: AssetImage("lib/assets/images/google_logo.png"),width: 80,height: 80)
-                    ),
-                  ],),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-                  child: Text("Email",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.white,fontSize: 20)))
+                    Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Image(
+                            image: AssetImage(
+                                "lib/assets/images/facebook_logo.png"),
+                            width: 80,
+                            height: 80)),
+                    Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Image(
+                            image:
+                                AssetImage("lib/assets/images/google_logo.png"),
+                            width: 80,
+                            height: 80)),
+                  ],
                 ),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
+                        child: Text("Email",
+                            textAlign: TextAlign.left,
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
                   height: 40,
                   color: Colors.white,
                   child: TextField(
-                    style: TextStyle(
-                      fontSize: 17,
-                      height: 2,
-                      color: Colors.black
-                    ),
+                    controller: _emailController,
+                    style:
+                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
                 Align(
                     alignment: Alignment.centerLeft,
-                    child:Padding(padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
                         child: Text("Password",
                             textAlign: TextAlign.left,
-                            style: TextStyle(color: Colors.white,fontSize: 20)))
-                ),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
                   height: 40,
                   color: Colors.white,
                   child: TextField(
-                    style: TextStyle(
-                        fontSize: 17,
-                        height: 2,
-                        color: Colors.black
-                    ),
+                    controller: _passwordController,
+                    style:
+                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
-                Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                  child: Text("Don't have an account?",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white,fontSize: 25))),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    child: ButtonTheme(
+                        minWidth: 200,
+                        height: 50,
+                        child: FlatButton(
+                          color: Color(0xffabd0a8),
+                          onPressed: () => _LoginViaEmail(_emailController.text,_passwordController.text,context),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          child: Text("Login",
+                              style: TextStyle(
+                                  color: Color(0xff000080), fontSize: 20)),
+                        ))),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Text("Don't have an account?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 25))),
                 ButtonTheme(
-                  minWidth: 200,
-                  height: 50,
-                  child: FlatButton(
-                    color: Color(0xffabd0a8),
+                    minWidth: 200,
+                    height: 50,
+                    child: FlatButton(
+                      color: Color(0xffabd0a8),
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SignUp()),
                         );
                       },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                    child: Text("Sign-up",
-                        style: TextStyle(color: Color(0xff000080),fontSize: 20)),
-                  )
-                ),
-                Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      child: Text("Sign-up",
+                          style: TextStyle(
+                              color: Color(0xff000080), fontSize: 20)),
+                    )),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Text("Forgot Password?",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white,fontSize: 25))),
+                        style: TextStyle(color: Colors.white, fontSize: 25))),
                 ButtonTheme(
                     minWidth: 200,
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-
                       onPressed: _doSomething,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
                       child: Text("Send email",
-                          style: TextStyle(color: Color(0xff000080),fontSize: 20)),
-                    )
-                )
+                          style: TextStyle(
+                              color: Color(0xff000080), fontSize: 20)),
+                    ))
               ],
             ),
           ),
@@ -133,5 +163,27 @@ class _LoginState extends State<Login> {
             child: Image.asset("lib/assets/images/posit_logo.png"))
       ],
     );
+  }
+}
+
+void _LoginViaEmail(String userEmail,String userPassword, BuildContext context) async {
+  await Firebase.initializeApp();
+  try {
+    User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: userEmail, password: userPassword)).user;
+    if (user != null) {
+      //will update the user information hereade
+      UserInformation.initiateFirebaseUser(user);
+      if(user.emailVerified){
+        Navigator.push(context,MaterialPageRoute(builder: (context) => HomeView()));
+      }
+      else{
+        Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
+      }
+
+    }
+  } catch (error) {
+    print(error);
+    _emailController.text = "";
+    _passwordController.text = "";
   }
 }
