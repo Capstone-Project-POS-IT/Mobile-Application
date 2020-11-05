@@ -5,7 +5,7 @@ import 'package:pos_it/Authentication/UserInformation.dart';
 
 //Views
 import './calendar.dart';
-import './news.dart';
+import './News.dart';
 import 'ExternalCalls.dart';
 
 class WelcomeName extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 //Views
 import './home.dart';
 import './calendar.dart';
-import './news.dart';
+import './News.dart';
 
 class NaviView extends StatefulWidget {
   @override

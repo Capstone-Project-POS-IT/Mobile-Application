@@ -127,13 +127,30 @@ class APICall {
 
   }
 
-  static Future<void> getUserData(int id, String password) async {
-    await _initializeFirebase();
-    int hashcodedPassword = password.hashCode;
-
-    /*Will add data of user to the database. Will be saved under the ID of the user*/
-
+  /* Get all of user's sentiment to the backend
+  - Parameters: None
+  - Return: JSON with the user sentiment data
+  - Output: Returns JSON of the user data in form of JSON
+   */
+  static Future<dynamic> getUserDaySentimentsData() async {
+    APICall._initializeFirebase();
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "getUserDaySentiments");
+    dynamic resp = await callable.call();
+    print("Resp");
+    print(resp.data);
   }
+
+  /*Will delete all of a user's sentiment data */
+  static Future<dynamic> deleteUserDaySentimentsData() async {
+    APICall._initializeFirebase();
+    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
+        functionName: "deleteUserDaySentiments");
+    dynamic resp = await callable.call();
+    print("Resp");
+    print(resp.data);
+  }
+
 
   /* Send feedback to database about the application.
   - Parameters: subject (string), message (string)
