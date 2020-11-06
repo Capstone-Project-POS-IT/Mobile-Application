@@ -111,7 +111,7 @@ class _MainCalendarView extends State<MainCalendarView> {
                       ),
 
                       decoration: BoxDecoration(
-                        color: getColor(double.parse(event)),
+                        color: getColor(event),
                         //color: Colors.greenAccent,
                         shape:  BoxShape.rectangle,
                         border: Border.all(width: 2.0, color: Colors.black12),
@@ -144,8 +144,14 @@ class _MainCalendarView extends State<MainCalendarView> {
   }
 
   //simple function that takes a number as a double input (1 -10) and returns a color
-  Color getColor(double mood) {
-
+  Color getColor(String event) {
+    double mood = 0.0;
+    if(event == 'null') {
+      return Colors.black54;
+    } else {
+      mood = double.parse(event);
+    }
+    
     if(mood == 0.0) {
       return const Color(0xff3a3858);
     } else if(mood == 1.0) {
