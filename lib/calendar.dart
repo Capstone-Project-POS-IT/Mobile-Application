@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
@@ -20,13 +22,37 @@ class _MainCalendarView extends State<MainCalendarView> {
   double sliderValue;
   List<dynamic> _selectedEvents;
   var eventMoods = new Map();
+  SharedPreferences prefs;
 
   void initState() {
     _controller = CalendarController();
     _events = {};
     _selectedEvents = [];
-
     super.initState();
+    initPrefs();
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _events = Map<DateTime, List<dynamic>>.from(decodeMap(json.decode(prefs.getString("events") ?? "{ }")));
+    });
+  }
+
+  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
+    Map<String, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[key.toString()] = map[key];
+    });
+    return newMap;
+  }
+
+  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
+    Map<DateTime, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[DateTime.parse(key)] = map[key];
+    });
+    return newMap;
   }
 
   void _onDaySelected(DateTime day, List events, _) {
@@ -36,6 +62,7 @@ class _MainCalendarView extends State<MainCalendarView> {
       _selectedEvents = events;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -80,14 +107,14 @@ class _MainCalendarView extends State<MainCalendarView> {
                       height: 20.0,
                       child: new Text('Mood: ' + event,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                       ),
 
                       decoration: BoxDecoration(
-                        //color: getColor(double.parse(event)),
+                        color: getColor(double.parse(event)),
                         //color: Colors.greenAccent,
                         shape:  BoxShape.rectangle,
-                        border: Border.all(width: 2.0, color: Colors.greenAccent),
+                        border: Border.all(width: 2.0, color: Colors.black12),
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
@@ -107,6 +134,7 @@ class _MainCalendarView extends State<MainCalendarView> {
                 } else {
                   _events[_controller.selectedDay] = [sliderValue.toString()];
                 }
+                prefs.setString("events", json.encode(encodeMap(_events)));
               }
             });
             eventMoods[_controller.selectedDay] = sliderValue;
@@ -117,27 +145,29 @@ class _MainCalendarView extends State<MainCalendarView> {
 
   //simple function that takes a number as a double input (1 -10) and returns a color
   Color getColor(double mood) {
-    
-    if(mood == 1.0) {
-      return const Color(0x2a4858);
+
+    if(mood == 0.0) {
+      return const Color(0xff3a3858);
+    } else if(mood == 1.0) {
+      return const Color(0xff2a4858);
     } else if (mood == 2.0) {
-      return const Color(0x215d6e);
+      return const Color(0xff215d6e);
     } else if (mood == 3.0) {
-      return const Color(0x08737f);
+      return const Color(0xff08737f);
     } else if (mood == 4.0) {
-      return const Color(0x00898a);
+      return const Color(0xff00898a);
     } else if (mood == 5.0) {
-      return const Color(0x089f8f);
+      return const Color(0xff089f8f);
     } else if (mood == 6.0) {
-      return const Color(0x39b48e);
+      return const Color(0xff39b48e);
     } else if (mood == 7.0) {
-      return const Color(0x64c987);
+      return const Color(0xff64c987);
     } else if (mood == 8.0) {
-      return const Color(0x92dc7e);
+      return const Color(0xff92dc7e);
     } else if (mood == 9.0) {
-      return const Color(0xc4ec74);
+      return const Color(0xffc4ec74);
     } else {
-      return const Color(0xfafa6e);
+      return const Color(0xfffafa6e);
     }
   }
 }
