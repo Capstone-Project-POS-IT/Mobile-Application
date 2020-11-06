@@ -107,7 +107,7 @@ class _MainCalendarView extends State<MainCalendarView> {
                       height: 20.0,
                       child: new Text('Mood: ' + event,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: getTextColor(event)),
                       ),
 
                       decoration: BoxDecoration(
@@ -151,7 +151,7 @@ class _MainCalendarView extends State<MainCalendarView> {
     } else {
       mood = double.parse(event);
     }
-    
+
     if(mood == 0.0) {
       return const Color(0xff3a3858);
     } else if(mood == 1.0) {
@@ -174,6 +174,21 @@ class _MainCalendarView extends State<MainCalendarView> {
       return const Color(0xffc4ec74);
     } else {
       return const Color(0xfffafa6e);
+    }
+  }
+
+  Color getTextColor(String event) {
+    double mood = 0.0;
+    if(event == 'null') {
+      return Colors.white;
+    } else {
+      mood = double.parse(event);
+    }
+
+    if(mood <= 9.0) {
+      return Colors.white;
+    } else {
+      return Colors.black45;
     }
   }
 }
