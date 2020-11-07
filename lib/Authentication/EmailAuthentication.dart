@@ -132,7 +132,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
   }
 
   void _confirmEmailAuthCodeAndName() async{
-   dynamic response =  await Authentication.emailAuthenticationAndAddDisplayName(_inputAuthenticationCode.text, _inputDisplayName.text);
+   dynamic response = await Authentication.emailAuthenticationAndAddDisplayName(_inputAuthenticationCode.text, _inputDisplayName.text);
    if(response["emailAuthenticated"]==true){
      Navigator.push(context,MaterialPageRoute(builder: (context) => HomeView()));
    }
@@ -142,6 +142,6 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
   }
 
   void _resendEmailAuthCode(){
-    Authentication.resendEmailAuthentication();
+    Authentication.sendEmailAuthenticationEmail(true);
   }
 }

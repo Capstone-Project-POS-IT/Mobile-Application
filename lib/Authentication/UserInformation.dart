@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 class UserInformation {
   static User _user; //will be the Firebase User
+  //Data to be stored of the user
 
+  /*Initiation functions*/
   static void initiateFirebaseUser(User userCreate) {
     _user = userCreate;
   }

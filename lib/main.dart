@@ -7,7 +7,7 @@ import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
 import 'package:pos_it/Authentication/SignUp.dart';
 import 'package:pos_it/ExternalCalls.dart';
-import 'package:pos_it/News.dart';
+import 'package:pos_it/news.dart';
 //Views
 import './Navibar.dart';
 import 'calendar.dart';
