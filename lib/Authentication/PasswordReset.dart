@@ -127,7 +127,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                   Padding(
                                       padding: EdgeInsets.all(25),
                                       child: Text(
-                                          "Please verify your email by typing in the six digit code received in your email inbox",
+                                          "Please verify your email by typing in the ten character code received in your email inbox",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: Colors.white,
@@ -152,7 +152,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                           _emailVerificationCodeTextFieldEnabled,
                                       controller:
                                           _emailVerificationCodeController,
-                                      maxLength: 6,
+                                      maxLength: 10,
                                       textAlign: TextAlign.center,
                                       keyboardType: TextInputType.number,
                                       style: TextStyle(

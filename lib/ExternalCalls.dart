@@ -147,23 +147,6 @@ class APICall {
 /***************************Authentication Related Function Calls************************************************/
 
 class Authentication {
-  //send email authentication along with user wanted name.
-  static Future<dynamic> emailAuthenticationAndAddDisplayName(
-      String userAuthCodeInput, String name) async {
-    await APICall._initializeFirebase();
-    int userAuthCodeInputInt = int.parse(userAuthCodeInput);
-
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "verifyEmailAuthCodeAndAddDisplayName");
-    dynamic resp = await callable.call(<String, dynamic>{
-      "userAuthCodeInput": userAuthCodeInputInt,
-      "name": name
-    });
-    print("Resp");
-    print(resp.data);
-
-    return resp.data;
-  }
 
   //resend email authentication if user lost email or if email wasnt received. Currently only for sign up
   static Future<void> sendEmailAuthenticationEmail(bool isWelcome) async {
@@ -173,6 +156,24 @@ class Authentication {
     dynamic resp = await callable.call(<String, bool>{"isWelcome": isWelcome});
     print("Resp");
     print(resp.data);
+  }
+
+
+  //send email authentication along with user wanted name.
+  static Future<dynamic> emailAuthenticationAndAddDisplayName(
+      String userAuthCodeInput, String name) async {
+    await APICall._initializeFirebase();
+
+    final HttpsCallable callable = CloudFunctions.instance
+        .getHttpsCallable(functionName: "verifyEmailAuthCodeAndAddDisplayName");
+    dynamic resp = await callable.call(<String, dynamic>{
+      "userAuthCodeInput": userAuthCodeInput,
+      "name": name
+    });
+    print("Resp");
+    print(resp.data);
+
+    return resp.data;
   }
 
   //Two functions below are for password reset
@@ -188,11 +189,10 @@ class Authentication {
   static Future<dynamic> verifyEmailAuthCodeAndResetPassword(
       String userAuthCodeInput, String email, String newPassword) async {
     await APICall._initializeFirebase();
-    int userAuthCodeInputInt = int.parse(userAuthCodeInput);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "verifyEmailAuthCodeAndResetPassword");
     dynamic resp = await callable.call(<String, dynamic>{
-      "userAuthCodeInput": userAuthCodeInputInt,
+      "userAuthCodeInput": userAuthCodeInput,
       "email": email,
       "newPassword": newPassword
     });
@@ -200,6 +200,7 @@ class Authentication {
     print(resp.data);
     return resp.data;
   }
+
 
   /*Google Sign in */
   static Future<String> signInWithGoogle() async {
