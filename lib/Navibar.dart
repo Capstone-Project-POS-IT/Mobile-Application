@@ -16,7 +16,8 @@ class _NaviView extends State<NaviView> {
   final List<Widget> _children = [
     HomeView(),
     MainCalendarView(),
-    NewsView()
+    NewsView(),
+    SettingsView()
   ];
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class _NaviView extends State<NaviView> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
@@ -37,7 +39,11 @@ class _NaviView extends State<NaviView> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.report),
             label: "News",
-          )
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.settings),
+            label: "Settings",
+          ),
         ],
       ),
     );
