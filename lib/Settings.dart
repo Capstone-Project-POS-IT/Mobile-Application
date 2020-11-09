@@ -1,14 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
-
-class Settings extends StatefulWidget {
+class SettingsView extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsView createState() => new _SettingsView();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsView extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    // TODO: implement build
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Settings'),
+      ),
+    );
   }
 }

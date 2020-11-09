@@ -31,6 +31,7 @@ class _TopBarState extends State<TopBar> {
   void _doSomething(){
 
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(padding: EdgeInsets.all(15),
