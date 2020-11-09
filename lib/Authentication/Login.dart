@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pos_it/Authentication/PasswordReset.dart';
-import '../home.dart';
+import '../ExternalCalls.dart';
+import '../Navibar.dart';
 import 'EmailAuthentication.dart';
 import 'UserInformation.dart';
 import 'SignUp.dart';
@@ -184,7 +185,7 @@ void _LoginViaEmail(String userEmail, String userPassword,
       if (user.emailVerified) {
         // UserInformation.getAllData();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeView()));
+            context, MaterialPageRoute(builder: (context) => NaviView()));
       }
       else {
         Navigator.push(context,

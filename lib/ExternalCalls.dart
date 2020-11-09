@@ -71,32 +71,19 @@ class APICall {
     return quote[1] + " -" + quote[0];
   }
 
-  /* Get all top headlines
+  /* Retrieves all of the news from database that are filtered based on user's most recent sentiment
   - Parameters: None
-  - Return: Void
-  - Output: Returns list of all main headlines in JSON
+  - Return: JSON with all of the news based on user's most recent sentiment
+  - Output: Shows JSON of news
    */
-  static Future<void> getNewsHeadlines() async {
+  static Future<dynamic> getNewsHeadlinesSentiBased() async {
     await _initializeFirebase();
     final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'getTopNewsHeadlines');
-    var resp = await callable.call();
-    print(resp.data);
-  }
-
-  /* Get Headlines based on sentiment of the user
-  - Parameters: User sentiment (value between 1-10)
-  - Return: Currently Void. Will change later
-  - Output: Returns list of all headlines that follow the sentiment guidelines
-   */
-  static Future<void> getNewsHeadlinesSentiBased(int userSentiment) async {
-    await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "getTopNewsSentiBased");
-    dynamic resp =
-        await callable.call(<String, dynamic>{"sentiment": userSentiment});
+        .getHttpsCallable(functionName: "getAllNewsBasedOnMostRecentSentiment");
+    dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
+    return resp.data;
   }
 
   /* Send user data sentiment to the backend
@@ -120,7 +107,7 @@ class APICall {
     print(resp.data);
   }
 
-  /* Get all of user's sentiment to the backend
+  /* Get all of user's sentiment from the backend
   - Parameters: None
   - Return: JSON with the user sentiment data
   - Output: Returns JSON of the user data in form of JSON
