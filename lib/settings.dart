@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-class NewsView extends StatefulWidget {
+class SettingsView extends StatefulWidget {
   @override
-  _NewsView createState() => new _NewsView();
+  _SettingsView createState() => new _SettingsView();
 }
 
-class _NewsView extends State<NewsView> {
+class _SettingsView extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('News Reports'),
+        title: new Text('Settings'),
       ),
     );
   }
