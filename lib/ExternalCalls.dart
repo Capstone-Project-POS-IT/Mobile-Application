@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -95,13 +93,13 @@ class APICall {
       int todaySentiment, String description) async {
     APICall._initializeFirebase();
     DateTime current = DateTime.now();
-    DateTime dayStart = new DateTime(current.year, current.month, current.day);
+    String todayDateFormatted = DateFormat('MM-dd-yyyy').format(current);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "sendUserDaySentimentData");
     dynamic resp = await callable.call(<String, dynamic>{
       "todaySentiment": todaySentiment,
       "description": description,
-      "userDate": dayStart.toString()
+      "userDate": todayDateFormatted
     });
     print("Resp");
     print(resp.data);

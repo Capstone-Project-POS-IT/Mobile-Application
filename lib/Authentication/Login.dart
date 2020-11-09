@@ -6,7 +6,7 @@ import 'package:pos_it/Authentication/PasswordReset.dart';
 import '../ExternalCalls.dart';
 import '../Navibar.dart';
 import 'EmailAuthentication.dart';
-import 'UserInformation.dart';
+import '../UserInfo/UserInformation.dart';
 import 'SignUp.dart';
 
 //inputs
@@ -180,10 +180,9 @@ void _LoginViaEmail(String userEmail, String userPassword,
     User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: userEmail, password: userPassword)).user;
     if (user != null) {
-      //will update the user information here
       UserInformation.initiateFirebaseUser(user);
       if (user.emailVerified) {
-        // UserInformation.getAllData();
+        await UserInformation.setAllUserInformationData();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => NaviView()));
       }

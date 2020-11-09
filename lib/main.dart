@@ -1,13 +1,6 @@
-import 'dart:io';
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
-import 'package:pos_it/Authentication/EmailAuthentication.dart';
-import 'package:pos_it/Authentication/SignUp.dart';
-import 'package:pos_it/ExternalCalls.dart';
-import 'package:pos_it/news.dart';
+
 //Views
 import './Navibar.dart';
 import 'calendar.dart';

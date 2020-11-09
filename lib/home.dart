@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
-import 'package:pos_it/Authentication/UserInformation.dart';
-
+import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 //Views
 import './calendar.dart';
 import './News.dart';
