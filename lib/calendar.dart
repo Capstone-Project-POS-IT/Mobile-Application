@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:pos_it/ExternalCalls.dart';
 
 
 //mainCalendarView will be the view that shows the current day and allows the user to
 //select how they felt throughout the day.
+
 class MainCalendarView extends StatefulWidget {
   @override
   _MainCalendarView createState() => new _MainCalendarView();
@@ -29,7 +33,7 @@ class _MainCalendarView extends State<MainCalendarView> {
     _events = {};
     _selectedEvents = [];
     super.initState();
-    initPrefs();
+    //initPrefs();
   }
 
   initPrefs() async {
@@ -60,6 +64,15 @@ class _MainCalendarView extends State<MainCalendarView> {
     events.add(eventMoods[day].toString());
     setState(() {
       _selectedEvents = events;
+    });
+  }
+
+  void addEventstoCalendar() {
+    dynamic jsonName = UserInformation.get("sentimentData");
+    dynamic userData = jsonName["data"];
+    userData.ForEach((day) {
+      DateTime date = DateTime.parse(day);
+      _events[date] = [day[0]];
     });
   }
 
@@ -134,7 +147,8 @@ class _MainCalendarView extends State<MainCalendarView> {
                 } else {
                   _events[_controller.selectedDay] = [sliderValue.toString()];
                 }
-                prefs.setString("events", json.encode(encodeMap(_events)));
+                //prefs.setString("events", json.encode(encodeMap(_events)));
+                APICall.sendUserDaySentimentData(sliderValue, 'placeholder');
               }
             });
             eventMoods[_controller.selectedDay] = sliderValue;

@@ -90,7 +90,7 @@ class APICall {
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
   static Future<void> sendUserDaySentimentData(
-      int todaySentiment, String description) async {
+      double todaySentiment, String description) async {
     APICall._initializeFirebase();
     DateTime current = DateTime.now();
     String todayDateFormatted = DateFormat('MM-dd-yyyy').format(current);
