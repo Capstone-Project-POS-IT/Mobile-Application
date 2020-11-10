@@ -90,10 +90,10 @@ class APICall {
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
   static Future<void> sendUserDaySentimentData(
-      int todaySentiment, String description) async {
-    await _initializeFirebase();
-    DateTime current = DateTime.now();
-    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(current);
+      double todaySentiment, String description, DateTime date) async {
+    APICall._initializeFirebase();
+    //DateTime current = DateTime.now();
+    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(date);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "sendUserDaySentimentData");
     dynamic resp = await callable.call(<String, dynamic>{
@@ -143,7 +143,6 @@ class APICall {
     print("Resp");
     print(resp.data);
   }
-
 }
 
 /***************************Authentication Related Function Calls************************************************/
