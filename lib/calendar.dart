@@ -20,6 +20,7 @@ class MainCalendarView extends StatefulWidget {
 
 class _MainCalendarView extends State<MainCalendarView> {
 
+  String currentDateSentiment = 11.0.toString();
   CalendarController _controller;
   String globalSentiment;
   Map<DateTime, List<dynamic>> _events;
@@ -87,6 +88,7 @@ class _MainCalendarView extends State<MainCalendarView> {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
     if(map.containsKey(todayDateFormatted) == true) {
       double sentiment = map[todayDateFormatted]["sentiment"].toDouble();
+      currentDateSentiment = sentiment.toString();
 
       return new Container(
         width: 100.0,
@@ -109,11 +111,21 @@ class _MainCalendarView extends State<MainCalendarView> {
       return new Container(
           width: 100.0,
           height: 50.0,
-          child: new Text('No sentiment value found.',
+          child: new Text('No sentiment data found.',
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
            )
       );
+    }
+  }
+
+  void updateCurrentSentiment() {
+    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
+    if(map.containsKey(todayDateFormatted) == true) {
+      double sentiment = map[todayDateFormatted]["sentiment"].toDouble();
+      currentDateSentiment = sentiment.toString();
+    } else {
+      currentDateSentiment = 11.0.toString();
     }
   }
 
@@ -138,7 +150,13 @@ class _MainCalendarView extends State<MainCalendarView> {
                   availableGestures: AvailableGestures.all,
                   onDaySelected: (date, events, _) {
                     _onDaySelected(date, events, _);
+                    updateCurrentSentiment();
                   },
+                  calendarStyle: CalendarStyle(
+                    selectedColor: getColor(currentDateSentiment),
+                    todayColor: Colors.deepOrange[200],
+                    //markersColor: Colors.brown[700],
+                  ),
                 ),
                 Slider(
                   value: _currentSliderValue,
@@ -219,6 +237,8 @@ class _MainCalendarView extends State<MainCalendarView> {
       return const Color(0xff92dc7e);
     } else if (mood == 9.0) {
       return const Color(0xffc4ec74);
+    } else if (mood == 11.0) {
+      return Colors.lightBlue;
     } else {
       return const Color(0xfffafa6e);
     }
