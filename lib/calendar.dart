@@ -21,6 +21,7 @@ class MainCalendarView extends StatefulWidget {
 class _MainCalendarView extends State<MainCalendarView> {
 
   CalendarController _controller;
+  String globalSentiment;
   Map<DateTime, List<dynamic>> _events;
   double _currentSliderValue = 1;
   final children = <Widget>[];
@@ -77,8 +78,43 @@ class _MainCalendarView extends State<MainCalendarView> {
       DateTime date = DateTime.parse(k);
       List<dynamic> temp = new List();
       temp.add(v["sentiment"]) as dynamic;
+      //print(v["sentiment"]);
       _events[date] = temp;
     });
+  }
+
+  Widget returnDateMood() {
+    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
+    if(map.containsKey(todayDateFormatted) == true) {
+      double sentiment = map[todayDateFormatted]["sentiment"].toDouble();
+
+      return new Container(
+        width: 100.0,
+        height: 20.0,
+        child: new Text('Mood: ' + sentiment.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold, color: getTextColor(sentiment.toString())),
+        ),
+
+        decoration: BoxDecoration(
+          color: getColor(sentiment.toString()),
+          //color: Colors.greenAccent,
+          shape:  BoxShape.rectangle,
+          border: Border.all(width: 2.0, color: Colors.black12),
+          borderRadius: BorderRadius.circular(5),
+
+        ),
+      );
+    } else {
+      return new Container(
+          width: 100.0,
+          height: 50.0,
+          child: new Text('No sentiment value found.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+           )
+      );
+    }
   }
 
   @override
@@ -118,24 +154,9 @@ class _MainCalendarView extends State<MainCalendarView> {
                     );
                   },
                 ),
-                ... _selectedEvents.map((event) => Padding(
+                ... _selectedEvents.map((globalSentiment) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 100.0,
-                      height: 20.0,
-                      child: new Text('Mood: ' + event,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: getTextColor(event)),
-                      ),
-
-                      decoration: BoxDecoration(
-                        color: getColor(event),
-                        //color: Colors.greenAccent,
-                        shape:  BoxShape.rectangle,
-                        border: Border.all(width: 2.0, color: Colors.black12),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
+                    child: returnDateMood(),
                   ),
                 ),
               ]
