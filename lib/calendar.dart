@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/ExternalCalls.dart';
+import 'package:intl/intl.dart';
 
 
 //mainCalendarView will be the view that shows the current day and allows the user to
@@ -26,6 +27,7 @@ class _MainCalendarView extends State<MainCalendarView> {
   double sliderValue;
   List<dynamic> _selectedEvents;
   var eventMoods = new Map();
+  Map<String, dynamic> map;
   SharedPreferences prefs;
 
   void initState() {
@@ -33,6 +35,7 @@ class _MainCalendarView extends State<MainCalendarView> {
     _events = {};
     _selectedEvents = [];
     super.initState();
+    addEventstoCalendar();
     //initPrefs();
   }
 
@@ -68,11 +71,13 @@ class _MainCalendarView extends State<MainCalendarView> {
   }
 
   void addEventstoCalendar() {
-    dynamic jsonName = UserInformation.get("sentimentData");
-    dynamic userData = jsonName["data"];
-    userData.ForEach((day) {
-      DateTime date = DateTime.parse(day);
-      _events[date] = [day[0]];
+    map = UserInformation.getUserSentimentMap();
+
+    map.forEach((k, v) {
+      DateTime date = DateTime.parse(k);
+      List<dynamic> temp = new List();
+      temp.add(v["sentiment"]) as dynamic;
+      _events[date] = temp;
     });
   }
 
@@ -147,8 +152,15 @@ class _MainCalendarView extends State<MainCalendarView> {
                 } else {
                   _events[_controller.selectedDay] = [sliderValue.toString()];
                 }
-                //prefs.setString("events", json.encode(encodeMap(_events)));
-                APICall.sendUserDaySentimentData(sliderValue, 'placeholder');
+
+                APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
+                //sleep(const Duration(milliseconds:350));
+                UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+
+                //remove in order for calendar to save properly.
+                //sleep(const Duration(milliseconds:350));
+                //UserInformation.setAllUserInformationData();
+
               }
             });
             eventMoods[_controller.selectedDay] = sliderValue;

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/ExternalCalls.dart';
+import 'package:intl/intl.dart';
 
 class UserInformation {
 
@@ -13,6 +14,7 @@ class UserInformation {
   static User _user; //will be the Firebase User
   static dynamic _userSentiBasedNews;
   static dynamic _userSentimentData;
+  static Map<String, dynamic> map;
 
   /*Initiation functions*/
   static void initiateFirebaseUser(User userCreate) {
@@ -20,8 +22,9 @@ class UserInformation {
   }
 
   static Future<void> setAllUserInformationData() async {
-    _userSentiBasedNews = APICall.getNewsHeadlinesSentiBased();
-    _userSentimentData = APICall.getUserDaySentimentsData();
+    _userSentiBasedNews = await APICall.getNewsHeadlinesSentiBased();
+    _userSentimentData = await APICall.getUserDaySentimentsData();
+    print(_userSentimentData);
   }
 
   //Get Information about the user
@@ -48,5 +51,18 @@ class UserInformation {
     }
   }
 
+  static getUserSentimentMap() {
+    dynamic jsonName = UserInformation.get("sentimentData");
+    dynamic userData = jsonName["data"];
+
+    map = Map<String, dynamic>.from(userData);
+
+    return map;
+  }
+
+  static addUserSentimentData(DateTime key, double value) {
+    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(key);
+    map[todayDateFormatted] = value;
+  }
 
 }
