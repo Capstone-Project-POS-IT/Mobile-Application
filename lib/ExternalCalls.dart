@@ -90,10 +90,10 @@ class APICall {
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
   static Future<void> sendUserDaySentimentData(
-      int todaySentiment, String description) async {
+      double todaySentiment, String description, DateTime date) async {
     APICall._initializeFirebase();
-    DateTime current = DateTime.now();
-    String todayDateFormatted = DateFormat('MM-dd-yyyy').format(current);
+    //DateTime current = DateTime.now();
+    String todayDateFormatted = DateFormat('yyyy-MM-dd').format(date);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "sendUserDaySentimentData");
     dynamic resp = await callable.call(<String, dynamic>{
@@ -111,12 +111,13 @@ class APICall {
   - Output: Returns JSON of the user data in form of JSON
    */
   static Future<dynamic> getUserDaySentimentsData() async {
-    APICall._initializeFirebase();
+    await _initializeFirebase();
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "getUserDaySentiments");
     dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
+    return resp.data;
   }
 
   /*Will delete all of a user's sentiment data */
