@@ -20,8 +20,8 @@ class UserInformation {
   }
 
   static Future<void> setAllUserInformationData() async {
-    _userSentiBasedNews = APICall.getNewsHeadlinesSentiBased();
-    _userSentimentData = APICall.getUserDaySentimentsData();
+    _userSentiBasedNews = await APICall.getNewsHeadlinesSentiBased();
+    _userSentimentData = await APICall.getUserDaySentimentsData();
   }
 
   //Get Information about the user
