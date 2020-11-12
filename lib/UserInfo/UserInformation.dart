@@ -59,12 +59,16 @@ class UserInformation {
   }
 
   static getUserSentimentMap() {
-    dynamic jsonName = UserInformation.get("sentimentData");
-    dynamic userData = jsonName["data"];
+    dynamic jsonMap = UserInformation.get("sentimentData");
+    dynamic userData = jsonMap["data"];
 
     map = Map<String, dynamic>.from(userData);
 
     return map;
+  }
+
+  static getAllUserNewsBasedData(){
+    dynamic jsonNews = UserInformation.get("news");
   }
 
   static addUserSentimentData(DateTime key, double value) {

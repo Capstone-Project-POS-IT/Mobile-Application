@@ -79,20 +79,19 @@ class APICall {
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "getAllNewsBasedOnMostRecentSentiment");
     dynamic resp = await callable.call();
-    print("Resp");
+    print("Resp news");
     print(resp.data);
     return resp.data;
   }
 
   /* Send user data sentiment to the backend
-  - Parameters: todaySentiment (int between 1-10), description (string)
+  - Parameters: todaySentiment (int between 1-10), description (string), Date (Datetime)
   - Return: Void
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
   static Future<void> sendUserDaySentimentData(
       double todaySentiment, String description, DateTime date) async {
     APICall._initializeFirebase();
-    //DateTime current = DateTime.now();
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(date);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "sendUserDaySentimentData");
@@ -165,7 +164,7 @@ class Authentication {
 
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "verifyEmailAuthCodeAndAddDisplayName");
-    dynamic resp = await callable.call(<String, dynamic>{
+    dynamic resp = await callable.call(<String, String>{
       "userAuthCodeInput": userAuthCodeInput,
       "name": name
     });

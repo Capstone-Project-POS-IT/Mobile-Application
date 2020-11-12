@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/ExternalCalls.dart';
 
-import '../home.dart';
+import '../Home.dart';
 
 class PasswordReset extends StatefulWidget {
   @override
@@ -154,7 +154,6 @@ class _PasswordResetState extends State<PasswordReset> {
                                           _emailVerificationCodeController,
                                       maxLength: 10,
                                       textAlign: TextAlign.center,
-                                      keyboardType: TextInputType.number,
                                       style: TextStyle(
                                           fontSize: 17,
                                           height: 2,
