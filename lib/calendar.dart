@@ -30,7 +30,6 @@ class _MainCalendarView extends State<MainCalendarView> {
   List<dynamic> _selectedEvents;
   var eventMoods = new Map();
   Map<String, dynamic> map;
-  SharedPreferences prefs;
 
   void initState() {
     _controller = CalendarController();
@@ -38,30 +37,6 @@ class _MainCalendarView extends State<MainCalendarView> {
     _selectedEvents = [];
     super.initState();
     addEventstoCalendar();
-    //initPrefs();
-  }
-
-  initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _events = Map<DateTime, List<dynamic>>.from(decodeMap(json.decode(prefs.getString("events") ?? "{ }")));
-    });
-  }
-
-  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
-    Map<String, dynamic> newMap = {};
-    map.forEach((key, value) {
-      newMap[key.toString()] = map[key];
-    });
-    return newMap;
-  }
-
-  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
-    Map<DateTime, dynamic> newMap = {};
-    map.forEach((key, value) {
-      newMap[DateTime.parse(key)] = map[key];
-    });
-    return newMap;
   }
 
   void _onDaySelected(DateTime day, List events, _) {
@@ -87,7 +62,9 @@ class _MainCalendarView extends State<MainCalendarView> {
   Widget returnDateMood() {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
     if(map.containsKey(todayDateFormatted) == true) {
-      double sentiment = map[todayDateFormatted]["sentiment"].toDouble();
+      print(map[todayDateFormatted]);
+      print(map[todayDateFormatted].runtimeType);
+      double sentiment = map[todayDateFormatted];
       currentDateSentiment = sentiment.toString();
 
       return new Container(
@@ -95,7 +72,9 @@ class _MainCalendarView extends State<MainCalendarView> {
         height: 20.0,
         child: new Text('Mood: ' + sentiment.toString(),
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, color: getTextColor(sentiment.toString())),
+          style: TextStyle(fontWeight: FontWeight.bold,
+              //color: getTextColor(sentiment.toString())
+                color: Colors.white),
         ),
 
         decoration: BoxDecoration(
@@ -114,7 +93,7 @@ class _MainCalendarView extends State<MainCalendarView> {
           child: new Text('No sentiment data found.',
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
-           )
+          )
       );
     }
   }
@@ -122,7 +101,7 @@ class _MainCalendarView extends State<MainCalendarView> {
   void updateCurrentSentiment() {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
     if(map.containsKey(todayDateFormatted) == true) {
-      double sentiment = map[todayDateFormatted]["sentiment"].toDouble();
+      double sentiment = map[todayDateFormatted];
       currentDateSentiment = sentiment.toString();
     } else {
       currentDateSentiment = 11.0.toString();
@@ -132,78 +111,82 @@ class _MainCalendarView extends State<MainCalendarView> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Daily Mood'),
-        ),
-        body: Padding(
+      appBar: new AppBar(
+        title: new Text('Daily Mood'),
+      ),
+      body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                TableCalendar(
-                  events: _events,
-                  calendarController: _controller,
-                  initialCalendarFormat: CalendarFormat.week,
-                  formatAnimation: FormatAnimation.slide,
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  availableGestures: AvailableGestures.all,
-                  onDaySelected: (date, events, _) {
-                    _onDaySelected(date, events, _);
-                    updateCurrentSentiment();
-                  },
-                  calendarStyle: CalendarStyle(
-                    selectedColor: getColor(currentDateSentiment),
-                    todayColor: Colors.deepOrange[200],
-                    //markersColor: Colors.brown[700],
-                  ),
-                ),
-                Slider(
-                  value: _currentSliderValue,
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  label: _currentSliderValue.round().toString(),
-                  onChanged: (double value) {
-                    setState(() {
-                      _currentSliderValue = value;
-                      sliderValue = value;
-                      }
-                    );
-                  },
-                ),
-                ... _selectedEvents.map((globalSentiment) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: returnDateMood(),
-                  ),
-                ),
-              ]
-            )
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    TableCalendar(
+                      events: _events,
+                      calendarController: _controller,
+                      initialCalendarFormat: CalendarFormat.week,
+                      formatAnimation: FormatAnimation.slide,
+                      startingDayOfWeek: StartingDayOfWeek.sunday,
+                      availableGestures: AvailableGestures.all,
+                      onDaySelected: (date, events, _) {
+                        _onDaySelected(date, events, _);
+                        updateCurrentSentiment();
+                      },
+                      calendarStyle: CalendarStyle(
+                        selectedColor: getColor(currentDateSentiment),
+                        todayColor: Colors.lightBlue,
+                        //markersColor: Colors.brown[700],
+                      ),
+                    ),
+                    Slider(
+                      value: _currentSliderValue,
+                      min: 0,
+                      max: 10,
+                      divisions: 10,
+                      label: _currentSliderValue.round().toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _currentSliderValue = value;
+                          sliderValue = value;
+                        }
+                        );
+                      },
+                    ),
+                    ... _selectedEvents.map((globalSentiment) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: returnDateMood(),
+                    ),
+                    ),
+                  ]
+              )
           )
-        ),
+      ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: (){
-            setState(() {
-              if(_events[_controller.selectedDay] == null) {
-                if (_events[_controller.selectedDay] != null) {
-                  _events[_controller.selectedDay].add(sliderValue.toString());
-                } else {
-                  _events[_controller.selectedDay] = [sliderValue.toString()];
-                }
+        child: Icon(Icons.add),
+        onPressed: (){
+          setState(() {
+            if(sliderValue == null) {
+              sliderValue = 1.0;
+            }
 
-                APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
-                //sleep(const Duration(milliseconds:350));
-                UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
-
-                //remove in order for calendar to save properly.
-                //sleep(const Duration(milliseconds:350));
-                //UserInformation.setAllUserInformationData();
-
+            if(_events[_controller.selectedDay] == null) {
+              if (_events[_controller.selectedDay] != null) {
+                _events[_controller.selectedDay].add(sliderValue.toString());
+              } else {
+                _events[_controller.selectedDay] = [sliderValue.toString()];
               }
-            });
-            eventMoods[_controller.selectedDay] = sliderValue;
-          },
+
+              APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
+              //sleep(const Duration(milliseconds:350));
+              UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+
+              //remove in order for calendar to save properly.
+              //sleep(const Duration(milliseconds:350));
+              //UserInformation.setAllUserInformationData();
+
+            }
+          });
+          eventMoods[_controller.selectedDay] = sliderValue;
+        },
       ),
     );
   }
@@ -217,30 +200,30 @@ class _MainCalendarView extends State<MainCalendarView> {
       mood = double.parse(event);
     }
 
-    if(mood == 0.0) {
-      return const Color(0xff3a3858);
-    } else if(mood == 1.0) {
-      return const Color(0xff2a4858);
-    } else if (mood == 2.0) {
-      return const Color(0xff215d6e);
+    if(mood == 1.0) {
+      return const Color(0xfF0b0742);
+    } else if(mood == 2.0) {
+      return const Color(0xff34104b);
     } else if (mood == 3.0) {
-      return const Color(0xff08737f);
+      return const Color(0xff531b53);
     } else if (mood == 4.0) {
-      return const Color(0xff00898a);
+      return const Color(0xff6f285a);
     } else if (mood == 5.0) {
-      return const Color(0xff089f8f);
+      return const Color(0xff8a3960);
     } else if (mood == 6.0) {
-      return const Color(0xff39b48e);
+      return const Color(0xffa24c66);
     } else if (mood == 7.0) {
-      return const Color(0xff64c987);
+      return const Color(0xffb8606c);
     } else if (mood == 8.0) {
-      return const Color(0xff92dc7e);
+      return const Color(0xffcd7773);
     } else if (mood == 9.0) {
-      return const Color(0xffc4ec74);
+      return const Color(0xffdf8e7c);
+    } else if (mood == 10.0) {
+      return const Color(0xffefa787);
     } else if (mood == 11.0) {
       return Colors.lightBlue;
     } else {
-      return const Color(0xfffafa6e);
+      return const Color(0xfffdc094);
     }
   }
 
