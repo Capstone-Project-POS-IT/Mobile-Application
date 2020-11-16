@@ -6,6 +6,12 @@ import 'package:pos_it/ProvideFeedback.dart';
 
 //TODO: fix buttons, bottom nav bar
 
+class SettingsView extends StatefulWidget {
+  @override
+  _SettingsView createState() => new _SettingsView();
+}
+
+
 class _SettingsView extends State<SettingsView> {
   void _goToCreators() {}
   void _goToProvideFeedback() {}
