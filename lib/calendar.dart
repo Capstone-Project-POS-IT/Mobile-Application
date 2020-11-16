@@ -50,21 +50,33 @@ class _MainCalendarView extends State<MainCalendarView> {
   void addEventstoCalendar() {
     map = UserInformation.getUserSentimentMap();
 
-    map.forEach((k, v) {
-      DateTime date = DateTime.parse(k);
-      List<dynamic> temp = new List();
-      temp.add(v["sentiment"]) as dynamic;
-      //print(v["sentiment"]);
-      _events[date] = temp;
-    });
+    if(map != null) {
+      map.forEach((k, v) {
+        DateTime date = DateTime.parse(k);
+        List<dynamic> temp = new List();
+        if(v["sentiment"] == null) {
+          temp.add(1.0) as dynamic;
+        } else {
+          temp.add(v["sentiment"]) as dynamic;
+        }
+        _events[date] = temp;
+      });
+    }
   }
 
   Widget returnDateMood() {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
     if(map.containsKey(todayDateFormatted) == true) {
-      print(map[todayDateFormatted]);
-      print(map[todayDateFormatted].runtimeType);
-      double sentiment = map[todayDateFormatted];
+      double sentiment;
+      if(map[todayDateFormatted].runtimeType == double) {
+        sentiment = map[todayDateFormatted];
+      } else {
+        if(map[todayDateFormatted] == null) {
+          sentiment = 1.0;
+        } else {
+          sentiment = map[todayDateFormatted]['sentiment'].toDouble();
+        }
+      }
       currentDateSentiment = sentiment.toString();
 
       return new Container(
@@ -73,13 +85,11 @@ class _MainCalendarView extends State<MainCalendarView> {
         child: new Text('Mood: ' + sentiment.toString(),
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold,
-              //color: getTextColor(sentiment.toString())
                 color: Colors.white),
         ),
 
         decoration: BoxDecoration(
           color: getColor(sentiment.toString()),
-          //color: Colors.greenAccent,
           shape:  BoxShape.rectangle,
           border: Border.all(width: 2.0, color: Colors.black12),
           borderRadius: BorderRadius.circular(5),
@@ -101,7 +111,16 @@ class _MainCalendarView extends State<MainCalendarView> {
   void updateCurrentSentiment() {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(_controller.selectedDay);
     if(map.containsKey(todayDateFormatted) == true) {
-      double sentiment = map[todayDateFormatted];
+      double sentiment;
+      if(map[todayDateFormatted].runtimeType == double) {
+        sentiment = map[todayDateFormatted];
+      } else {
+        if(map[todayDateFormatted] == null) {
+          sentiment = 1.0;
+        } else {
+          sentiment = map[todayDateFormatted]['sentiment'].toDouble();
+        }
+      }
       currentDateSentiment = sentiment.toString();
     } else {
       currentDateSentiment = 11.0.toString();
@@ -123,7 +142,7 @@ class _MainCalendarView extends State<MainCalendarView> {
                     TableCalendar(
                       events: _events,
                       calendarController: _controller,
-                      initialCalendarFormat: CalendarFormat.week,
+                      initialCalendarFormat: CalendarFormat.month,
                       formatAnimation: FormatAnimation.slide,
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       availableGestures: AvailableGestures.all,
@@ -164,24 +183,34 @@ class _MainCalendarView extends State<MainCalendarView> {
         child: Icon(Icons.add),
         onPressed: (){
           setState(() {
-            if(sliderValue == null) {
-              sliderValue = 1.0;
-            }
 
             if(_events[_controller.selectedDay] == null) {
               if (_events[_controller.selectedDay] != null) {
-                _events[_controller.selectedDay].add(sliderValue.toString());
+                print(sliderValue);
+                if(sliderValue == null) {
+                  _events[_controller.selectedDay].add("1.0");
+                  APICall.sendUserDaySentimentData(1.0, 'placeholder', _controller.selectedDay);
+                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0);
+                } else {
+                  _events[_controller.selectedDay].add(sliderValue.toString());
+                  APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
+                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+                }
               } else {
-                _events[_controller.selectedDay] = [sliderValue.toString()];
+                if(sliderValue == null) {
+                  _events[_controller.selectedDay] = ["1.0"];
+                  APICall.sendUserDaySentimentData(1.0, 'placeholder', _controller.selectedDay);
+                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0);
+                } else {
+                  _events[_controller.selectedDay] = [sliderValue.toString()];
+                  APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
+                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+                }
               }
-
-              APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
               //sleep(const Duration(milliseconds:350));
-              UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
-
               //remove in order for calendar to save properly.
-              //sleep(const Duration(milliseconds:350));
-              //UserInformation.setAllUserInformationData();
+              sleep(const Duration(milliseconds:350));
+              UserInformation.setAllUserInformationData();
 
             }
           });
