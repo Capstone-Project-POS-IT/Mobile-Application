@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 class NewsView extends StatefulWidget {
   @override
@@ -143,7 +143,7 @@ class _NewsCardState extends State<NewsCard> {
 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: _launchArticleUrl,
+      onDoubleTap:_launchArticleUrl,
       onLongPress: changeCardSize,
       child: Container(
         height: cardHeight,
@@ -204,14 +204,13 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  _launchArticleUrl() async {
-    // if(await canLaunch(articleUrl)){
-    //   await launch(articleUrl);
-    // }
-    // else{
-    //   print("The link cannot be opened to $articleUrl");
-    // }
-    await launch(widget.articleUrl);
+  _launchArticleUrl()  async {
+    const url = 'https://flutter.dev';
+    if (canLaunch(url)!=null) {
+      launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future<void> changeCardSize() {
