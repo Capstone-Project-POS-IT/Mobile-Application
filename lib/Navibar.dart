@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 //Views
-import './home.dart';
+import './Home.dart';
 import './calendar.dart';
 import './settings.dart';
-import './news.dart';
+import './News.dart';
 
 class NaviView extends StatefulWidget {
   @override
@@ -31,19 +31,19 @@ class _NaviView extends State<NaviView> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
-            title: new Text("Home"),
+            label: "Home",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.calendar_today),
-            title: new Text("Tracker"),
+            label: "Tracker",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.report),
-            title: new Text("News"),
+            label: "News",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.settings),
-            title: new Text("Settings"),
+            label: "Settings",
           ),
         ],
       ),

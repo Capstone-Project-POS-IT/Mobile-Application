@@ -170,6 +170,7 @@ class _SettingsView extends State<SettingsView> {
             ),
 
           //End of all buttons
+
           ],
         ),
       ),
