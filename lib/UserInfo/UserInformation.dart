@@ -55,8 +55,11 @@ class UserInformation {
     dynamic jsonName = UserInformation.get("sentimentData");
     dynamic userData = jsonName["data"];
 
-    map = Map<String, dynamic>.from(userData);
-
+    if(userData == null) {
+      map = new Map<String, dynamic>();
+    } else {
+      map = Map<String, dynamic>.from(userData);
+    }
     return map;
   }
 
