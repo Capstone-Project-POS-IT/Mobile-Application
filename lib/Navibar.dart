@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 //Views
 import './home.dart';
 import './calendar.dart';
-import './News.dart';
+import './settings.dart';
+import './news.dart';
 
 class NaviView extends StatefulWidget {
   @override
@@ -16,7 +17,8 @@ class _NaviView extends State<NaviView> {
   final List<Widget> _children = [
     HomeView(),
     MainCalendarView(),
-    NewsView()
+    NewsView(),
+    SettingsView()
   ];
   @override
   Widget build(BuildContext context) {
@@ -25,19 +27,24 @@ class _NaviView extends State<NaviView> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
-            title: new Text('Home'),
+            title: new Text("Home"),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.calendar_today),
-            title: new Text('Tracker'),
+            title: new Text("Tracker"),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.report),
-            title: new Text('News'),
-          )
+            title: new Text("News"),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.settings),
+            title: new Text("Settings"),
+          ),
         ],
       ),
     );

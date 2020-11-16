@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
-import 'package:pos_it/Authentication/UserInformation.dart';
-
+import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 //Views
 import './calendar.dart';
 import './News.dart';
@@ -57,48 +57,3 @@ class _HomeView extends State<HomeView> {
     );
   }
 }
-
-/*
-
-Widget build(context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: FutureBuilder<String> (
-          future: APICall.getInspirationalQuote(),
-          builder: (context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data, textAlign: TextAlign.center);
-            } else {
-              return CircularProgressIndicator();
-            }
-          }
-      ),
-    );
-  }
-
-class _HomeView extends State<HomeView> {
-  var quote = 'placeholder';
-  var test = HomeView.getQuote();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(100.0),
-          child: Center(
-            child: Text(test,
-              textAlign: TextAlign.center,
-            ),
-         ),
-        ),
-      )
-    );
-  }
-}
-*/

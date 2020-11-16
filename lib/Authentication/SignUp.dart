@@ -6,7 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
-import 'package:pos_it/Authentication/UserInformation.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/ExternalCalls.dart';
 //inputs
 final TextEditingController _emailController = new TextEditingController();

@@ -8,7 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:pos_it/ExternalCalls.dart';
 
-import '../home.dart';
+import '../Navibar.dart';
 
 //inputs
 final TextEditingController _inputAuthenticationCode = new TextEditingController();
@@ -132,9 +132,9 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
   }
 
   void _confirmEmailAuthCodeAndName() async{
-   dynamic response =  await Authentication.emailAuthenticationAndAddDisplayName(_inputAuthenticationCode.text, _inputDisplayName.text);
+   dynamic response = await Authentication.emailAuthenticationAndAddDisplayName(_inputAuthenticationCode.text, _inputDisplayName.text);
    if(response["emailAuthenticated"]==true){
-     Navigator.push(context,MaterialPageRoute(builder: (context) => HomeView()));
+     Navigator.push(context,MaterialPageRoute(builder: (context) => NaviView()));
    }
    else{
      //say there was an error.... say what the error is.
@@ -142,6 +142,6 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
   }
 
   void _resendEmailAuthCode(){
-    Authentication.resendEmailAuthentication();
+    Authentication.sendEmailAuthenticationEmail(true);
   }
 }

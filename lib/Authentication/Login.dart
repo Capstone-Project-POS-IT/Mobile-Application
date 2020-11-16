@@ -2,12 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:pos_it/Authentication/PasswordReset.dart';
 import '../ExternalCalls.dart';
-import '../home.dart';
+import '../Navibar.dart';
 import 'EmailAuthentication.dart';
-import 'UserInformation.dart';
+import '../UserInfo/UserInformation.dart';
 import 'SignUp.dart';
 
 //inputs
@@ -56,7 +55,7 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.all(20),
                         child: Image(
                             image:
-                                AssetImage("lib/assets/images/google_logo.png"),
+                            AssetImage("lib/assets/images/google_logo.png"),
                             width: 80,
                             height: 80)),
                   ],
@@ -68,7 +67,7 @@ class _LoginState extends State<Login> {
                         child: Text("Email",
                             textAlign: TextAlign.left,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 20)))),
+                            TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
@@ -77,7 +76,7 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     controller: _emailController,
                     style:
-                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
+                    TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
                 Align(
@@ -87,7 +86,7 @@ class _LoginState extends State<Login> {
                         child: Text("Password",
                             textAlign: TextAlign.left,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 20)))),
+                            TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
@@ -96,7 +95,7 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     controller: _passwordController,
                     style:
-                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
+                    TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
                 Padding(
@@ -106,7 +105,9 @@ class _LoginState extends State<Login> {
                         height: 50,
                         child: FlatButton(
                           color: Color(0xffabd0a8),
-                          onPressed: () => _LoginViaEmail(_emailController.text,_passwordController.text,context),
+                          onPressed: () =>
+                              _LoginViaEmail(_emailController.text,
+                                  _passwordController.text, context),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                           ),
@@ -147,7 +148,12 @@ class _LoginState extends State<Login> {
                     height: 50,
                     child: FlatButton(
                       color: Color(0xffabd0a8),
-                      onPressed: _doSomething,
+                      onPressed: () => {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PasswordReset())
+                      )
+                    },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
@@ -167,20 +173,23 @@ class _LoginState extends State<Login> {
   }
 }
 
-void _LoginViaEmail(String userEmail,String userPassword, BuildContext context) async {
+void _LoginViaEmail(String userEmail, String userPassword,
+    BuildContext context) async {
   await Firebase.initializeApp();
   try {
-    User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: userEmail, password: userPassword)).user;
+    User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userEmail, password: userPassword)).user;
     if (user != null) {
-      //will update the user information here
       UserInformation.initiateFirebaseUser(user);
-      if(user.emailVerified){
-        Navigator.push(context,MaterialPageRoute(builder: (context) => HomeView()));
+      if (user.emailVerified) {
+        await UserInformation.setAllUserInformationData();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NaviView()));
       }
-      else{
-        Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
+      else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => EmailAuthentication()));
       }
-
     }
   } catch (error) {
     print(error);
