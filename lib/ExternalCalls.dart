@@ -79,20 +79,19 @@ class APICall {
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "getAllNewsBasedOnMostRecentSentiment");
     dynamic resp = await callable.call();
-    print("Resp");
+    print("Resp news");
     print(resp.data);
     return resp.data;
   }
 
   /* Send user data sentiment to the backend
-  - Parameters: todaySentiment (int between 1-10), description (string)
+  - Parameters: todaySentiment (int between 1-10), description (string), Date (Datetime)
   - Return: Void
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
   static Future<void> sendUserDaySentimentData(
       double todaySentiment, String description, DateTime date) async {
     APICall._initializeFirebase();
-    //DateTime current = DateTime.now();
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(date);
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "sendUserDaySentimentData");
@@ -121,8 +120,8 @@ class APICall {
   }
 
   /*Will delete all of a user's sentiment data */
-  static Future<dynamic> deleteUserDaySentimentsData() async {
-    APICall._initializeFirebase();
+  static Future<void> deleteUserDaySentimentsData() async {
+    await _initializeFirebase();
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "deleteUserDaySentiments");
     dynamic resp = await callable.call();
@@ -148,7 +147,6 @@ class APICall {
 /***************************Authentication Related Function Calls************************************************/
 
 class Authentication {
-
   //resend email authentication if user lost email or if email wasnt received. Currently only for sign up
   static Future<void> sendEmailAuthenticationEmail(bool isWelcome) async {
     await APICall._initializeFirebase();
@@ -159,7 +157,6 @@ class Authentication {
     print(resp.data);
   }
 
-
   //send email authentication along with user wanted name.
   static Future<dynamic> emailAuthenticationAndAddDisplayName(
       String userAuthCodeInput, String name) async {
@@ -167,7 +164,7 @@ class Authentication {
 
     final HttpsCallable callable = CloudFunctions.instance
         .getHttpsCallable(functionName: "verifyEmailAuthCodeAndAddDisplayName");
-    dynamic resp = await callable.call(<String, dynamic>{
+    dynamic resp = await callable.call(<String, String>{
       "userAuthCodeInput": userAuthCodeInput,
       "name": name
     });
@@ -201,7 +198,6 @@ class Authentication {
     print(resp.data);
     return resp.data;
   }
-
 
   /*Google Sign in */
   static Future<String> signInWithGoogle() async {

@@ -206,6 +206,7 @@ class _MainCalendarView extends State<MainCalendarView> {
                   APICall.sendUserDaySentimentData(sliderValue, 'placeholder', _controller.selectedDay);
                   UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
                 }
+
               }
               //sleep(const Duration(milliseconds:350));
               //remove in order for calendar to save properly.

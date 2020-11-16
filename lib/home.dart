@@ -4,7 +4,7 @@ import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 //Views
-import './calendar.dart';
+import './Calendar.dart';
 import './News.dart';
 import 'ExternalCalls.dart';
 

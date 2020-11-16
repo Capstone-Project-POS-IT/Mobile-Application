@@ -12,9 +12,6 @@ import 'package:pos_it/settings.dart';
 void main() {
   runApp(MyApp());
 
-  //test function call
-
-
 }
 
 class MyApp extends StatelessWidget {

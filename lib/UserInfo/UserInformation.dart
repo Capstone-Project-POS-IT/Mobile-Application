@@ -1,8 +1,6 @@
 /*Class holds all of user information and preferences*/
-import 'package:cloud_functions/cloud_functions.dart';
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/ExternalCalls.dart';
@@ -12,7 +10,7 @@ class UserInformation {
 
   //Data to be stored of the user
   static User _user; //will be the Firebase User
-  static dynamic _userSentiBasedNews;
+  static Map _userSentiBasedNews;
   static dynamic _userSentimentData;
   static Map<String, dynamic> map;
 
@@ -22,7 +20,7 @@ class UserInformation {
   }
 
   static Future<void> setAllUserInformationData() async {
-    _userSentiBasedNews = await APICall.getNewsHeadlinesSentiBased();
+    _userSentiBasedNews = Map<String, dynamic>.from(await APICall.getNewsHeadlinesSentiBased());
     _userSentimentData = await APICall.getUserDaySentimentsData();
     //print(_userSentimentData);
   }
@@ -66,6 +64,11 @@ class UserInformation {
   static addUserSentimentData(DateTime key, double value) {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(key);
     map[todayDateFormatted] = value;
+  }
+
+  //get news based on the topic
+  static List<dynamic> getNewsBasedOnTopic(String topic){
+    return _userSentiBasedNews['articles'][topic];
   }
 
 }
