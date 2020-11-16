@@ -65,8 +65,6 @@ class UserInformation {
 
   //get news based on the topic
   static List<dynamic> getNewsBasedOnTopic(String topic){
-    print("INFO!!!!  ");
-    print(_userSentiBasedNews['articles'][topic]);
     return _userSentiBasedNews['articles'][topic];
   }
 

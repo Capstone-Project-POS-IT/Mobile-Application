@@ -12,8 +12,10 @@ class NewsView extends StatefulWidget {
 
 class _NewsView extends State<NewsView> {
   //articles per source
-  List<dynamic> mainHeadlineArticles = UserInformation.getNewsBasedOnTopic(
-      'headlines');
+  List<dynamic> mainHeadlineArticles = UserInformation.getNewsBasedOnTopic('headlines');
+  List<dynamic> usHeadlineArticles = UserInformation.getNewsBasedOnTopic('usheadlines');
+  List<dynamic> sportsHeadlineArticles = UserInformation.getNewsBasedOnTopic('sportHeadlines');
+  List<dynamic> healthHeadlineArticles = UserInformation.getNewsBasedOnTopic('healthHeadlines');
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _NewsView extends State<NewsView> {
           //you can change the center widget to another widget that would
           //fit your need better.
           children: <Widget>[
-            Center(
+            Center(//child for the main headlines
               child: ListView.builder(
                 itemCount: mainHeadlineArticles.length,
                 cacheExtent: 100,
@@ -58,14 +60,32 @@ class _NewsView extends State<NewsView> {
                 },
               ),
             ),
-            Center(
-              child: Text('child body 2'),
+            Center(//child for the us headlines
+              child: ListView.builder(
+                itemCount: usHeadlineArticles.length,
+                cacheExtent: 100,
+                itemBuilder: (context, index) {
+                  return CreateNewsCard(usHeadlineArticles, index);
+                },
+              ),
             ),
-            Center(
-              child: Text('child body 3'),
+            Center(//child for the health headlines
+              child: ListView.builder(
+                itemCount: healthHeadlineArticles.length,
+                cacheExtent: 100,
+                itemBuilder: (context, index) {
+                  return CreateNewsCard(healthHeadlineArticles, index);
+                },
+              ),
             ),
-            Center(
-              child: Text('child body 4'),
+            Center(//child for the sports headlines
+              child: ListView.builder(
+                itemCount: sportsHeadlineArticles.length,
+                cacheExtent: 100,
+                itemBuilder: (context, index) {
+                  return CreateNewsCard(sportsHeadlineArticles, index);
+                },
+              ),
             ),
           ],
         ),
@@ -76,29 +96,36 @@ class _NewsView extends State<NewsView> {
   //create the NewsCard
   Widget CreateNewsCard(List<dynamic> source, int index) {
     dynamic currentArticle = source[index];
-    return NewsCard();
+    return NewsCard(
+        currentArticle['title'],
+        currentArticle['description'],
+        currentArticle['source']['name'],
+        currentArticle['publishedAt'],
+        currentArticle['url'],
+        currentArticle['urlToImage'],
+        currentArticle['content']);
   }
-
 }
 
-
 class NewsCard extends StatefulWidget {
-  // String title,
-  //     description,
-  //     source,
-  //     publishedAt,
-  //     articleUrl,
-  //     urlToImage,
-  //     content;
-  //
-  // NewsCard(String title, String description,String source,String publishedAt,String articleUrl,String urlToImage,String content){
-  //   this.title = title;
-  //   this.source = source;
-  //   this.publishedAt = publishedAt;
-  //   this.articleUrl = articleUrl;
-  //   this.urlToImage = urlToImage;
-  //   this.content = content;
-  // }
+  String articleTitle,
+      articleDescription,
+      articleSource,
+      articleUrl,
+      articleUrlToImage,
+      articleContent;
+  DateTime articlePublishedAt;
+
+  NewsCard(String title, String description, String source, String publishedAt,
+      String articleUrl, String urlToImage, String content) {
+    this.articleTitle = title;
+    this.articleDescription = description;
+    this.articleSource = source;
+    this.articlePublishedAt = DateTime.parse(publishedAt);
+    this.articleUrl = articleUrl;
+    this.articleUrlToImage = urlToImage;
+    this.articleContent = content;
+  }
 
   _NewsCardState createState() => _NewsCardState();
 }
@@ -113,19 +140,6 @@ class _NewsCardState extends State<NewsCard> {
     isCardExpanded = false;
     super.initState();
   }
-
-  String articleTitle =
-      "Labor challenges Coalition on jobmaker disadvantages for older workers – politics live";
-  String articleDescription =
-      "Government says young Australians face highest rate of unemployment and denies hiring credit will result in age discrimination. Follow the latest updates";
-  String articleSource = "Google News (Australia)";
-  DateTime articlePublishedAt = DateTime.parse("2020-11-12T05:42:00+00:00");
-  String articleUrl =
-      "https://www.theguardian.com/australia-news/live/2020/nov/12/albanese-anthem-federal-icac-nsw-queensland-victoria-morrison-live-news";
-  String articleUrlToImage =
-      "https://i.guim.co.uk/img/media/3da1f4ffc5b6514c272554b2d63f74fad5139659/0_202_5472_3283/master/5472.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctbGl2ZS5wbmc&enable=upscale&s=f65242851015ef352a8ee0e80e1482d5";
-  String articleContent =
-      "Government says young Australians face highest rate of unemployment and denies hiring credit will result in age discrimination. Follow the latest updates";
 
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -148,12 +162,12 @@ class _NewsCardState extends State<NewsCard> {
                     flex: 5,
                     child: Container(
                       margin: EdgeInsets.zero,
-                      child: Image.network(articleUrlToImage),
+                      child: Image.network(widget.articleUrlToImage),
                     ),
                   ),
                   Flexible(
                     flex: 3,
-                    child: Text(articleTitle,
+                    child: Text(widget.articleTitle,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 18,
@@ -171,12 +185,15 @@ class _NewsCardState extends State<NewsCard> {
                           Row(
                             children: [
                               Icon(Icons.calendar_today),
-                              Text(DateFormat("MM-dd-yyyy")
-                                  .format(DateTime.now()))
+                              Text(DateFormat("MMMM dd, yyyy  hh:mm a")
+                                  .format(widget.articlePublishedAt))
                             ],
                           ),
                           Row(
-                            children: [Icon(Icons.source), Text(articleSource)],
+                            children: [
+                              Icon(Icons.source),
+                              Text(widget.articleSource)
+                            ],
                           )
                         ],
                       )),
@@ -194,7 +211,7 @@ class _NewsCardState extends State<NewsCard> {
     // else{
     //   print("The link cannot be opened to $articleUrl");
     // }
-    await launch(articleUrl);
+    await launch(widget.articleUrl);
   }
 
   Future<void> changeCardSize() {
@@ -220,7 +237,7 @@ class _NewsCardState extends State<NewsCard> {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 TextSpan(
-                    text: articleDescription,
+                    text: widget.articleDescription,
                     style: TextStyle(color: Colors.black))
               ]),
             ),
@@ -235,7 +252,8 @@ class _NewsCardState extends State<NewsCard> {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 TextSpan(
-                    text: articleContent, style: TextStyle(color: Colors.black))
+                    text: widget.articleContent,
+                    style: TextStyle(color: Colors.black))
               ]),
             ),
           ),
@@ -248,7 +266,7 @@ class _NewsCardState extends State<NewsCard> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.black)),
                 TextSpan(
-                    text: articleUrl,
+                    text: widget.articleUrl,
                     style: TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline))
@@ -261,5 +279,4 @@ class _NewsCardState extends State<NewsCard> {
       return Container();
     }
   }
-
 }
