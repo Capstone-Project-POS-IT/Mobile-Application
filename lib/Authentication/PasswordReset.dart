@@ -154,7 +154,6 @@ class _PasswordResetState extends State<PasswordReset> {
                                           _emailVerificationCodeController,
                                       maxLength: 10,
                                       textAlign: TextAlign.center,
-                                      keyboardType: TextInputType.number,
                                       style: TextStyle(
                                           fontSize: 17,
                                           height: 2,

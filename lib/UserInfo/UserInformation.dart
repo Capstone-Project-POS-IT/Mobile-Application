@@ -20,9 +20,16 @@ class UserInformation {
   }
 
   static Future<void> setAllUserInformationData() async {
-    _userSentiBasedNews = Map<String, dynamic>.from(await APICall.getNewsHeadlinesSentiBased());
+    setUserSentiBasedNews();
+    setUserDaySentimentData();
+  }
+
+  static Future<void> setUserSentiBasedNews() async{
+    _userSentiBasedNews = await APICall.getNewsHeadlinesSentiBased();
+  }
+
+  static Future<void> setUserDaySentimentData() async{
     _userSentimentData = await APICall.getUserDaySentimentsData();
-    //print(_userSentimentData);
   }
 
   //Get Information about the user
@@ -50,12 +57,16 @@ class UserInformation {
   }
 
   static getUserSentimentMap() {
-    dynamic jsonName = UserInformation.get("sentimentData");
-    dynamic userData = jsonName["data"];
+    dynamic jsonMap = UserInformation.get("sentimentData");
+    dynamic userData = jsonMap["data"];
 
     map = Map<String, dynamic>.from(userData);
 
     return map;
+  }
+
+  static getAllUserNewsBasedData(){
+    dynamic jsonNews = UserInformation.get("news");
   }
 
   static addUserSentimentData(DateTime key, double value) {
