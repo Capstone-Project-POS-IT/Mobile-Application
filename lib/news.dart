@@ -14,7 +14,20 @@ class _NewsView extends State<NewsView> {
       backgroundColor: Colors.blue,
       body: Center(
         child: Column(
-          children: <Widget>[TopBar()],
+          children: <Widget>[
+            TopBar(),
+            Row(children: <Widget>[
+              Text("Hi Tami",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xffFFFFFF), fontSize: 12)),
+              Text("Hi Tami",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xffFFFFFF), fontSize: 12)),
+              Text("Yo mama",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xffFFFFFF), fontSize: 12)),
+            ])
+          ],
         ),
       ),
     );
@@ -27,13 +40,12 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
+  void _doSomething() {}
 
-  void _doSomething(){
-
-  }
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.all(15),
+    return Padding(
+      padding: EdgeInsets.all(15),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -41,16 +53,14 @@ class _TopBarState extends State<TopBar> {
           Image.asset("lib/assets/images/posit_logo.png"),
           Align(
             alignment: Alignment.topRight,
-            child:IconButton(
+            child: IconButton(
               icon: Icon(Icons.search),
               iconSize: 50,
               onPressed: _doSomething,
-            ) ,
+            ),
           )
-
         ],
       ),
     );
   }
 }
-
