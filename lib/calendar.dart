@@ -198,7 +198,7 @@ class _MainCalendarView extends State<MainCalendarView> {
 
                 //remove in order for calendar to save properly.
                 //sleep(const Duration(milliseconds:350));
-                //UserInformation.setAllUserInformationData();
+                UserInformation.setAllUserInformationData();
 
               }
             });

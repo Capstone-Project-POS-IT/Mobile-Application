@@ -157,7 +157,7 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
   try{
     User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userEmail, password: userPassword)).user;
     if(user!=null){
-      //will update the user information hereade
+      //will update the user information here
       UserInformation.initiateFirebaseUser(user);
       //Authentication.sendWelcomeAndAuthenticationEmail(); //this is temporary until authentication trigger issue is solved
       Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));

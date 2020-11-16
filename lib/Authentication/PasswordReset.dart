@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/ExternalCalls.dart';
 
-import '../home.dart';
+import '../Home.dart';
 
 class PasswordReset extends StatefulWidget {
   @override
