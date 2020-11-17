@@ -13,7 +13,7 @@ class WelcomeName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text("Welcome "+UserInformation.getDisplayName(),
     textAlign: TextAlign.center,
-    style: TextStyle(fontSize: 40,color: Colors.blue));
+    style: TextStyle(fontSize: 40,color: Color(0xff131d47)));
   }
 }
 
@@ -29,6 +29,7 @@ class _HomeView extends State<HomeView> {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff131d47),
         title: Text('Home Screen'),
       ),
         body: SingleChildScrollView(

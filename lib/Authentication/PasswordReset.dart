@@ -50,7 +50,7 @@ class _PasswordResetState extends State<PasswordReset> {
       children: <Widget>[
         Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0xff000080),
+          backgroundColor: Color(0xff131d47),
           body: Center(
             child: Padding(
               padding: EdgeInsets.all(30),

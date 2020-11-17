@@ -25,6 +25,7 @@ class _NaviView extends State<NaviView> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        // backgroundColor: Color(0xff131d47),
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,

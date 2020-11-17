@@ -22,7 +22,6 @@ class UserInformation {
   static Future<void> setAllUserInformationData() async {
     _userSentiBasedNews = Map<String, dynamic>.from(await APICall.getNewsHeadlinesSentiBased());
     _userSentimentData = await APICall.getUserDaySentimentsData();
-    //print(_userSentimentData);
   }
 
   //Get Information about the user

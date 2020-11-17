@@ -19,7 +19,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  void _doSomething() {}
+
+  @override
+  void initState() {
+    Authentication.signOutOfGoogle();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class _LoginState extends State<Login> {
       children: <Widget>[
         Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0xff000080),
+          backgroundColor: Color(0xff131d47),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,13 +56,16 @@ class _LoginState extends State<Login> {
                                 "lib/assets/images/facebook_logo.png"),
                             width: 80,
                             height: 80)),
-                    Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Image(
-                            image:
-                            AssetImage("lib/assets/images/google_logo.png"),
-                            width: 80,
-                            height: 80)),
+                    GestureDetector(
+                      onTap: ()=>_loginViaGoogle(context),
+                      child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Image(
+                              image: AssetImage(
+                                  "lib/assets/images/google_logo.png"),
+                              width: 80,
+                              height: 80)),
+                    )
                   ],
                 ),
                 Align(
@@ -67,7 +75,7 @@ class _LoginState extends State<Login> {
                         child: Text("Email",
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.white, fontSize: 20)))),
+                                TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
@@ -76,7 +84,7 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     controller: _emailController,
                     style:
-                    TextStyle(fontSize: 17, height: 2, color: Colors.black),
+                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
                 Align(
@@ -86,7 +94,7 @@ class _LoginState extends State<Login> {
                         child: Text("Password",
                             textAlign: TextAlign.left,
                             style:
-                            TextStyle(color: Colors.white, fontSize: 20)))),
+                                TextStyle(color: Colors.white, fontSize: 20)))),
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
@@ -95,7 +103,7 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     controller: _passwordController,
                     style:
-                    TextStyle(fontSize: 17, height: 2, color: Colors.black),
+                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
                 ),
                 Padding(
@@ -105,9 +113,8 @@ class _LoginState extends State<Login> {
                         height: 50,
                         child: FlatButton(
                           color: Color(0xffabd0a8),
-                          onPressed: () =>
-                              _LoginViaEmail(_emailController.text,
-                                  _passwordController.text, context),
+                          onPressed: () => _LoginViaEmail(_emailController.text,
+                              _passwordController.text, context),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                           ),
@@ -149,11 +156,11 @@ class _LoginState extends State<Login> {
                     child: FlatButton(
                       color: Color(0xffabd0a8),
                       onPressed: () => {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PasswordReset())
-                      )
-                    },
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PasswordReset()))
+                      },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
@@ -173,20 +180,20 @@ class _LoginState extends State<Login> {
   }
 }
 
-void _LoginViaEmail(String userEmail, String userPassword,
-    BuildContext context) async {
+void _LoginViaEmail(
+    String userEmail, String userPassword, BuildContext context) async {
   await Firebase.initializeApp();
   try {
     User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userEmail, password: userPassword)).user;
+            email: userEmail, password: userPassword))
+        .user;
     if (user != null) {
       UserInformation.initiateFirebaseUser(user);
       if (user.emailVerified) {
         await UserInformation.setAllUserInformationData();
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => NaviView()));
-      }
-      else {
+      } else {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => EmailAuthentication()));
       }
@@ -195,5 +202,16 @@ void _LoginViaEmail(String userEmail, String userPassword,
     print(error);
     _emailController.text = "";
     _passwordController.text = "";
+  }
+}
+
+void _loginViaGoogle(BuildContext context) async {
+  await Firebase.initializeApp();
+  User userFromGoogle = await Authentication.signInWithGoogle();
+  if (userFromGoogle != null) {
+    UserInformation.initiateFirebaseUser(userFromGoogle);
+    UserInformation.setAllUserInformationData();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => NaviView()));
   }
 }
