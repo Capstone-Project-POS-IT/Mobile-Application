@@ -2,13 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:intl/intl.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/ExternalCalls.dart';
+
+import '../Navibar.dart';
 //inputs
 final TextEditingController _emailController = new TextEditingController();
 final TextEditingController _passwordController = new TextEditingController();
@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUp> {
       children: <Widget>[
         Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0xff000080),
+          backgroundColor: Color(0xff131d47),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                         child: Image(image: AssetImage("lib/assets/images/facebook_logo.png"),width: 80,height: 80)
                     ),
                     GestureDetector(
-                      onTap:()=>_createUserAccountViaGoogle(),
+                      onTap:()=>_createUserAccountViaGoogle(context),
                       child:Padding(padding: EdgeInsets.all(20),
                           child: Image(image: AssetImage("lib/assets/images/google_logo.png"),width: 80,height: 80,)
                       ),
@@ -159,7 +159,7 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
     if(user!=null){
       //will update the user information here
       UserInformation.initiateFirebaseUser(user);
-      //Authentication.sendWelcomeAndAuthenticationEmail(); //this is temporary until authentication trigger issue is solved
+      UserInformation.setAllUserInformationData();
       Navigator.push(context,MaterialPageRoute(builder: (context) => EmailAuthentication()));
     }
   }
@@ -170,8 +170,14 @@ void _createUserAccount(String userEmail, String userPassword,BuildContext conte
   }
 }
 
-void _createUserAccountViaGoogle() async{
-  Authentication.signInWithGoogle();
+void _createUserAccountViaGoogle(BuildContext context) async{
+  await Firebase.initializeApp();
+  User userFromGoogle = await Authentication.signInWithGoogle();
+  if(userFromGoogle!=null){
+    UserInformation.initiateFirebaseUser(userFromGoogle);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => NaviView()));
+  }
 }
 
 

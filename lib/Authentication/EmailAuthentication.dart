@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:pos_it/ExternalCalls.dart';
 
 import '../Navibar.dart';
@@ -27,7 +27,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
       children: <Widget>[
         Scaffold(
           // resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0xff000080),
+          backgroundColor: Color(0xff131d47),
           body: SingleChildScrollView(
             child: Center(
             child: Column(

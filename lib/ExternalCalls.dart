@@ -24,11 +24,10 @@ class APICall {
    */
   static Future<void> testAPI() async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
-      functionName: 'testDemo',
-    );
+    final HttpsCallable callable =
+    FirebaseFunctions.instance.httpsCallable('testDemo');
     dynamic resp =
-        await callable.call(); //one time call function with no params
+    await callable.call(); //one time call function with no params
     if (resp.data['msg'] == "Hello from Firebase!") {
       print("API SUCCEEEDED!!!!!!!!!!!!!!!!!");
     } else {
@@ -44,10 +43,10 @@ class APICall {
    */
   static Future<void> testAPIWithParams(String name, String date) async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "testDemoWithParams");
+    final HttpsCallable callable =
+    FirebaseFunctions.instance.httpsCallable("testDemoWithParams");
     dynamic resp =
-        await callable.call(<String, dynamic>{'name': name, 'date': date});
+    await callable.call(<String, dynamic>{'name': name, 'date': date});
     print(resp.data);
     if (resp.data['msg'].toString().startsWith("Hello from Firebase")) {
       print("API WITH PARAMS SUCCEEEDED!!!!!!!!!!!!!!!!!");
@@ -61,8 +60,8 @@ class APICall {
   */
   static Future<String> getInspirationalQuote() async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'randomChosenInspirationalQuote');
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable('randomChosenInspirationalQuote');
     var resp = await callable.call();
     var data = resp.data;
     var quote = data.values.toList();
@@ -76,8 +75,8 @@ class APICall {
    */
   static Future<dynamic> getNewsHeadlinesSentiBased() async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "getAllNewsBasedOnMostRecentSentiment");
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable("getAllNewsBasedOnMostRecentSentiment");
     dynamic resp = await callable.call();
     print("Resp news");
     print(resp.data);
@@ -89,12 +88,12 @@ class APICall {
   - Return: Void
   - Output: {error: [error], success: [success], sentiment: [sentiment], description: [description} printed in console
    */
-  static Future<void> sendUserDaySentimentData(
-      double todaySentiment, String description, DateTime date) async {
+  static Future<void> sendUserDaySentimentData(double todaySentiment,
+      String description, DateTime date) async {
     APICall._initializeFirebase();
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(date);
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "sendUserDaySentimentData");
+    final HttpsCallable callable =
+    FirebaseFunctions.instance.httpsCallable("sendUserDaySentimentData");
     dynamic resp = await callable.call(<String, dynamic>{
       "todaySentiment": todaySentiment,
       "description": description,
@@ -111,8 +110,8 @@ class APICall {
    */
   static Future<dynamic> getUserDaySentimentsData() async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "getUserDaySentiments");
+    final HttpsCallable callable =
+    FirebaseFunctions.instance.httpsCallable("getUserDaySentiments");
     dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
@@ -122,8 +121,8 @@ class APICall {
   /*Will delete all of a user's sentiment data */
   static Future<void> deleteUserDaySentimentsData() async {
     await _initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "deleteUserDaySentiments");
+    final HttpsCallable callable =
+    FirebaseFunctions.instance.httpsCallable("deleteUserDaySentiments");
     dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
@@ -136,7 +135,7 @@ class APICall {
   static Future<void> sendUserFeedback(String subject, String message) async {
     await _initializeFirebase();
     final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: "sendFeedback");
+    FirebaseFunctions.instance.httpsCallable("sendFeedback");
     dynamic resp = await callable
         .call(<String, String>{"subject": subject, "message": message});
     print("Resp");
@@ -147,11 +146,18 @@ class APICall {
 /***************************Authentication Related Function Calls************************************************/
 
 class Authentication {
-  //resend email authentication if user lost email or if email wasnt received. Currently only for sign up
+
+  //variables for GoogleSignIn
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  /*****************Email Sign Ins******************/
+
+  //resend email authentication if user lost email or if email wasnt received.
   static Future<void> sendEmailAuthenticationEmail(bool isWelcome) async {
     await APICall._initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "sendEmailAuthenticationEmail");
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable("sendEmailAuthenticationEmail");
     dynamic resp = await callable.call(<String, bool>{"isWelcome": isWelcome});
     print("Resp");
     print(resp.data);
@@ -162,23 +168,23 @@ class Authentication {
       String userAuthCodeInput, String name) async {
     await APICall._initializeFirebase();
 
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "verifyEmailAuthCodeAndAddDisplayName");
-    dynamic resp = await callable.call(<String, String>{
-      "userAuthCodeInput": userAuthCodeInput,
-      "name": name
-    });
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable("verifyEmailAuthCodeAndAddDisplayName");
+    dynamic resp = await callable.call(
+        <String, String>{"userAuthCodeInput": userAuthCodeInput, "name": name});
     print("Resp");
     print(resp.data);
 
     return resp.data;
   }
 
+  /*********************Password Reset*********************/
+
   //Two functions below are for password reset
   static Future<void> sendResetPasswordAuthenticationEmail(String email) async {
     await APICall._initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "sendResetPasswordAuthenticationEmail");
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable("sendResetPasswordAuthenticationEmail");
     dynamic resp = await callable.call(<String, dynamic>{"email": email});
     print("Resp");
     print(resp.data);
@@ -187,8 +193,8 @@ class Authentication {
   static Future<dynamic> verifyEmailAuthCodeAndResetPassword(
       String userAuthCodeInput, String email, String newPassword) async {
     await APICall._initializeFirebase();
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: "verifyEmailAuthCodeAndResetPassword");
+    final HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable("verifyEmailAuthCodeAndResetPassword");
     dynamic resp = await callable.call(<String, dynamic>{
       "userAuthCodeInput": userAuthCodeInput,
       "email": email,
@@ -199,34 +205,31 @@ class Authentication {
     return resp.data;
   }
 
-  /*Google Sign in */
-  static Future<String> signInWithGoogle() async {
-    await APICall._initializeFirebase();
-    final FirebaseAuth mAuth = FirebaseAuth.instance;
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
+  /******************Google Sign in*****************/
+  static Future<User> signInWithGoogle() async {
 
-    final UserCredential authResult =
-        await mAuth.signInWithCredential(credential);
+    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount
+        .authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+
+    final dynamic authResult = await _auth.signInWithCredential(credential); //sign in user to Firebase
     final User user = authResult.user;
 
-    if (user != null) {
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
 
-      final User currentUser = mAuth.currentUser;
-      assert(user.uid == currentUser.uid);
+    final User currentUser = _auth.currentUser;
+    assert(currentUser.uid==user.uid);
 
-      print('signInWithGoogle succeeded: $user');
-
-      return '$user';
-    }
-    return null;
+    return user;
   }
+
+/******************Google Sign Out*****************/
+static void signOutOfGoogle() async{
+    await _googleSignIn.signOut();
+}
+
 }
