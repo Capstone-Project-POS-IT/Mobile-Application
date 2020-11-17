@@ -175,6 +175,7 @@ void _createUserAccountViaGoogle(BuildContext context) async{
   User userFromGoogle = await Authentication.signInWithGoogle();
   if(userFromGoogle!=null){
     UserInformation.initiateFirebaseUser(userFromGoogle);
+    UserInformation.setAllUserInformationData();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
   }

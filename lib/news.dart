@@ -217,9 +217,9 @@ class _NewsCardState extends State<NewsCard> {
   }
 
   _launchArticleUrl() async {
-    const url = 'https://flutter.dev';
-    if (canLaunch(url) != null) {
-      launch(url);
+    String url = widget.articleUrl;
+    if (await canLaunch(url)) {
+      launch(url, enableJavaScript: true, forceWebView: true);
     } else {
       throw 'Could not launch $url';
     }
