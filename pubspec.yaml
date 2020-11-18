@@ -31,7 +31,7 @@ dependencies:
   shared_preferences: ^0.5.4+5
   firebase_auth: ^0.18.3  #Firebase authentication
   google_sign_in: ^4.4.4  #Google sign-in authentication
-#  flutter_facebook_login: ^3.0.0 #Facebook sign-in authentication
+  flutter_facebook_auth: ^1.0.1 #Facebook sign-in authentication
   firebase_auth_web: ^0.3.1+1 #Web authentication for firebase
   url_launcher: ^5.4.2 #for calling external URLs
 
