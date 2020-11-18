@@ -19,10 +19,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   @override
   void initState() {
     Authentication.signOutOfGoogle();
+    Authentication.signOutOfFacebook();
     super.initState();
   }
 
@@ -49,15 +49,17 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Image(
-                            image: AssetImage(
-                                "lib/assets/images/facebook_logo.png"),
-                            width: 80,
-                            height: 80)),
                     GestureDetector(
-                      onTap: ()=>_loginViaGoogle(context),
+                        onTap: () => _loginViaFacebook(context),
+                        child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Image(
+                                image: AssetImage(
+                                    "lib/assets/images/facebook_logo.png"),
+                                width: 80,
+                                height: 80))),
+                    GestureDetector(
+                      onTap: () => _loginViaGoogle(context),
                       child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Image(
@@ -206,10 +208,19 @@ void _LoginViaEmail(
 }
 
 void _loginViaGoogle(BuildContext context) async {
-  await Firebase.initializeApp();
   User userFromGoogle = await Authentication.signInWithGoogle();
   if (userFromGoogle != null) {
     UserInformation.initiateFirebaseUser(userFromGoogle);
+    UserInformation.setAllUserInformationData();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => NaviView()));
+  }
+}
+
+void _loginViaFacebook(BuildContext context) async {
+  User userFromFacebook = await Authentication.signInWithFacebook();
+  if (userFromFacebook != null) {
+    UserInformation.initiateFirebaseUser(userFromFacebook);
     UserInformation.setAllUserInformationData();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
