@@ -159,9 +159,9 @@ class _MainCalendarView extends State<MainCalendarView> {
                     ),
                     Slider(
                       value: _currentSliderValue,
-                      min: 0,
+                      min: 1,
                       max: 10,
-                      divisions: 10,
+                      divisions: 9,
                       label: _currentSliderValue.round().toString(),
                       onChanged: (double value) {
                         setState(() {
