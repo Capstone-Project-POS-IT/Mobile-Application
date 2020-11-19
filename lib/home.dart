@@ -1,8 +1,10 @@
+import 'dart:collection';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
+import 'package:intl/intl.dart';
 //Views
 import './Calendar.dart';
 import './News.dart';
@@ -13,11 +15,318 @@ class WelcomeName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text("Welcome "+UserInformation.getDisplayName(),
     textAlign: TextAlign.center,
-    style: TextStyle(fontSize: 40,color: Colors.blue));
+    style: TextStyle(fontSize: 40,color: Colors.blue[400]));
   }
 }
 
+class userStats extends StatelessWidget {
+  Map<String, dynamic> map = UserInformation.getUserSentimentMap();
 
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          new Column(
+            children: [
+              new Text('Current Month:'),
+              new Text('Previous Month:'),
+              new Divider(
+                color: Colors.black87,
+              ),
+              new Text('Happiness Streak:'),
+              new Text('Saddness Streak:'),
+            ],
+          ),
+          new Column(
+            children: [
+              new Text(currentMonthAverage(),
+                  style: TextStyle(color: getColor(currentMonthAverage().toString()))),
+              new Text(previousMonthAverage(),
+                  style: TextStyle(color: getColor(previousMonthAverage().toString()))),
+              new Divider(
+                color: Colors.black87,
+              ),
+              new Text(happyStreak()),
+              new Text(sadStreak()),
+            ],
+          ),
+        ]
+    );
+  }
+
+  /*
+  function that returns a string of the previous months average sentiment
+  */
+  String previousMonthAverage() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    var parsedDate = DateTime.parse(formattedDate);
+    int currentMonth = monthParser(parsedDate);
+    int previousMonth;
+    if(currentMonth == 1) {
+      previousMonth = 12;
+    } else {
+      previousMonth = currentMonth - 1;
+    }
+
+    int month;
+    double average = 0;
+    int count = 0;
+
+    if(map != null) {
+      map.forEach((k, v) {
+        DateTime date = DateTime.parse(k);
+        month = monthParser(date);
+        if (month == previousMonth) {
+          average = average + v['sentiment'];
+          count++;
+        }
+      });
+    } else {
+      return 'No data availible.';
+    }
+
+    if(average == 0) {
+      return 'No data availible.';
+    } else {
+      average = average / count;
+      return average.toStringAsFixed(0);
+    }
+  }
+
+  /*
+  function that returns a string of the current average sentiment for that month
+  */
+  String currentMonthAverage() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    var parsedDate = DateTime.parse(formattedDate);
+    int currentMonth = monthParser(parsedDate);
+    int month;
+    double average = 0;
+    int count = 0;
+
+    if(map != null) {
+      map.forEach((k, v) {
+        DateTime date = DateTime.parse(k);
+        month = monthParser(date);
+        if (month == currentMonth) {
+          average = average + v['sentiment'];
+          count++;
+        }
+      });
+    } else {
+      return 'No data availible.';
+    }
+
+    if(average == 0) {
+      return 'No data availible.';
+    } else {
+      average = average / count;
+      return average.toStringAsFixed(0);
+    }
+  }
+
+  /*
+  function that returns a int month from a datetime day
+  */
+  int monthParser(DateTime date) {
+    String Date = date.toString();
+    String month = '';
+
+    for(int i=0; i < Date.length; i++) {
+      if(i > 4 && i < 7) {
+        var char = Date[i];
+        month = month + char;
+      }
+    }
+    return int.parse(month);
+  }
+
+  /*
+  function that returns an int day from a datetime day
+  */
+  int dayParser(DateTime date) {
+    String Date = date.toString();
+    String day = '';
+    //print(Date);
+
+    for(int i=0; i < Date.length; i++) {
+      if(i > 7 && i < 10) {
+        var char = Date[i];
+        day = day + char;
+      }
+    }
+    return int.parse(day);
+  }
+
+  /*
+  function that returns an organzied map where keys = int day and values = a datetime object of that day
+  */
+  Map dayMonthOrganizer(int currentMonth) {
+    final SplayTreeMap<int, DateTime> organizedMonth = SplayTreeMap<int, DateTime>();
+    int month;
+    int day;
+
+    if(map != null) {
+      map.forEach((k, v) {
+        DateTime date = DateTime.parse(k);
+        month = monthParser(date);
+        if (month == currentMonth) {
+          day = dayParser(date);
+          print(date);
+          organizedMonth[day] = date;
+        }
+      });
+    };
+
+    return organizedMonth;
+
+  }
+
+  /*
+  function that returns a string that represents the current streak of happy days
+  */
+  String happyStreak() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    var parsedDate = DateTime.parse(formattedDate);
+    int currentMonth = monthParser(parsedDate);
+    int month;
+
+    int streak = 0;
+    int longestStreak = 0;
+    int previousDay;
+    int currentDay;
+
+    Map<int, DateTime> organizedMonth = dayMonthOrganizer(currentMonth);
+    print(organizedMonth);
+
+
+    if(map != null && organizedMonth != null) {
+      organizedMonth.forEach((key, value) {
+        map.forEach((key2, value2) {
+          if(dayParser(value) == dayParser(DateTime.parse(key2)) && monthParser(value) == monthParser(DateTime.parse(key2))) {
+            if(previousDay == null) {
+              if (map[key2]['sentiment'] <= 6.0) {
+                streak++;
+              }
+              previousDay = key;
+            } else {
+              currentDay = key;
+              if (currentDay - previousDay == 1) {
+                if (map[key2]['sentiment'] <= 6.0) {
+                  streak++;
+                  if (streak < longestStreak) {
+                    longestStreak = streak;
+                  }
+                  previousDay = currentDay;
+                } else {
+                  streak = 0;
+                }
+              }
+            }
+          }
+        });
+
+      });
+    }
+
+    /*
+    if(organizedMonth != null) {
+      organizedMonth.forEach((k, v) {
+        //DateTime date = DateTime.parse(k);
+        if(previousDay == null) {
+          if (map[v]['sentiment'] <= 6.0) {
+            streak++;
+          }
+          previousDay = k;
+        } else {
+          currentDay = k;
+          if (currentDay - previousDay == 1) {
+            if (map[v]['sentiment'] <= 6.0) {
+              streak++;
+              if (streak < longestStreak) {
+                longestStreak = streak;
+              }
+              previousDay = currentDay;
+            } else {
+              streak = 0;
+            }
+          }
+        }
+      });
+    } else {
+      return 'No data availible.';
+    }
+
+     */
+    return streak.toString();
+  }
+
+
+  /*
+  function that returns a string that represents the current streak of sad days
+  */
+  String sadStreak() {
+    return '#';
+  }
+
+  /*
+  function that maps a day to datetime variable from the original map (with sentiments and descriptions)
+   */
+  Map keyToMapKeyMapping(int currentMonth) {
+
+  }
+
+  /*
+  function that returns a color given a sentiment value
+   */
+  Color getColor(String average) {
+    double mood = 0.0;
+    if(average == 'null') {
+      return Colors.black54;
+    } else {
+      mood = double.parse(average);
+    }
+
+    if(mood == 1.0) {
+      return const Color(0xfF0b0742);
+    } else if(mood == 2.0) {
+      return const Color(0xff34104b);
+    } else if (mood == 3.0) {
+      return const Color(0xff531b53);
+    } else if (mood == 4.0) {
+      return const Color(0xff6f285a);
+    } else if (mood == 5.0) {
+      return const Color(0xff8a3960);
+    } else if (mood == 6.0) {
+      return const Color(0xffa24c66);
+    } else if (mood == 7.0) {
+      return const Color(0xffb8606c);
+    } else if (mood == 8.0) {
+      return const Color(0xffcd7773);
+    } else if (mood == 9.0) {
+      return const Color(0xffdf8e7c);
+    } else if (mood == 10.0) {
+      return const Color(0xffefa787);
+    } else if (mood == 11.0) {
+      return Colors.lightBlue;
+    } else {
+      return const Color(0xfffdc094);
+    }
+  }
+}
+/*
+Text('placeholder',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 40,color: Colors.blue));
+ */
 
 class HomeView extends StatefulWidget {
   @override
@@ -33,11 +342,11 @@ class _HomeView extends State<HomeView> {
       ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(100.0),
+            padding: const EdgeInsets.all(50.0),
             child: Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [WelcomeName() ,FutureBuilder<String> (
+                children: <Widget> [WelcomeName(), new Divider(color: Colors.black87,),FutureBuilder<String> (
                     future: APICall.getInspirationalQuote(),
                     builder: (context, AsyncSnapshot<String> snapshot) {
                       if (snapshot.hasData) {
@@ -49,7 +358,9 @@ class _HomeView extends State<HomeView> {
                         return CircularProgressIndicator();
                       }
                     }
-                )],
+                ),
+                new Divider(color: Colors.black87,), userStats()
+                ],
               )
             ),
           ),

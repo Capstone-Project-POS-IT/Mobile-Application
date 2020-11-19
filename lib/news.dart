@@ -191,7 +191,7 @@ class _NewsCardState extends State<NewsCard> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.source),
+                              Icon(Icons.desktop_windows),
                               Text(widget.articleSource)
                             ],
                           )
