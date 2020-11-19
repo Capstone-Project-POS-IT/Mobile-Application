@@ -131,6 +131,7 @@ class _MainCalendarView extends State<MainCalendarView> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+          backgroundColor: Color(0xff131d47),
         title: new Text('Daily Mood'),
       ),
       body: Padding(
