@@ -1,4 +1,5 @@
 import 'dart:collection';
+//import 'dart:html';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pos_it/Authentication/Login.dart';
@@ -36,7 +37,6 @@ class userStats extends StatelessWidget {
                 color: Colors.black87,
               ),
               new Text('Happiness Streak:'),
-              new Text('Saddness Streak:'),
             ],
           ),
           new Column(
@@ -49,7 +49,6 @@ class userStats extends StatelessWidget {
                 color: Colors.black87,
               ),
               new Text(happyStreak()),
-              new Text(sadStreak()),
             ],
           ),
         ]
@@ -183,9 +182,23 @@ class userStats extends StatelessWidget {
         }
       });
     };
-
     return organizedMonth;
+  }
 
+  /*
+  a function that will make an organized copy of the global map.
+   */
+  Map globalMapOrganizer() {
+    final SplayTreeMap<String, dynamic> organizedMap = SplayTreeMap<String, dynamic>();
+
+    if(map != null) {
+      map.forEach((k, v) {
+        organizedMap[k] = v;
+      });
+    } else {
+      return null;
+    }
+    return organizedMap;
   }
 
   /*
@@ -196,92 +209,59 @@ class userStats extends StatelessWidget {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
     var parsedDate = DateTime.parse(formattedDate);
-    int currentMonth = monthParser(parsedDate);
-    int month;
 
     int streak = 0;
     int longestStreak = 0;
-    int previousDay;
-    int currentDay;
+    String previousDay;
+    bool onStreak = false;
 
-    Map<int, DateTime> organizedMonth = dayMonthOrganizer(currentMonth);
-    print(organizedMonth);
+    Map<String, dynamic> organizedMap = globalMapOrganizer();
+    //print(organizedMap);
 
-
-    if(map != null && organizedMonth != null) {
-      organizedMonth.forEach((key, value) {
-        map.forEach((key2, value2) {
-          if(dayParser(value) == dayParser(DateTime.parse(key2)) && monthParser(value) == monthParser(DateTime.parse(key2))) {
-            if(previousDay == null) {
-              if (map[key2]['sentiment'] <= 6.0) {
-                streak++;
-              }
-              previousDay = key;
-            } else {
-              currentDay = key;
-              if (currentDay - previousDay == 1) {
-                if (map[key2]['sentiment'] <= 6.0) {
-                  streak++;
-                  if (streak < longestStreak) {
-                    longestStreak = streak;
-                  }
-                  previousDay = currentDay;
-                } else {
-                  streak = 0;
-                }
+    if(organizedMap != null) {
+      organizedMap.forEach((date, dyn) {
+        if(monthParser(DateTime.parse(date)) <= monthParser(parsedDate) && dayParser(DateTime.parse(date)) <= dayParser(parsedDate)) {
+          if(previousDay == null) {
+            if(map[date]['sentiment'] <= 6.0) {
+              streak = streak + 1;
+              if(onStreak == false) {
+                onStreak = true;
               }
             }
-          }
-        });
-
-      });
-    }
-
-    /*
-    if(organizedMonth != null) {
-      organizedMonth.forEach((k, v) {
-        //DateTime date = DateTime.parse(k);
-        if(previousDay == null) {
-          if (map[v]['sentiment'] <= 6.0) {
-            streak++;
-          }
-          previousDay = k;
-        } else {
-          currentDay = k;
-          if (currentDay - previousDay == 1) {
-            if (map[v]['sentiment'] <= 6.0) {
-              streak++;
-              if (streak < longestStreak) {
-                longestStreak = streak;
+            previousDay = date;
+            print(previousDay);
+            if(streak > longestStreak) {
+              longestStreak = streak;
+            }
+          } else {
+            if(dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) {
+              if(map[date]['sentiment'] <= 6.0) {
+                streak = streak + 1;
+                if(onStreak == false) {
+                  onStreak = true;
+                }
               }
-              previousDay = currentDay;
             } else {
               streak = 0;
+              onStreak = false;
+            }
+            print('current bool' + onStreak.toString());
+            previousDay = date;
+            if(streak > longestStreak) {
+              longestStreak = streak;
             }
           }
         }
       });
-    } else {
-      return 'No data availible.';
     }
 
-     */
-    return streak.toString();
-  }
-
-
-  /*
-  function that returns a string that represents the current streak of sad days
-  */
-  String sadStreak() {
-    return '#';
-  }
-
-  /*
-  function that maps a day to datetime variable from the original map (with sentiments and descriptions)
-   */
-  Map keyToMapKeyMapping(int currentMonth) {
-
+    print('Streak :' + longestStreak.toString());
+    print(onStreak);
+    if(longestStreak > 0 && onStreak == true) {
+      return longestStreak.toString();
+    } else {
+      return 'No data availible';
+    }
   }
 
   /*
