@@ -80,12 +80,15 @@ class _MainCalendarView extends State<MainCalendarView> {
       currentDateSentiment = sentiment.toString();
 
       return new Container(
-        width: 100.0,
-        height: 20.0,
-        child: new Text('Mood: ' + sentiment.toString(),
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold,
-                color: Colors.white),
+        width: 150.0,
+        height: 45.0,
+        child: Center(
+          child: new Text('Mood: ' + sentiment.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 17.0),
+          ),
         ),
 
         decoration: BoxDecoration(
@@ -171,6 +174,23 @@ class _MainCalendarView extends State<MainCalendarView> {
                         );
                       },
                     ),
+                    Container(
+                      height: 60,
+                      width: 60,
+                      /*
+                      child: new Text('Color Preview: ' + sliderValue.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                       */
+                      decoration: BoxDecoration(
+                        color: getColor(sliderValue.toString()),
+                        shape:  BoxShape.rectangle,
+                        border: Border.all(width: 2.0, color: Colors.black12),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                     ... _selectedEvents.map((globalSentiment) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: returnDateMood(),
@@ -181,6 +201,7 @@ class _MainCalendarView extends State<MainCalendarView> {
           )
       ),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.lightBlue,
         child: Icon(Icons.add),
         onPressed: (){
           setState(() {
