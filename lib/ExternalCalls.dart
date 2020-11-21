@@ -153,7 +153,20 @@ class Authentication {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  /*****************Email Sign Ins******************/
+  /*****************Email Sign Up/ Sign In******************/
+
+  static Future<User> signUpViaEmaiL(
+      String userEmail, String userPassword) async {
+    return (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: userEmail, password: userPassword))
+        .user;
+  }
+
+  static Future<User> signInViaEmail(String userEmail, userPassword) async {
+    return (await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: userEmail, password: userPassword))
+        .user;
+  }
 
   //resend email authentication if user lost email or if email wasnt received.
   static Future<void> sendEmailAuthenticationEmail(bool isWelcome) async {
@@ -163,6 +176,10 @@ class Authentication {
     dynamic resp = await callable.call(<String, bool>{"isWelcome": isWelcome});
     print("Resp");
     print(resp.data);
+  }
+
+  static void signOutOfEmail() {
+    FirebaseAuth.instance.signOut();
   }
 
   //send email authentication along with user wanted name.
@@ -208,7 +225,7 @@ class Authentication {
   }
 
   /******************Google Sign in*****************/
-  static Future<User> signInWithGoogle() async {
+  static Future<User> signInViaGoogle() async {
     await _initializeFirebase();
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
@@ -238,7 +255,7 @@ class Authentication {
 
   /****************************Facebook Sign In *****************/
 
-  static Future<User> signInWithFacebook() async {
+  static Future<User> signInViaFacebook() async {
     await _initializeFirebase();
     try {
       AccessToken _accessToken = await FacebookAuth.instance.login();
@@ -267,5 +284,13 @@ class Authentication {
 
   static void signOutOfFacebook() async {
     await FacebookAuth.instance.logOut();
+  }
+
+  //General Logout
+  static Future<void> signOutUserAllPossibilities() async {
+    await _initializeFirebase();
+    signOutOfEmail();
+    signOutOfGoogle();
+    signOutOfFacebook();
   }
 }

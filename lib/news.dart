@@ -171,7 +171,14 @@ class _NewsCardState extends State<NewsCard> {
                     child: Container(
                       margin: EdgeInsets.zero,
                       child: widget.articleUrlToImage != null
-                          ? Image.network(widget.articleUrlToImage)
+                          ? Image.network(
+                              widget.articleUrlToImage,
+                              loadingBuilder: (context, child, progress) {
+                                return progress == null
+                                    ? child
+                                    : CircularProgressIndicator();
+                              },
+                            )
                           : Text("No Image Available",
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 24)),

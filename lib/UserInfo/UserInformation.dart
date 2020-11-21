@@ -39,6 +39,9 @@ class UserInformation {
       case "displayName":{
         return _user.displayName;
       }
+      case "email":{
+        return _user.email;
+      }
       case "news":{
         return _userSentiBasedNews;
       }
