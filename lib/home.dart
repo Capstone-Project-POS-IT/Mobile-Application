@@ -272,7 +272,11 @@ class userStats extends StatelessWidget {
     if(average == 'null') {
       return Colors.black54;
     } else {
-      mood = double.parse(average);
+      if(average == 'No data availible.') {
+        return Colors.black54;
+      } else {
+        mood = double.parse(average);
+      }
     }
 
     if(mood == 1.0) {
@@ -302,11 +306,6 @@ class userStats extends StatelessWidget {
     }
   }
 }
-/*
-Text('placeholder',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 40,color: Colors.blue));
- */
 
 class HomeView extends StatefulWidget {
   @override
