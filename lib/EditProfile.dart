@@ -85,3 +85,70 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 }
+
+class EditProfileOption extends StatefulWidget {
+  IconData icon;
+  String option;
+  String usersInfoOfOption;
+
+  EditProfileOption(IconData icon, String option, String usersInfoOfOption) {
+    this.icon = icon;
+    this.option = option;
+    this.usersInfoOfOption = usersInfoOfOption;
+  }
+
+  @override
+  _EditProfileOptionState createState() => _EditProfileOptionState();
+}
+
+class _EditProfileOptionState extends State<EditProfileOption> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+      decoration: BoxDecoration(
+        color: Color(0xff1D2D6B),
+        border: Border(
+          top: BorderSide(width: 0.5, color: Color(0xffFFFFFF)),
+          bottom: BorderSide(width: 0.5, color: Color(0xffFFFFFF)),
+        ),
+      ),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 10, 5, 10),
+                  child: Icon(
+                    widget.icon,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text(widget.option+":",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xffFFFFFF),
+                          fontSize: 20,
+                          backgroundColor: Color(0xff1D2D6B))),
+                ),
+              ],
+            ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 10, 15, 10),
+                child: Text(
+                  widget.usersInfoOfOption,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+            )
+          ]),
+    );
+  }
+}

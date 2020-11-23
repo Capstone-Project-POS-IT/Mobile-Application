@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +155,7 @@ class _NewsCardState extends State<NewsCard> {
       onDoubleTap: _launchArticleUrl,
       onLongPress: _changeCardSize,
       child: Container(
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         height: cardHeight,
         width: cardWidth,
         child: Card(
@@ -226,7 +228,7 @@ class _NewsCardState extends State<NewsCard> {
   _launchArticleUrl() async {
     String url = widget.articleUrl;
     if (await canLaunch(url)) {
-      launch(url, enableJavaScript: true, forceWebView: true);
+      launch(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -287,6 +289,11 @@ class _NewsCardState extends State<NewsCard> {
                     text: widget.articleUrl != null
                         ? widget.articleUrl
                         : "No Link Available",
+                    recognizer: widget.articleUrl != null
+                        ? (TapGestureRecognizer()
+                      ..onTap = () => _launchArticleUrl())
+                        : (TapGestureRecognizer()
+                      ..onTap = () => print("No article")),
                     style: TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline))
