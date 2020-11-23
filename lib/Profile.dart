@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pos_it/AccountConfirmation.dart';
 import 'package:pos_it/EditProfile.dart';
 import 'package:pos_it/creators.dart';
 import 'Authentication/Login.dart';
@@ -34,7 +35,7 @@ class _ProfileView extends State<ProfileView> {
 
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountConfirmation()));
               },
               child: Container(
                 decoration: BoxDecoration(

@@ -10,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 //for facebook
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 
 //initialize the firebase if needed
 Future<bool> _initializeFirebase() async {
@@ -286,11 +287,36 @@ class Authentication {
     await FacebookAuth.instance.logOut();
   }
 
-  //General Logout
+  /**********************General Authentications */
+
+  //log out user using all possibilities
   static Future<void> signOutUserAllPossibilities() async {
     await _initializeFirebase();
     signOutOfEmail();
     signOutOfGoogle();
     signOutOfFacebook();
+  }
+
+  static Future<bool> reAuthenticateUserWithPassword(String assumedPassword) async {
+    await _initializeFirebase();
+    var credential = EmailAuthProvider.credential(
+        email: UserInformation.get("email"), password: assumedPassword);
+    try{
+      await _auth.currentUser.reauthenticateWithCredential(credential);
+      return true;
+    }
+    catch (onError){
+      print("Error with reauthentication!!!!");
+      return false;
+    }
+
+
+
+    _auth.currentUser.reauthenticateWithCredential(credential).then((value) {
+      return true;
+    }).catchError((onError) {
+      print("User reauthentication failed");
+      return false;
+    });
   }
 }
