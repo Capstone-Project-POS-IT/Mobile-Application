@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pos_it/AccountConfirmation.dart';
+import 'package:pos_it/Profile.dart';
 import 'package:pos_it/creators.dart';
 import 'package:pos_it/ProvideFeedback.dart';
 
@@ -99,7 +101,7 @@ class _SettingsView extends State<SettingsView> {
             GestureDetector(
               onTap: (){
                 //TODO
-                //print("Container clicked");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileView()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -112,7 +114,7 @@ class _SettingsView extends State<SettingsView> {
                 child: Row(children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(15),
-                    child: Text("Privacy Settings",
+                    child: Text("Profile Settings",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
                   )
