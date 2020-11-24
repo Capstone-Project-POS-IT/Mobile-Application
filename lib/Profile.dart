@@ -1,16 +1,22 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pos_it/AccountConfirmation.dart';
+import 'package:pos_it/EditProfile.dart';
 import 'package:pos_it/creators.dart';
+import 'Authentication/Login.dart';
+import 'ExternalCalls.dart';
 
 //TODO: bottom nav bar, fix buttons
 
-const IconData account_circle_rounded = IconData(0xf03e, fontFamily: 'MaterialIcons');
+const IconData account_circle_rounded =
+    IconData(0xf03e, fontFamily: 'MaterialIcons');
 const IconData create_rounded = IconData(0xf145, fontFamily: 'MaterialIcons');
 const IconData email = IconData(0xe6f3, fontFamily: 'MaterialIcons');
 const IconData bookmark = IconData(0xe5f8, fontFamily: 'MaterialIcons');
 const IconData check_box = IconData(0xe64d, fontFamily: 'MaterialIcons');
-const IconData power_settings_new = IconData(0xe949, fontFamily: 'MaterialIcons');
+const IconData power_settings_new =
+    IconData(0xe949, fontFamily: 'MaterialIcons');
 
 class ProfileView extends StatefulWidget {
   @override
@@ -28,9 +34,8 @@ class _ProfileView extends State<ProfileView> {
             Title(),
 
             GestureDetector(
-              onTap: (){
-                //TODO
-                //print("Container clicked");
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountConfirmation()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -54,14 +59,17 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Edit Profile",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
-                    )
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
+                  )
                 ]),
               ),
             ),
 
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 //TODO
                 //print("Container clicked");
               },
@@ -87,14 +95,17 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Email Verification",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
                   )
                 ]),
               ),
             ),
 
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 //TODO
                 //print("Container clicked");
               },
@@ -120,14 +131,17 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Saved Articles",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
                   )
                 ]),
               ),
             ),
 
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 //TODO
                 //print("Container clicked");
               },
@@ -153,14 +167,17 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Weekly Progress",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
                   )
                 ]),
               ),
             ),
 
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 //TODO
                 //print("Container clicked");
               },
@@ -186,16 +203,20 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Monthly Progress",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
                   )
                 ]),
               ),
             ),
 
             GestureDetector(
-              onTap: (){
-                //TODO
-                //print("Container clicked");
+              onTap: () {
+                Authentication.signOutUserAllPossibilities().then((value) =>
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Login())));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -219,7 +240,10 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.all(15),
                     child: Text("Logout",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 20,
+                            backgroundColor: Color(0xff1D2D6B))),
                   )
                 ]),
               ),
@@ -247,10 +271,8 @@ class _Title extends State<Title> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Image.asset("lib/assets/images/posit_logo.png"),
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+            Image.asset("lib/assets/images/posit_logo.png"),
           ]),
           Align(
             alignment: Alignment.topRight,
@@ -269,7 +291,10 @@ class _Title extends State<Title> {
             alignment: Alignment.center,
             child: Text("Username",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xffDCFCDD), fontWeight: FontWeight.bold, fontSize: 30)),
+                style: TextStyle(
+                    color: Color(0xffDCFCDD),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30)),
           ),
         ],
       ),

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 
 //for google
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 //for facebook
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 
 //initialize the firebase if needed
 Future<bool> _initializeFirebase() async {
@@ -122,13 +122,14 @@ class APICall {
   }
 
   /*Will delete all of a user's sentiment data */
-  static Future<void> deleteUserDaySentimentsData() async {
+  static Future<void> deleteAllUserSentimentData() async {
     await _initializeFirebase();
     final HttpsCallable callable =
         FirebaseFunctions.instance.httpsCallable("deleteUserDaySentiments");
     dynamic resp = await callable.call();
     print("Resp");
     print(resp.data);
+    UserInformation.setAllUserInformationData();
   }
 
   /* Send feedback to database about the application.
@@ -153,7 +154,20 @@ class Authentication {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  /*****************Email Sign Ins******************/
+  /*****************Email Sign Up/ Sign In******************/
+
+  static Future<User> signUpViaEmaiL(
+      String userEmail, String userPassword) async {
+    return (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: userEmail, password: userPassword))
+        .user;
+  }
+
+  static Future<User> signInViaEmail(String userEmail, userPassword) async {
+    return (await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: userEmail, password: userPassword))
+        .user;
+  }
 
   //resend email authentication if user lost email or if email wasnt received.
   static Future<void> sendEmailAuthenticationEmail(bool isWelcome) async {
@@ -163,6 +177,10 @@ class Authentication {
     dynamic resp = await callable.call(<String, bool>{"isWelcome": isWelcome});
     print("Resp");
     print(resp.data);
+  }
+
+  static void signOutOfEmail() {
+    FirebaseAuth.instance.signOut();
   }
 
   //send email authentication along with user wanted name.
@@ -208,7 +226,7 @@ class Authentication {
   }
 
   /******************Google Sign in*****************/
-  static Future<User> signInWithGoogle() async {
+  static Future<User> signInViaGoogle() async {
     await _initializeFirebase();
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
@@ -238,7 +256,7 @@ class Authentication {
 
   /****************************Facebook Sign In *****************/
 
-  static Future<User> signInWithFacebook() async {
+  static Future<User> signInViaFacebook() async {
     await _initializeFirebase();
     try {
       AccessToken _accessToken = await FacebookAuth.instance.login();
@@ -267,5 +285,48 @@ class Authentication {
 
   static void signOutOfFacebook() async {
     await FacebookAuth.instance.logOut();
+  }
+
+  /***************Delete User Account *****/
+  static Future<void> deleteUserAccount() async {
+    await UserInformation.getUser().delete();
+    return;
+  }
+
+  /**********************General Authentications***************************************/
+
+  //log out user using all possibilities
+  static Future<void> signOutUserAllPossibilities() async {
+    await _initializeFirebase();
+    signOutOfEmail();
+    signOutOfGoogle();
+    signOutOfFacebook();
+  }
+
+  static Future<bool> reAuthenticateUserWithPassword(
+      String assumedPassword) async {
+    await _initializeFirebase();
+    var credential = EmailAuthProvider.credential(
+        email: UserInformation.get("email"), password: assumedPassword);
+    try {
+      await _auth.currentUser.reauthenticateWithCredential(credential);
+      return true;
+    } catch (onError) {
+      print("Error with reauthentication!!!!");
+      return false;
+    }
+  }
+
+  /**********************Edit User Authentications *****/
+  static Future<void> updateUserDisplayName(String newName) async {
+    _initializeFirebase();
+    await UserInformation.getUser().updateProfile(displayName: newName);
+    // UserInformation.initiateFirebaseUser(user);
+    print("NEW NAME IS " + UserInformation.getUser().displayName);
+  }
+
+  static Future<void> updateUserPassword(String newPassword) async {
+    _initializeFirebase();
+    await UserInformation.getUser().updatePassword(newPassword);
   }
 }

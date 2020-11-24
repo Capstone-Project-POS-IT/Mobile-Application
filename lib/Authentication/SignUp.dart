@@ -18,13 +18,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool _obscurePassword = true;
-
-  void toggleObscurePassword() {
-    setState(() {
-      _obscurePassword = !_obscurePassword;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,12 +169,10 @@ void _createUserAccount(
     String userEmail, String userPassword, BuildContext context) async {
   await Firebase.initializeApp();
   try {
-    User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: userEmail, password: userPassword))
-        .user;
+    User user = await Authentication.signUpViaEmaiL(userEmail, userPassword);
     if (user != null) {
       //will update the user information here
-      UserInformation.initiateFirebaseUser(user);
+      UserInformation.initiateFirebaseUser();
       UserInformation.setAllUserInformationData();
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => EmailAuthentication()));
@@ -194,9 +185,9 @@ void _createUserAccount(
 }
 
 void _createUserAccountViaGoogle(BuildContext context) async {
-  User userFromGoogle = await Authentication.signInWithGoogle();
+  User userFromGoogle = await Authentication.signInViaGoogle();
   if (userFromGoogle != null) {
-    UserInformation.initiateFirebaseUser(userFromGoogle);
+    UserInformation.initiateFirebaseUser();
     UserInformation.setAllUserInformationData();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
@@ -204,9 +195,9 @@ void _createUserAccountViaGoogle(BuildContext context) async {
 }
 
 void _createUserAccountViaFacebook(BuildContext context) async {
-  User userFromFacebook = await Authentication.signInWithFacebook();
+  User userFromFacebook = await Authentication.signInViaFacebook();
   if (userFromFacebook != null) {
-    UserInformation.initiateFirebaseUser(userFromFacebook);
+    UserInformation.initiateFirebaseUser();
     UserInformation.setAllUserInformationData();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));

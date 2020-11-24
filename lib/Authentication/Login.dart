@@ -19,10 +19,22 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool userExists = true;
+
   @override
   void initState() {
-    Authentication.signOutOfGoogle();
-    Authentication.signOutOfFacebook();
+    bool userExists = false;
+    Firebase.initializeApp().then((value) {
+      if (FirebaseAuth.instance.currentUser != null) {
+        showSigningInDialog(context);
+        userExists = true;
+        FirebaseAuth.instance.currentUser.refreshToken;
+        setAllUserInformation().whenComplete(
+            () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => NaviView())));
+      }
+    });
+
     super.initState();
   }
 
@@ -50,7 +62,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
-                        onTap: () => _loginViaFacebook(context),
+                        onTap: () => _signInViaFacebook(context),
                         child: Padding(
                             padding: EdgeInsets.all(20),
                             child: Image(
@@ -59,7 +71,7 @@ class _LoginState extends State<Login> {
                                 width: 80,
                                 height: 80))),
                     GestureDetector(
-                      onTap: () => _loginViaGoogle(context),
+                      onTap: () => _signInViaGoogle(context),
                       child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Image(
@@ -85,6 +97,12 @@ class _LoginState extends State<Login> {
                   color: Colors.white,
                   child: TextField(
                     controller: _emailController,
+                    decoration: new InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 4)),
+                      hintText: "Account Email",
+                    ),
+                    cursorHeight: 40,
                     style:
                         TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
@@ -100,7 +118,7 @@ class _LoginState extends State<Login> {
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
-                  height: 40,
+                  height: 35,
                   color: Colors.white,
                   child: TextField(
                     controller: _passwordController,
@@ -115,7 +133,7 @@ class _LoginState extends State<Login> {
                         height: 50,
                         child: FlatButton(
                           color: Color(0xffabd0a8),
-                          onPressed: () => _LoginViaEmail(_emailController.text,
+                          onPressed: () => _signInViaEmail(_emailController.text,
                               _passwordController.text, context),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -182,17 +200,33 @@ class _LoginState extends State<Login> {
   }
 }
 
-void _LoginViaEmail(
+showSigningInDialog(BuildContext context) {
+  return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 20,
+          width: 40,
+          child: SimpleDialog(
+            children: [
+              Text("Signing in...",
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+              CircularProgressIndicator()
+            ],
+          ),
+        );
+      });
+}
+
+void _signInViaEmail(
     String userEmail, String userPassword, BuildContext context) async {
   await Firebase.initializeApp();
   try {
-    User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: userEmail, password: userPassword))
-        .user;
+    User user = await Authentication.signInViaEmail(userEmail, userPassword);
     if (user != null) {
-      UserInformation.initiateFirebaseUser(user);
       if (user.emailVerified) {
-        await UserInformation.setAllUserInformationData();
+        setAllUserInformation();
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => NaviView()));
       } else {
@@ -201,28 +235,39 @@ void _LoginViaEmail(
       }
     }
   } catch (error) {
-    print(error);
+    //can use print(error.code); and  print(error.message);
+    print("ERROR" + error.toString());
+
+    //set the outline of the boxes to red
+
+    //show the snackbar or the toast
+
     _emailController.text = "";
     _passwordController.text = "";
   }
 }
 
-void _loginViaGoogle(BuildContext context) async {
-  User userFromGoogle = await Authentication.signInWithGoogle();
+void _signInViaGoogle(BuildContext context) async {
+  User userFromGoogle = await Authentication.signInViaGoogle();
   if (userFromGoogle != null) {
-    UserInformation.initiateFirebaseUser(userFromGoogle);
-    UserInformation.setAllUserInformationData();
+    setAllUserInformation();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
   }
 }
 
-void _loginViaFacebook(BuildContext context) async {
-  User userFromFacebook = await Authentication.signInWithFacebook();
+void _signInViaFacebook(BuildContext context) async {
+  User userFromFacebook = await Authentication.signInViaFacebook();
   if (userFromFacebook != null) {
-    UserInformation.initiateFirebaseUser(userFromFacebook);
-    UserInformation.setAllUserInformationData();
+    setAllUserInformation();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
   }
 }
+
+Future<void> setAllUserInformation() async {
+  UserInformation.initiateFirebaseUser();
+  await UserInformation.setAllUserInformationData();
+}
+
+

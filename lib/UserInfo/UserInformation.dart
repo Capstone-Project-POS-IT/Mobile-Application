@@ -15,8 +15,12 @@ class UserInformation {
   static Map<String, dynamic> map;
 
   /*Initiation functions*/
-  static void initiateFirebaseUser(User userCreate) {
-    _user = userCreate;
+  static void initiateFirebaseUser() {
+    _user = FirebaseAuth.instance.currentUser;
+  }
+
+  static User getUser(){
+    return _user;
   }
 
   static Future<void> setAllUserInformationData() async {
@@ -38,6 +42,9 @@ class UserInformation {
     switch(info){
       case "displayName":{
         return _user.displayName;
+      }
+      case "email":{
+        return _user.email;
       }
       case "news":{
         return _userSentiBasedNews;
