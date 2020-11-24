@@ -15,8 +15,12 @@ class UserInformation {
   static Map<String, dynamic> map;
 
   /*Initiation functions*/
-  static void initiateFirebaseUser(User userCreate) {
-    _user = userCreate;
+  static void initiateFirebaseUser() {
+    _user = FirebaseAuth.instance.currentUser;
+  }
+
+  static User getUser(){
+    return _user;
   }
 
   static Future<void> setAllUserInformationData() async {

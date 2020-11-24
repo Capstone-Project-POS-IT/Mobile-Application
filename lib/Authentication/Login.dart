@@ -8,7 +8,6 @@ import '../Navibar.dart';
 import 'EmailAuthentication.dart';
 import '../UserInfo/UserInformation.dart';
 import 'SignUp.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 //inputs
 final TextEditingController _emailController = new TextEditingController();
@@ -30,7 +29,7 @@ class _LoginState extends State<Login> {
         showSigningInDialog(context);
         userExists = true;
         FirebaseAuth.instance.currentUser.refreshToken;
-        setAllUserInformation(FirebaseAuth.instance.currentUser).whenComplete(
+        setAllUserInformation().whenComplete(
             () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => NaviView())));
       }
@@ -227,7 +226,7 @@ void _signInViaEmail(
     User user = await Authentication.signInViaEmail(userEmail, userPassword);
     if (user != null) {
       if (user.emailVerified) {
-        setAllUserInformation(user);
+        setAllUserInformation();
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => NaviView()));
       } else {
@@ -251,7 +250,7 @@ void _signInViaEmail(
 void _signInViaGoogle(BuildContext context) async {
   User userFromGoogle = await Authentication.signInViaGoogle();
   if (userFromGoogle != null) {
-    setAllUserInformation(userFromGoogle);
+    setAllUserInformation();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
   }
@@ -260,14 +259,14 @@ void _signInViaGoogle(BuildContext context) async {
 void _signInViaFacebook(BuildContext context) async {
   User userFromFacebook = await Authentication.signInViaFacebook();
   if (userFromFacebook != null) {
-    setAllUserInformation(userFromFacebook);
+    setAllUserInformation();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NaviView()));
   }
 }
 
-Future<void> setAllUserInformation(User user) async {
-  UserInformation.initiateFirebaseUser(user);
+Future<void> setAllUserInformation() async {
+  UserInformation.initiateFirebaseUser();
   await UserInformation.setAllUserInformationData();
 }
 
