@@ -303,7 +303,8 @@ class Authentication {
     signOutOfFacebook();
   }
 
-  static Future<bool> reAuthenticateUserWithPassword(
+  /***************User Reauthentication *************/
+  static Future<bool> reAuthenticateUserViaPassword(
       String assumedPassword) async {
     await _initializeFirebase();
     var credential = EmailAuthProvider.credential(
@@ -316,6 +317,40 @@ class Authentication {
       return false;
     }
   }
+
+  static Future<bool> reAuthenticateUserViaGoogle() async {
+    await _initializeFirebase();
+    final GoogleSignInAccount googleSignInAccount =
+        await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+    try {
+      await _auth.currentUser.reauthenticateWithCredential(credential);
+      return true;
+    } catch (onError) {
+      print("Error with reauthentication!!!!");
+      return false;
+    }
+  }
+
+  static Future<bool> reAuthenticateUserViaFacebook() async {
+    AccessToken _accessToken = await FacebookAuth.instance.login();
+    final OAuthCredential credential =
+    FacebookAuthProvider.credential(_accessToken.token);
+    try {
+      await _auth.currentUser.reauthenticateWithCredential(credential);
+      return true;
+    } catch (onError) {
+      print("Error with reauthentication!!!!");
+      return false;
+    }
+
+  }
+
 
   /**********************Edit User Authentications *****/
   static Future<void> updateUserDisplayName(String newName) async {

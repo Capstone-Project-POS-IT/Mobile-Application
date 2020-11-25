@@ -54,10 +54,19 @@ class AccountCredential extends StatefulWidget {
 
 class _AccountCredentialState extends State<AccountCredential> {
   TextEditingController passwordController;
+  bool userHasEmailOption;
 
   @override
   void initState() {
     passwordController = new TextEditingController();
+    userHasEmailOption = false;
+    for (UserInfo userInfo in UserInformation.getUser().providerData) {
+      if (userInfo.providerId == "password") {
+        userHasEmailOption = true;
+        break;
+      }
+    }
+
     super.initState();
   }
 
@@ -65,86 +74,152 @@ class _AccountCredentialState extends State<AccountCredential> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: 300,
+        height: 400,
         padding: EdgeInsets.all(10),
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
             color: Color(0xff1D2D6B),
             border: Border.all(width: 2, color: Colors.white)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("User Email:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(UserInformation.get("email"),
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 25, color: Colors.white)),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Password:",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  width: 350,
-                  height: 40,
-                  color: Colors.white,
-                  child: TextField(
-                    controller: passwordController,
-                    decoration: new InputDecoration(
-                      hintText: "Enter password",
-                    ),
-                    cursorHeight: 40,
-                    style:
-                        TextStyle(fontSize: 17, height: 2, color: Colors.black),
-                  ),
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => {_verifyAccountCredentialsViaSocialMedia("Facebook")},
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Image(
+                      image: AssetImage("lib/assets/images/facebook_logo.png"),
+                      width: 65,
+                      height: 65),
                 ),
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                child: ButtonTheme(
-                    minWidth: 200,
-                    height: 50,
-                    child: FlatButton(
-                      color: Color(0xffabd0a8),
-                      onPressed: () =>
-                          _verifyAccountCredentials(passwordController.text),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      child: Text("Verify Account",
-                          style: TextStyle(
-                              color: Color(0xff000080), fontSize: 20)),
-                    ))),
-          ],
-        ),
+              ),
+              GestureDetector(
+                onTap: () => {_verifyAccountCredentialsViaSocialMedia("Google")},
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Image(
+                      image: AssetImage("lib/assets/images/google_logo.png"),
+                      width: 65,
+                      height: 65),
+                ),
+              )
+            ],
+          ),
+          userHasEmailOption == true
+              ? AccountConfirmationEmailWidget()
+              : Container()
+        ]),
       ),
     );
   }
 
+  void _verifyAccountCredentialsViaSocialMedia(String socialMedia) async {
+    bool isAccountVerified = false;
+    if (socialMedia == "Google") {
+      isAccountVerified = await Authentication.reAuthenticateUserViaGoogle();
+    } else {
+      isAccountVerified = await Authentication.reAuthenticateUserViaFacebook();
+    }
+
+    if (isAccountVerified) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EditProfile()));
+    }
+  }
+}
+
+class AccountConfirmationEmailWidget extends StatefulWidget {
+  @override
+  _AccountConfirmationEmailWidgetState createState() =>
+      _AccountConfirmationEmailWidgetState();
+}
+
+class _AccountConfirmationEmailWidgetState
+    extends State<AccountConfirmationEmailWidget> {
+  TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    _passwordController = new TextEditingController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text("User Email:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(UserInformation.get("email"),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 25, color: Colors.white)),
+            )
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Password:",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            Container(
+              alignment: Alignment.bottomLeft,
+              width: 350,
+              height: 40,
+              color: Colors.white,
+              child: TextField(
+                controller: _passwordController,
+                decoration: new InputDecoration(
+                  hintText: "Enter password",
+                ),
+                cursorHeight: 40,
+                style: TextStyle(fontSize: 17, height: 2, color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            child: ButtonTheme(
+                minWidth: 200,
+                height: 50,
+                child: FlatButton(
+                  color: Color(0xffabd0a8),
+                  onPressed: () =>
+                      {_verifyAccountCredentials(_passwordController.text)},
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: Text("Verify Account",
+                      style: TextStyle(color: Color(0xff000080), fontSize: 20)),
+                ))),
+      ],
+    );
+  }
+
   void _verifyAccountCredentials(String password) async {
-    bool accountVerified = await Authentication.reAuthenticateUserWithPassword(password);
-    if(accountVerified){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
+    bool isAccountVerified =
+        await Authentication.reAuthenticateUserViaPassword(password);
+    if (isAccountVerified) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EditProfile()));
     }
   }
 }

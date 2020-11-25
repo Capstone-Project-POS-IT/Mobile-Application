@@ -1,12 +1,8 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pos_it/ExternalCalls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pos_it/ExternalCalls.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
-import 'package:pos_it/creators.dart';
-import 'package:pos_it/ProvideFeedback.dart';
 
 import 'Authentication/Login.dart';
 
@@ -129,7 +125,24 @@ class _EditProfileState extends State<EditProfile> {
               GestureDetector(
                   onTap: () => _deleteDataOptions("account"),
                   child: EditProfileOption(
-                      Icons.delete_forever, "Delete account", ""))
+                      Icons.delete_forever, "Delete account", "")),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: ButtonTheme(
+                      minWidth: 200,
+                      height: 50,
+                      child: FlatButton(
+                        color: Color(0xffabd0a8),
+                        onPressed: () => {
+                          Navigator.pop(context),
+                          Navigator.pop(context),
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                        child: Text("Back to Profile Settings",
+                            style: TextStyle(color: Color(0xff000080), fontSize: 20)),
+                      )))
             ],
           ),
         ),
@@ -153,14 +166,20 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
+  //changes in email, display name, or password
   void _setUpdatedProfile(String option) async {
     switch (option) {
       case "displayName":
-        await Authentication.updateUserDisplayName(_displayNameController.text);
+        if (_displayNameController.text.isNotEmpty) {
+          await Authentication.updateUserDisplayName(
+              _displayNameController.text);
+          setState(() {
+            _userDisplayName = FirebaseAuth.instance.currentUser.displayName;
+            _displayNameController.text = "";
+          });
+        }
         setState(() {
           _isEditingDisplayName = false;
-          _userDisplayName = FirebaseAuth.instance.currentUser.displayName;
-          _displayNameController.text = "";
         });
         break;
       case "password":
@@ -174,6 +193,7 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  //delete sentiment data or account
   void _deleteDataOptions(String option) {
     switch (option) {
       case "sentiment data":
@@ -181,8 +201,8 @@ class _EditProfileState extends State<EditProfile> {
             "Are you sure you want to delete all sentiment data", false);
         break;
       case "account":
-        showDeleteDataDialog(context, "Deleting Account",
-            "Are you sure you want to delete your account", true);
+        showDeleteDataDialog(context, "WARNING! Deleting Account",
+            "Are you sure you want to delete your account?", true);
         break;
     }
   }
@@ -259,6 +279,7 @@ class _EditProfileOptionState extends State<EditProfileOption> {
   }
 }
 
+//Dialog that shows up when deleting user sentiment data or the account
 showDeleteDataDialog(
     BuildContext context, String title, String content, bool deletingAccount) {
   Future<void> yesOption() async {
