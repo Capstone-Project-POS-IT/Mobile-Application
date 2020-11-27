@@ -36,7 +36,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                 SizedBox(height: 100),
                 Text("Thank you for creating an account with POS-IT!",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Color(0xffDCFCDD), fontSize: 30,fontWeight: FontWeight.bold)),
                 Padding(padding: EdgeInsets.all(25),
                 child:Text("Please verify your email by typing in the six digit code received in your email inbox",
                     textAlign: TextAlign.center,

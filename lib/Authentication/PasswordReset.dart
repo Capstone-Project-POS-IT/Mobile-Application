@@ -60,7 +60,7 @@ class _PasswordResetState extends State<PasswordReset> {
                   Text("Password Reset For POS-IT",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xffDCFCDD),
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
                   Container(
