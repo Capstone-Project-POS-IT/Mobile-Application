@@ -54,7 +54,7 @@ class _LoginState extends State<Login> {
                   "Login",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xffDCFCDD),
                       fontSize: 40,
                       fontWeight: FontWeight.bold),
                 ),

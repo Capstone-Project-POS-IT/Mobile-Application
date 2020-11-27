@@ -26,9 +26,9 @@ class _AccountConfirmationState extends State<AccountConfirmation> {
               Text("Account Confirmation",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 40,
+                      color: Color(0xffDCFCDD),
                       fontWeight: FontWeight.bold,
-                      color: Colors.white)),
+                      fontSize: 40)),
               Text(
                 "Please confirm you account before continuing to change account settings",
                 textAlign: TextAlign.center,

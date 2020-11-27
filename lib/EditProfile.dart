@@ -38,112 +38,121 @@ class _EditProfileState extends State<EditProfile> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xff131d47),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Text("Edit Profile ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 45)),
-              ),
-              SizedBox(
-                height: 100,
-              ),
-
-              /*Below are the Editing profile options*/
-              GestureDetector(
-                onTap: () {
-                  _showOptionToEdit("email");
-                },
-                child: EditProfileOption(Icons.email, "Email:", _userEmail),
-              ),
-              GestureDetector(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text("Edit Profile ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xffDCFCDD),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40)),
+                ),
+                Text(
+                  "Click on the options below to edit your profile. ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+                /*Below are the Editing profile options*/
+                GestureDetector(
                   onTap: () {
-                    _showOptionToEdit("display name");
+                    _showOptionToEdit("email");
+                  },
+                  child: EditProfileOption(Icons.email, "Email:", _userEmail),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      _showOptionToEdit("display name");
+                    },
+                    child: EditProfileOption(
+                        Icons.expand, "Display Name:", _userDisplayName)),
+                _isEditingDisplayName == true
+                    ? Container(
+                        alignment: Alignment.bottomLeft,
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        color: Colors.white,
+                        child: TextField(
+                          controller: _displayNameController,
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(5),
+                              hintText: "Enter new display name",
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.check_circle),
+                                onPressed: () {
+                                  _setUpdatedProfile("displayName");
+                                },
+                              )),
+                          style: TextStyle(
+                              fontSize: 17, height: 2, color: Colors.black),
+                        ),
+                      )
+                    : Container(),
+                GestureDetector(
+                  onTap: () {
+                    _showOptionToEdit("password");
                   },
                   child: EditProfileOption(
-                      Icons.expand, "Display Name:", _userDisplayName)),
-              _isEditingDisplayName == true
-                  ? Container(
-                      alignment: Alignment.bottomLeft,
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      color: Colors.white,
-                      child: TextField(
-                        controller: _displayNameController,
-                        decoration: InputDecoration(
-                            hintText: "Enter new display name",
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.check_circle),
-                              onPressed: () {
-                                _setUpdatedProfile("displayName");
-                              },
-                            )),
-                        style: TextStyle(
-                            fontSize: 17, height: 2, color: Colors.black),
-                      ),
-                    )
-                  : Container(),
-              GestureDetector(
-                onTap: () {
-                  _showOptionToEdit("password");
-                },
-                child: EditProfileOption(
-                    Icons.margin, "Password:", _userPasswordStars),
-              ),
-              _isEditingPassword == true
-                  ? Container(
-                      alignment: Alignment.bottomLeft,
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      color: Colors.white,
-                      child: TextField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                            hintText: "Enter new password",
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.check_circle),
-                              onPressed: () {
-                                _setUpdatedProfile("password");
-                              },
-                            )),
-                        style: TextStyle(
-                            fontSize: 17, height: 2, color: Colors.black),
-                      ),
-                    )
-                  : Container(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              GestureDetector(
-                onTap: () => _deleteDataOptions("sentiment data"),
-                child: EditProfileOption(
-                    Icons.delete, "Delete all sentiment data", ""),
-              ),
-              GestureDetector(
-                  onTap: () => _deleteDataOptions("account"),
-                  child: EditProfileOption(
-                      Icons.delete_forever, "Delete account", "")),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  child: ButtonTheme(
-                      minWidth: 200,
-                      height: 50,
-                      child: FlatButton(
-                        color: Color(0xffabd0a8),
-                        onPressed: () => {
-                          Navigator.pop(context),
-                          Navigator.pop(context),
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                      Icons.margin, "Password:", _userPasswordStars),
+                ),
+                _isEditingPassword == true
+                    ? Container(
+                        alignment: Alignment.bottomLeft,
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        color: Colors.white,
+                        child: TextField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(5),
+                              hintText: "Enter new password",
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.check_circle),
+                                onPressed: () {
+                                  _setUpdatedProfile("password");
+                                },
+                              )),
+                          style: TextStyle(
+                              fontSize: 17, height: 2, color: Colors.black),
                         ),
-                        child: Text("Back to Profile Settings",
-                            style: TextStyle(color: Color(0xff000080), fontSize: 20)),
-                      )))
-            ],
+                      )
+                    : Container(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                GestureDetector(
+                  onTap: () => _deleteDataOptions("sentiment data"),
+                  child: EditProfileOption(
+                      Icons.delete, "Delete all sentiment data", ""),
+                ),
+                GestureDetector(
+                    onTap: () => _deleteDataOptions("account"),
+                    child: EditProfileOption(
+                        Icons.delete_forever, "Delete account", "")),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    child: ButtonTheme(
+                        minWidth: 200,
+                        height: 50,
+                        child: FlatButton(
+                          color: Color(0xffabd0a8),
+                          onPressed: () => {
+                            Navigator.pop(context),
+                            Navigator.pop(context),
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          child: Text("Back to Profile Settings",
+                              style: TextStyle(
+                                  color: Color(0xff000080), fontSize: 20)),
+                        )))
+              ],
+            ),
           ),
         ),
       ),
@@ -197,12 +206,20 @@ class _EditProfileState extends State<EditProfile> {
   void _deleteDataOptions(String option) {
     switch (option) {
       case "sentiment data":
-        showDeleteDataDialog(context, "Deleting Sentiment Data",
-            "Are you sure you want to delete all sentiment data", false);
+        showDeleteDataDialog(
+            context,
+            "Deleting Sentiment Data",
+            TextStyle(color: Colors.black, fontSize: 25),
+            "Are you sure you want to delete all sentiment data?",
+            false);
         break;
       case "account":
-        showDeleteDataDialog(context, "WARNING! Deleting Account",
-            "Are you sure you want to delete your account?", true);
+        showDeleteDataDialog(
+            context,
+            "WARNING! Deleting Account",
+            TextStyle(color: Colors.red, fontSize: 30),
+            "Are you sure you want to delete your POS-IT account?",
+            true);
         break;
     }
   }
@@ -280,8 +297,8 @@ class _EditProfileOptionState extends State<EditProfileOption> {
 }
 
 //Dialog that shows up when deleting user sentiment data or the account
-showDeleteDataDialog(
-    BuildContext context, String title, String content, bool deletingAccount) {
+showDeleteDataDialog(BuildContext context, String title,
+    TextStyle titleTextStyle, String content, bool deletingAccount) {
   Future<void> yesOption() async {
     if (!deletingAccount) {
       //deleteting sentiment data
@@ -307,8 +324,9 @@ showDeleteDataDialog(
           height: 20,
           width: 40,
           child: AlertDialog(
-            title: Text(title),
-            content: Text(content),
+            title:
+                Text(title, textAlign: TextAlign.center, style: titleTextStyle),
+            content: Text(content,textAlign: TextAlign.center),
             actions: [
               FlatButton(
                   onPressed: () {
