@@ -356,8 +356,7 @@ class Authentication {
   static Future<void> updateUserDisplayName(String newName) async {
     _initializeFirebase();
     await UserInformation.getUser().updateProfile(displayName: newName);
-    // UserInformation.initiateFirebaseUser(user);
-    print("NEW NAME IS " + UserInformation.getUser().displayName);
+    UserInformation.initiateFirebaseUser();
   }
 
   static Future<void> updateUserPassword(String newPassword) async {

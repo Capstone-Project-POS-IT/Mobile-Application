@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pos_it/AccountConfirmation.dart';
+import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/AccountConfirmation.dart';
 import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/Authentication/EmailAuthentication.dart';
 import 'package:pos_it/Authentication/SignUp.dart';

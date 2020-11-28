@@ -1,7 +1,6 @@
 /*Class holds all of user information and preferences*/
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/ExternalCalls.dart';
@@ -12,8 +11,7 @@ class UserInformation {
   //Data to be stored of the user
   static User _user; //will be the Firebase User
   static Map _userSentiBasedNews;
-  static dynamic _userSentimentData;
-  static Map<String, dynamic> _map;
+  static Map _userSentimentData;
 
   /*Initiation functions*/
   static void initiateFirebaseUser() {
@@ -34,7 +32,7 @@ class UserInformation {
   }
 
   static Future<void> setUserSentimentData() async{
-    _userSentimentData = (await APICall.getUserDaySentimentsData())["data"];
+    _userSentimentData = Map<String,dynamic>.from((await APICall.getUserDaySentimentsData())["data"]);
   }
 
 
@@ -49,12 +47,10 @@ class UserInformation {
   }
 
   static getUserSentimentMap() {
-    if(_userSentimentData == null) {
-      _map = new Map<String, dynamic>();
-    } else if(_map==null) {
-      _map = Map<String, dynamic>.from(_userSentimentData);
-    }
-    return _map;
+    if(_userSentimentData == null)
+      _userSentimentData = new Map<String, dynamic>();
+
+    return _userSentimentData;
   }
 
   static addUserSentimentData(DateTime key, double value,String description) {
@@ -62,8 +58,7 @@ class UserInformation {
     dynamic newData = new HashMap();
     newData['sentiment'] = value;
     newData['description'] = description;
-    _map[todayDateFormatted] = newData;
-    print(_map);
+    _userSentimentData[todayDateFormatted] = newData;
   }
 
   //get news based on the topic
