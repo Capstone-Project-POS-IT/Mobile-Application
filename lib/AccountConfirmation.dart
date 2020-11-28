@@ -17,29 +17,31 @@ class _AccountConfirmationState extends State<AccountConfirmation> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff131d47),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Account Confirmation",
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Account Confirmation",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color(0xffDCFCDD),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40)),
+                Text(
+                  "Please confirm you account before continuing to change account settings",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xffDCFCDD),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40)),
-              Text(
-                "Please confirm you account before continuing to change account settings",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              SizedBox(height: 30),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AccountCredential(),
-              )
-            ],
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                SizedBox(height: 30),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: AccountCredential(),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -86,7 +88,8 @@ class _AccountCredentialState extends State<AccountCredential> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => {_verifyAccountCredentialsViaSocialMedia("Facebook")},
+                onTap: () =>
+                    {_verifyAccountCredentialsViaSocialMedia("Facebook")},
                 child: Padding(
                   padding: EdgeInsets.all(15),
                   child: Image(
@@ -96,7 +99,8 @@ class _AccountCredentialState extends State<AccountCredential> {
                 ),
               ),
               GestureDetector(
-                onTap: () => {_verifyAccountCredentialsViaSocialMedia("Google")},
+                onTap: () =>
+                    {_verifyAccountCredentialsViaSocialMedia("Google")},
                 child: Padding(
                   padding: EdgeInsets.all(15),
                   child: Image(
@@ -163,7 +167,7 @@ class _AccountConfirmationEmailWidgetState
                     color: Colors.white)),
             Align(
               alignment: Alignment.bottomLeft,
-              child: Text(UserInformation.get("email"),
+              child: Text(UserInformation.getUser().email,
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: 25, color: Colors.white)),
             )
