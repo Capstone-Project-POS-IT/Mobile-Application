@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pos_it/AccountConfirmation.dart';
-import 'package:pos_it/EditProfile.dart';
-import 'package:pos_it/creators.dart';
 import 'Authentication/Login.dart';
 import 'ExternalCalls.dart';
+import 'UserInfo/UserInformation.dart';
 
 //TODO: bottom nav bar, fix buttons
 
@@ -289,7 +287,9 @@ class _Title extends State<Title> {
               ]),
           Align(
             alignment: Alignment.center,
-            child: Text("Username",
+            child: Text(UserInformation.getDisplayName(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Color(0xffDCFCDD),

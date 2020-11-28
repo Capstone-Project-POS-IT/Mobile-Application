@@ -1,5 +1,6 @@
 /*Class holds all of user information and preferences*/
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class UserInformation {
   static User _user; //will be the Firebase User
   static Map _userSentiBasedNews;
   static dynamic _userSentimentData;
-  static Map<String, dynamic> map;
+  static Map<String, dynamic> _map;
 
   /*Initiation functions*/
   static void initiateFirebaseUser() {
@@ -24,9 +25,18 @@ class UserInformation {
   }
 
   static Future<void> setAllUserInformationData() async {
-    _userSentiBasedNews = Map<String, dynamic>.from(await APICall.getNewsHeadlinesSentiBased());
-    _userSentimentData = await APICall.getUserDaySentimentsData();
+    setUserBasedNews();
+    setUserSentimentData();
   }
+
+  static Future<void> setUserBasedNews() async{
+    _userSentiBasedNews = Map<String, dynamic>.from(await APICall.getNewsHeadlinesSentiBased());
+  }
+
+  static Future<void> setUserSentimentData() async{
+    _userSentimentData = (await APICall.getUserDaySentimentsData())["data"];
+  }
+
 
   //Get Information about the user
   static String getDisplayName(){
@@ -38,38 +48,22 @@ class UserInformation {
     }
   }
 
-  static dynamic get(String info){
-    switch(info){
-      case "displayName":{
-        return _user.displayName;
-      }
-      case "email":{
-        return _user.email;
-      }
-      case "news":{
-        return _userSentiBasedNews;
-      }
-      case "sentimentData":{
-        return _userSentimentData;
-      }
-    }
-  }
-
   static getUserSentimentMap() {
-    dynamic jsonName = UserInformation.get("sentimentData");
-    dynamic userData = jsonName["data"];
-
-    if(userData == null) {
-      map = new Map<String, dynamic>();
-    } else {
-      map = Map<String, dynamic>.from(userData);
+    if(_userSentimentData == null) {
+      _map = new Map<String, dynamic>();
+    } else if(_map==null) {
+      _map = Map<String, dynamic>.from(_userSentimentData);
     }
-    return map;
+    return _map;
   }
 
-  static addUserSentimentData(DateTime key, double value) {
+  static addUserSentimentData(DateTime key, double value,String description) {
     String todayDateFormatted = DateFormat('yyyy-MM-dd').format(key);
-    map[todayDateFormatted] = value;
+    dynamic newData = new HashMap();
+    newData['sentiment'] = value;
+    newData['description'] = description;
+    _map[todayDateFormatted] = newData;
+    print(_map);
   }
 
   //get news based on the topic

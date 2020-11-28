@@ -201,7 +201,7 @@ class _NewsCardState extends State<NewsCard> {
                   Flexible(
                       flex: 1,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Row(
                             children: [
@@ -213,7 +213,9 @@ class _NewsCardState extends State<NewsCard> {
                           Row(
                             children: [
                               Icon(Icons.desktop_windows),
-                              Text(widget.articleSource)
+                              Text(widget.articleSource,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ],
                           )
                         ],
@@ -291,9 +293,9 @@ class _NewsCardState extends State<NewsCard> {
                         : "No Link Available",
                     recognizer: widget.articleUrl != null
                         ? (TapGestureRecognizer()
-                      ..onTap = () => _launchArticleUrl())
+                          ..onTap = () => _launchArticleUrl())
                         : (TapGestureRecognizer()
-                      ..onTap = () => print("No article")),
+                          ..onTap = () => print("No article")),
                     style: TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline))

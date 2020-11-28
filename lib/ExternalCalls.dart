@@ -308,7 +308,7 @@ class Authentication {
       String assumedPassword) async {
     await _initializeFirebase();
     var credential = EmailAuthProvider.credential(
-        email: UserInformation.get("email"), password: assumedPassword);
+        email: UserInformation.getUser().email, password: assumedPassword);
     try {
       await _auth.currentUser.reauthenticateWithCredential(credential);
       return true;

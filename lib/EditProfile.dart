@@ -27,7 +27,7 @@ class _EditProfileState extends State<EditProfile> {
     _emailController = new TextEditingController();
     _displayNameController = new TextEditingController();
     _passwordController = new TextEditingController();
-    _userEmail = UserInformation.get("email");
+    _userEmail = UserInformation.getUser().email;
     _userDisplayName = UserInformation.getDisplayName();
     _userPasswordStars = "*****";
   }

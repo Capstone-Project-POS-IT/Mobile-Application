@@ -48,7 +48,6 @@ class _MainCalendarView extends State<MainCalendarView> {
 
   void addEventstoCalendar() {
     map = UserInformation.getUserSentimentMap();
-
     if(map != null) {
       map.forEach((k, v) {
         DateTime date = DateTime.parse(k);
@@ -285,22 +284,22 @@ class _MainCalendarView extends State<MainCalendarView> {
                 print(sliderValue);
                 if(sliderValue == null) {
                   _events[_controller.selectedDay].add("1.0");
-                  APICall.sendUserDaySentimentData(1.0, descripValue, _controller.selectedDay);
-                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0);
+                  APICall.sendUserDaySentimentData(1.0, descripValue, _controller.selectedDay).whenComplete(() => UserInformation.setUserBasedNews());
+                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0,descripValue);
                 } else {
                   _events[_controller.selectedDay].add(sliderValue.toString());
-                  APICall.sendUserDaySentimentData(sliderValue, descripValue, _controller.selectedDay);
-                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+                  APICall.sendUserDaySentimentData(sliderValue, descripValue, _controller.selectedDay).whenComplete(() => UserInformation.setUserBasedNews());
+                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue,descripValue);
                 }
               } else {
                 if(sliderValue == null) {
                   _events[_controller.selectedDay] = ["1.0"];
-                  APICall.sendUserDaySentimentData(1.0, descripValue, _controller.selectedDay);
-                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0);
+                  APICall.sendUserDaySentimentData(1.0, descripValue, _controller.selectedDay).whenComplete(() => UserInformation.setUserBasedNews());
+                  UserInformation.addUserSentimentData(_controller.selectedDay, 1.0,descripValue);
                 } else {
                   _events[_controller.selectedDay] = [sliderValue.toString()];
-                  APICall.sendUserDaySentimentData(sliderValue, descripValue, _controller.selectedDay);
-                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue);
+                  APICall.sendUserDaySentimentData(sliderValue, descripValue, _controller.selectedDay).whenComplete(() => UserInformation.setUserBasedNews());
+                  UserInformation.addUserSentimentData(_controller.selectedDay, sliderValue,descripValue);
                 }
 
               }
@@ -308,8 +307,7 @@ class _MainCalendarView extends State<MainCalendarView> {
               //sleep(const Duration(milliseconds:350));
               //remove in order for calendar to save properly.
               sleep(const Duration(milliseconds:350));
-              UserInformation.setAllUserInformationData();
-
+              //UserInformation.setAllUserInformationData();
             }
           });
           eventMoods[_controller.selectedDay] = sliderValue;
