@@ -1,11 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/EditProfile.dart';
 import 'package:pos_it/ExternalCalls.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pos_it/Authentication/PasswordReset.dart';
 
 class AccountConfirmation extends StatefulWidget {
   @override
@@ -31,7 +29,7 @@ class _AccountConfirmationState extends State<AccountConfirmation> {
                         fontWeight: FontWeight.bold,
                         fontSize: 40)),
                 Text(
-                  "Please confirm you account before continuing to change account settings",
+                  "Please confirm your account before continuing to change account settings",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),

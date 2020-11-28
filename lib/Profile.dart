@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pos_it/AccountConfirmation.dart';
+import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/AccountConfirmation.dart';
 import 'Authentication/Login.dart';
 import 'ExternalCalls.dart';
 import 'UserInfo/UserInformation.dart';
@@ -33,7 +33,10 @@ class _ProfileView extends State<ProfileView> {
 
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountConfirmation()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccountConfirmation()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -275,16 +278,27 @@ class _Title extends State<Title> {
           Align(
             alignment: Alignment.topRight,
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
-                Icon(
-                  Icons.account_circle_rounded,
-                  color: Colors.white,
-                  size: 125,
-                  semanticLabel: 'Account profile picture',
-                ),
-              ]),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            Padding(
+                padding: EdgeInsets.all(15),
+                child: UserInformation.getUser().photoURL != null
+                    ? Container(
+                        width: 125,
+                        height: 125,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    UserInformation.getUser().photoURL),
+                                fit: BoxFit.fill)),
+                      )
+                    : Icon(
+                        Icons.account_circle_rounded,
+                        color: Colors.white,
+                        size: 125,
+                        semanticLabel: 'Account profile picture',
+                      )),
+          ]),
           Align(
             alignment: Alignment.center,
             child: Text(UserInformation.getDisplayName(),

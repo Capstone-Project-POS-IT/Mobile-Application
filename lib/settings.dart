@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pos_it/AccountConfirmation.dart';
 import 'package:pos_it/Profile.dart';
 import 'package:pos_it/creators.dart';
 import 'package:pos_it/ProvideFeedback.dart';
