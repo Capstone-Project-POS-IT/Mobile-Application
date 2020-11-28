@@ -63,7 +63,6 @@ class UserInformation {
     newData['sentiment'] = value;
     newData['description'] = description;
     _map[todayDateFormatted] = newData;
-    print(_map);
   }
 
   //get news based on the topic
