@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/Authentication/AccountConfirmation.dart';
 import 'Authentication/Login.dart';
 import 'ExternalCalls.dart';
 import 'UserInfo/UserInformation.dart';
