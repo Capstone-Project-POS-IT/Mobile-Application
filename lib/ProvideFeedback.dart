@@ -9,7 +9,7 @@ class ProvideFeedbackPage extends StatefulWidget {
 
 class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
   @override
-  final myController = TextEditingController();
+  //final myController = TextEditingController();
 
   /*
   @override
@@ -44,7 +44,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                controller: myController,
+                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -76,7 +76,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                controller: myController,
+                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -107,7 +107,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                controller: myController,
+                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -138,7 +138,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                controller: myController,
+                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -169,7 +169,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                controller: myController,
+                //controller: myController,
                 maxLines: null,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000), height: 50),
@@ -185,6 +185,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             ),
 
             //Submit Button
+            /*
             FloatingActionButton(
               // When the user presses the button, show an alert dialog containing the
               // text that the user has entered into the text field.
@@ -202,7 +203,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
               },
               tooltip: 'Show me the value!',
               child: Icon(Icons.text_fields),
-            ),
+            ),*/
 
 
 
