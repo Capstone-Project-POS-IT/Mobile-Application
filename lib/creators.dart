@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-//TODO: change images, add LinkedIn image, scrollable, bottom nav bar
+import 'package:url_launcher/url_launcher.dart';
 
 const IconData email = IconData(0xe6f3, fontFamily: 'MaterialIcons');
 const IconData arrow_back_rounded = IconData(0xf07b, fontFamily: 'MaterialIcons');
@@ -17,7 +17,7 @@ class _CreatorsPage extends State<CreatorsPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color(0xff131D47),
-      body: Center (
+      body: SingleChildScrollView (
         child: Column (
           children: <Widget>[
             Title(),
@@ -55,15 +55,26 @@ class _CreatorsPage extends State<CreatorsPage> {
               )
             ]),
             Row( //Links - email and LinkedIn
-              children: const <Widget>[
+              children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(15),
                 ),
-                Icon(
-                  Icons.email,
+                IconButton(
+                  icon: Icon(Icons.email),
                   color: Colors.white,
-                  size: 40,
-                  semanticLabel: 'Send Nathan an email',
+                  hoverColor: Colors.grey,
+                  iconSize: 40,
+                  tooltip: 'Send Nathan an email',
+                  onPressed: () {
+                    //send email
+                  },
+                ),
+                new IconButton(
+                  icon: Image.asset('assets/images/linkedin_logo.png'),
+                  iconSize: 50,
+                  color: Colors.white,
+                  hoverColor: Colors.grey,
+                  onPressed: () => _launchURL('https://www.linkedin.com/in/nathan-kennedy-10374613a/'),
                 ),
               ]),
 
@@ -101,15 +112,26 @@ class _CreatorsPage extends State<CreatorsPage> {
                   )
                 ]),
             Row( //Links - email and LinkedIn
-                children: const <Widget>[
+                children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(15),
                   ),
-                  Icon(
-                    Icons.email,
+                  IconButton(
+                    icon: Icon(Icons.email),
                     color: Colors.white,
-                    size: 40,
-                    semanticLabel: 'Send Tami an email',
+                    hoverColor: Colors.grey,
+                    iconSize: 40,
+                    tooltip: 'Send Tami an email',
+                    onPressed: () {
+                      //send email
+                    },
+                  ),
+                  IconButton(
+                    icon: Image.asset('lib/assets/images/linkedin_logo.png'),
+                    iconSize: 50,
+                    color: Colors.white,
+                    hoverColor: Colors.grey,
+                    onPressed: () => _launchURL('https://www.linkedin.com/in/tahminayousafi/'),
                   ),
                 ]),
 
@@ -147,15 +169,26 @@ class _CreatorsPage extends State<CreatorsPage> {
                   )
                 ]),
             Row( //Links - email and LinkedIn
-                children: const <Widget>[
+                children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(15),
                   ),
-                  Icon(
-                    Icons.email,
+                  IconButton(
+                    icon: Icon(Icons.email),
                     color: Colors.white,
-                    size: 40,
-                    semanticLabel: 'Send Anthony an email',
+                    hoverColor: Colors.grey,
+                    iconSize: 40,
+                    tooltip: 'Send Anthony an email',
+                    onPressed: () {
+                      //send email
+                    },
+                  ),
+                  IconButton(
+                    icon: Image.asset('lib/assets/images/linkedin_logo.png'),
+                    iconSize: 50,
+                    color: Colors.white,
+                    hoverColor: Colors.grey,
+                    onPressed: () => _launchURL('https://www.linkedin.com/in/anthonybaron10/'),
                   ),
                 ]),
 
@@ -207,5 +240,13 @@ class _Title extends State<Title> {
         ],
       ),
     );
+  }
+}
+
+_launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

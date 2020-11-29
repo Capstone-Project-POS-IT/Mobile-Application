@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pos_it/creators.dart';
-
-//TODO: bottom nav bar, fix buttons
+import 'package:pos_it/ProvideFeedback.dart';
 
 const IconData account_circle_rounded = IconData(0xf03e, fontFamily: 'MaterialIcons');
 const IconData create_rounded = IconData(0xf145, fontFamily: 'MaterialIcons');

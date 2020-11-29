@@ -8,15 +8,6 @@ import './Calendar.dart';
 import './News.dart';
 import 'ExternalCalls.dart';
 
-class WelcomeName extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("Welcome " + UserInformation.getDisplayName(),
-        textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40, color: Color(0xffDCFCDD)));
-  }
-}
-
 class HomeView extends StatefulWidget {
   @override
   _HomeView createState() => new _HomeView();
@@ -31,20 +22,37 @@ class _HomeView extends State<HomeView> {
             child: Column(
               children: <Widget> [
                 Title(),
-                WelcomeName(),
-                FutureBuilder<String> (
-                  future: APICall.getInspirationalQuote(),
-                  builder: (context, AsyncSnapshot<String> snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(snapshot.data,
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container(
+                    width: 300,
+                    child: Text (
+                        "Welcome " + UserInformation.getDisplayName(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Color(0xffffffff)),
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }
-              )],
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40, color: Color(0xffDCFCDD)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container (
+                    width: 200,
+                    child: FutureBuilder<String> (
+                        future: APICall.getInspirationalQuote(),
+                        builder: (context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, color: Color(0xffffffff)),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }
+                    )
+                  ),
+                ),
+              ],
             )
         )
     );
@@ -63,14 +71,15 @@ class _Title extends State<Title> {
       padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset("lib/assets/images/posit_logo.png", height:150),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Image.asset("lib/assets/images/posit_logo.png", height:150),
+          ]),
           Align(
             alignment: Alignment.topRight,
-            /*child: Text("Welcome",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xffDCFCDD), fontWeight: FontWeight.bold, fontSize: 30)),*/
           ),
         ],
       ),
