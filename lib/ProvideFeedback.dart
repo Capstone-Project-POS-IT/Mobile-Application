@@ -9,16 +9,6 @@ class ProvideFeedbackPage extends StatefulWidget {
 
 class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
   @override
-  //final myController = TextEditingController();
-
-  /*
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }*/
-
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color(0xff131D47),
@@ -44,7 +34,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -76,7 +65,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -107,7 +95,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -138,7 +125,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                //controller: myController,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -169,7 +155,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
-                //controller: myController,
                 maxLines: null,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000), height: 50),
@@ -184,27 +169,8 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
               ),
             ),
 
-            //Submit Button
-            /*
-            FloatingActionButton(
-              // When the user presses the button, show an alert dialog containing the
-              // text that the user has entered into the text field.
-              onPressed: () {
-                return showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      // Retrieve the text the user has entered by using the
-                      // TextEditingController.
-                      content: Text(myController.text),
-                    );
-                  },
-                );
-              },
-              tooltip: 'Show me the value!',
-              child: Icon(Icons.text_fields),
-            ),*/
 
+            //Submit Button
 
 
           ],
