@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:pos_it/Profile.dart';
+>>>>>>> Stashed changes
 import 'package:pos_it/creators.dart';
 import 'package:pos_it/ProvideFeedback.dart';
 
