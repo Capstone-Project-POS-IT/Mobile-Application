@@ -34,6 +34,7 @@ dependencies:
   flutter_facebook_auth: ^1.0.1 #Facebook sign-in authentication
   firebase_auth_web: ^0.3.1+1 #Web authentication for firebase
   url_launcher: ^5.4.2 #for calling external URLs
+  flutter_email_sender: ^4.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -53,7 +54,8 @@ flutter:
     - lib/assets/images/facebook_logo.png
     - lib/assets/images/google_logo.png
     - lib/assets/images/posit_logo.png
-
+    - lib/assets/images/linkedin_logo.png
+    -
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

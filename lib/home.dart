@@ -316,35 +316,72 @@ class _HomeView extends State<HomeView> {
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff131d47),
-        title: Text('Home Screen'),
-      ),
+        backgroundColor: Color(0xff131D47),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [WelcomeName(), new Divider(color: Colors.black87,),FutureBuilder<String> (
-                    future: APICall.getInspirationalQuote(),
-                    builder: (context, AsyncSnapshot<String> snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        );
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    }
+            child: Column(
+              children: <Widget> [
+                Title(),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container(
+                    width: 300,
+                    child: Text (
+                        "Welcome " + UserInformation.getDisplayName(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40, color: Color(0xffDCFCDD)),
+                    ),
+                  ),
                 ),
-                new Divider(color: Colors.black87,), userStats()
-                ],
-              )
-            ),
-          ),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container (
+                    width: 200,
+                    child: FutureBuilder<String> (
+                        future: APICall.getInspirationalQuote(),
+                        builder: (context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, color: Color(0xffffffff)),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }
+                    )
+                  ),
+                ),
+              ],
+            )
         )
+    );
+  }
+}
+
+class Title extends StatefulWidget {
+  @override
+  _Title createState() => _Title();
+}
+
+class _Title extends State<Title> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Image.asset("lib/assets/images/posit_logo.png", height:150),
+          ]),
+          Align(
+            alignment: Alignment.topRight,
+          ),
+        ],
+      ),
     );
   }
 }
