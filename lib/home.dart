@@ -220,8 +220,8 @@ class userStats extends StatelessWidget {
 
     if(organizedMap != null) {
       organizedMap.forEach((date, dyn) {
-        if(monthParser(DateTime.parse(date)) <= monthParser(parsedDate) && dayParser(DateTime.parse(date)) <= dayParser(parsedDate)) {
-          if(previousDay == null) {
+        if(monthParser(DateTime.parse(date)) <= monthParser(parsedDate) && dayParser(DateTime.parse(date)) <= dayParser(parsedDate)) { //condition to check that the date in organized map is before the current date (cause rn the user can add 'events' to future dates on the calendar.
+          if(previousDay == null) { //base case
             if(map[date]['sentiment'] <= 6.0) {
               streak = streak + 1;
               if(onStreak == false) {
@@ -229,23 +229,45 @@ class userStats extends StatelessWidget {
               }
             }
             previousDay = date;
-            print(previousDay);
+            //print(previousDay);
             if(streak > longestStreak) {
               longestStreak = streak;
             }
           } else {
-            if(dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) {
+            if(dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) { //condition that checks the streak spans days
               if(map[date]['sentiment'] <= 6.0) {
                 streak = streak + 1;
                 if(onStreak == false) {
                   onStreak = true;
                 }
               }
+            } else if(monthParser(DateTime.parse(date)) - monthParser(DateTime.parse(previousDay)) == 1) { //condition to check when the streak crosses over multitple months
+              if(dayParser(DateTime.parse(date)) == 1 || dayParser(DateTime.parse(date)) == 01) { //base case for checking the first day each month (cause the difference between the first day of next month and last day of previous month varies between -27 through -30)
+                if(map[date]['sentiment'] <= 6.0) {
+                  streak = streak + 1;
+                  if(onStreak == false) {
+                    onStreak = true;
+                  }
+                } else {
+                  streak = 0;
+                  onStreak = false;
+                }
+              } else if (dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) { //i think this is not needed
+                if(map[date]['sentiment'] <= 6.0) {
+                  streak = streak + 1;
+                  if(onStreak == false) {
+                    onStreak = true;
+                  }
+                } else {
+                  streak = 0;
+                  onStreak = false;
+                }
+              }
             } else {
               streak = 0;
               onStreak = false;
             }
-            print('current bool' + onStreak.toString());
+            //print('current bool' + onStreak.toString());
             previousDay = date;
             if(streak > longestStreak) {
               longestStreak = streak;
