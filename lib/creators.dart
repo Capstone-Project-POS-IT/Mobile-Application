@@ -69,9 +69,9 @@ class _CreatorsPage extends State<CreatorsPage> {
                     //send email
                   },
                 ),
-                new IconButton(
-                  icon: Image.asset('assets/images/linkedin_logo.png'),
-                  iconSize: 50,
+                IconButton(
+                  icon: Image.asset('lib/assets/images/linkedin_logo.png'),
+                  iconSize: 60,
                   color: Colors.white,
                   hoverColor: Colors.grey,
                   onPressed: () => _launchURL('https://www.linkedin.com/in/nathan-kennedy-10374613a/'),
@@ -128,7 +128,7 @@ class _CreatorsPage extends State<CreatorsPage> {
                   ),
                   IconButton(
                     icon: Image.asset('lib/assets/images/linkedin_logo.png'),
-                    iconSize: 50,
+                    iconSize: 60,
                     color: Colors.white,
                     hoverColor: Colors.grey,
                     onPressed: () => _launchURL('https://www.linkedin.com/in/tahminayousafi/'),
@@ -185,7 +185,7 @@ class _CreatorsPage extends State<CreatorsPage> {
                   ),
                   IconButton(
                     icon: Image.asset('lib/assets/images/linkedin_logo.png'),
-                    iconSize: 50,
+                    iconSize: 60,
                     color: Colors.white,
                     hoverColor: Colors.grey,
                     onPressed: () => _launchURL('https://www.linkedin.com/in/anthonybaron10/'),
