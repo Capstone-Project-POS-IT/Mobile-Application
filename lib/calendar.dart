@@ -17,6 +17,7 @@ class MainCalendarView extends StatefulWidget {
 
 class _MainCalendarView extends State<MainCalendarView> {
 
+  bool userAccessibility = true;
   String currentDateSentiment = 11.0.toString();
   CalendarController _controller;
   String globalSentiment;
@@ -110,11 +111,11 @@ class _MainCalendarView extends State<MainCalendarView> {
       );
     } else {
       return new Container(
-          width: 100.0,
-          height: 50.0,
+         //width: 100.0,
+          //height: 50.0,
           child: new Text('No sentiment data found.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45, fontSize: 14.0),
           )
       );
     }
@@ -139,11 +140,14 @@ class _MainCalendarView extends State<MainCalendarView> {
 
       if (description == '' || description == null) {
         return new Container(
-            width: 100.0,
-            height: 50.0,
-            child: new Text('No description data found.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+            //width: 100.0,
+            //height: 50.0,
+            child: FittedBox(
+              fit:BoxFit.fitWidth,
+              child: new Text('No description data found.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45, fontSize: 14.0),
+              ),
             )
         );
       } else {
@@ -156,11 +160,14 @@ class _MainCalendarView extends State<MainCalendarView> {
       }
     } else {
       return new Container(
-          width: 100.0,
-          height: 50.0,
-          child: new Text('No description data found.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+          //width: 100.0,
+          //height: 50.0,
+          child: FittedBox(
+            fit:BoxFit.fitWidth,
+            child: new Text('No description data found.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45, fontSize: 14.0),
+            ),
           )
       );
     }
@@ -185,6 +192,15 @@ class _MainCalendarView extends State<MainCalendarView> {
     }
   }
 
+  void explodedView(date, events, _) {
+    if(userAccessibility) {
+      _onDaySelected(date, events, _);
+      updateCurrentSentiment();
+    } else {
+      _showUserData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -206,32 +222,26 @@ class _MainCalendarView extends State<MainCalendarView> {
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       availableGestures: AvailableGestures.all,
                       onDaySelected: (date, events, _) {
+                        //_onDaySelected(date, events, _);
+                        //updateCurrentSentiment();
+                        //_showUserData();
+                        explodedView(date, events, _);
+                      },
+                      /*
+                      onDaySelected: (date, events, _) {
                         _onDaySelected(date, events, _);
                         updateCurrentSentiment();
                       },
+                       */
                       calendarStyle: CalendarStyle(
                         selectedColor: getColor(currentDateSentiment),
                         todayColor: Colors.lightBlue,
                         //markersColor: Colors.brown[700],
                       ),
                     ),
-                    Slider(
-                      value: _currentSliderValue,
-                      min: 1,
-                      max: 10,
-                      divisions: 9,
-                      label: _currentSliderValue.round().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                          sliderValue = value;
-                        }
-                        );
-                      },
-                    ),
                     Container(
-                      height: 60,
-                      width: 60,
+                      height: 25,
+                      width: 75,
                       /*
                       child: new Text('Color Preview: ' + sliderValue.toString(),
                         textAlign: TextAlign.center,
@@ -246,15 +256,36 @@ class _MainCalendarView extends State<MainCalendarView> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
+                    Slider(
+                      activeColor: getColor(sliderValue.toString()),
+                      value: _currentSliderValue,
+                      min: 1,
+                      max: 10,
+                      divisions: 9,
+                      label: _currentSliderValue.round().toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _currentSliderValue = value;
+                          sliderValue = value;
+                        }
+                        );
+                      },
+                    ),
                     ... _selectedEvents.map((globalSentiment) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           returnDateMood(),
+                          new Divider(
+                            color: Colors.white,
+                          ),
                           getDescription(),
                         ],
                       ),
                     ),
+                    ),
+                    new Divider(
+                      color: Colors.white,
                     ),
                     TextField(
                       controller: _Textcontroller,
@@ -313,6 +344,47 @@ class _MainCalendarView extends State<MainCalendarView> {
           eventMoods[_controller.selectedDay] = sliderValue;
         },
       ),
+    );
+  }
+
+  _showUserData() {
+    showGeneralDialog(
+        barrierLabel: "Popup User Data",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: Duration(milliseconds: 700),
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return Align(
+              alignment: Alignment.center,
+              child: Container(
+
+                //borderRadius: BorderRadius.circular(40.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(25.0)
+                    )
+                ),
+                height: 300,
+                width: 300,
+                child: Padding(
+                  padding: new EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      returnDateMood(),
+                      new Divider(
+                        color: Colors.white,
+                      ),
+                      getDescription()
+                    ],
+                  ),
+                )
+              )
+            );
+         },
     );
   }
 
