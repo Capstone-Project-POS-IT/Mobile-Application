@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pos_it/AccountConfirmation.dart';
 import 'package:pos_it/Profile.dart';
 import 'package:pos_it/creators.dart';
 import 'package:pos_it/ProvideFeedback.dart';
@@ -11,7 +12,6 @@ class SettingsView extends StatefulWidget {
   @override
   _SettingsView createState() => new _SettingsView();
 }
-
 
 class _SettingsView extends State<SettingsView> {
   void _goToCreators() {}
@@ -171,7 +171,8 @@ class _SettingsView extends State<SettingsView> {
               ),
             ),
 
-            //End of all buttons
+          //End of all buttons
+
           ],
         ),
       ),

@@ -220,8 +220,8 @@ class userStats extends StatelessWidget {
 
     if(organizedMap != null) {
       organizedMap.forEach((date, dyn) {
-        if(monthParser(DateTime.parse(date)) <= monthParser(parsedDate) && dayParser(DateTime.parse(date)) <= dayParser(parsedDate)) {
-          if(previousDay == null) {
+        if(monthParser(DateTime.parse(date)) <= monthParser(parsedDate) && dayParser(DateTime.parse(date)) <= dayParser(parsedDate)) { //condition to check that the date in organized map is before the current date (cause rn the user can add 'events' to future dates on the calendar.
+          if(previousDay == null) { //base case
             if(map[date]['sentiment'] <= 6.0) {
               streak = streak + 1;
               if(onStreak == false) {
@@ -229,23 +229,45 @@ class userStats extends StatelessWidget {
               }
             }
             previousDay = date;
-            print(previousDay);
+            //print(previousDay);
             if(streak > longestStreak) {
               longestStreak = streak;
             }
           } else {
-            if(dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) {
+            if(dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) { //condition that checks the streak spans days
               if(map[date]['sentiment'] <= 6.0) {
                 streak = streak + 1;
                 if(onStreak == false) {
                   onStreak = true;
                 }
               }
+            } else if(monthParser(DateTime.parse(date)) - monthParser(DateTime.parse(previousDay)) == 1) { //condition to check when the streak crosses over multitple months
+              if(dayParser(DateTime.parse(date)) == 1 || dayParser(DateTime.parse(date)) == 01) { //base case for checking the first day each month (cause the difference between the first day of next month and last day of previous month varies between -27 through -30)
+                if(map[date]['sentiment'] <= 6.0) {
+                  streak = streak + 1;
+                  if(onStreak == false) {
+                    onStreak = true;
+                  }
+                } else {
+                  streak = 0;
+                  onStreak = false;
+                }
+              } else if (dayParser(DateTime.parse(date)) - dayParser(DateTime.parse(previousDay)) == 1) { //i think this is not needed
+                if(map[date]['sentiment'] <= 6.0) {
+                  streak = streak + 1;
+                  if(onStreak == false) {
+                    onStreak = true;
+                  }
+                } else {
+                  streak = 0;
+                  onStreak = false;
+                }
+              }
             } else {
               streak = 0;
               onStreak = false;
             }
-            print('current bool' + onStreak.toString());
+            //print('current bool' + onStreak.toString());
             previousDay = date;
             if(streak > longestStreak) {
               longestStreak = streak;
@@ -316,35 +338,72 @@ class _HomeView extends State<HomeView> {
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff131d47),
-        title: Text('Home Screen'),
-      ),
+        backgroundColor: Color(0xff131D47),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [WelcomeName(), new Divider(color: Colors.black87,),FutureBuilder<String> (
-                    future: APICall.getInspirationalQuote(),
-                    builder: (context, AsyncSnapshot<String> snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        );
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    }
+            child: Column(
+              children: <Widget> [
+                Title(),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container(
+                    width: 300,
+                    child: Text (
+                        "Welcome " + UserInformation.getDisplayName(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40, color: Color(0xffDCFCDD)),
+                    ),
+                  ),
                 ),
-                new Divider(color: Colors.black87,), userStats()
-                ],
-              )
-            ),
-          ),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Container (
+                    width: 200,
+                    child: FutureBuilder<String> (
+                        future: APICall.getInspirationalQuote(),
+                        builder: (context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, color: Color(0xffffffff)),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }
+                    )
+                  ),
+                ),
+              ],
+            )
         )
+    );
+  }
+}
+
+class Title extends StatefulWidget {
+  @override
+  _Title createState() => _Title();
+}
+
+class _Title extends State<Title> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Image.asset("lib/assets/images/posit_logo.png", height:150),
+          ]),
+          Align(
+            alignment: Alignment.topRight,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -12,7 +12,6 @@ class SettingsView extends StatefulWidget {
   _SettingsView createState() => new _SettingsView();
 }
 
-
 class _SettingsView extends State<SettingsView> {
   void _goToCreators() {}
   void _goToProvideFeedback() {}
@@ -171,7 +170,8 @@ class _SettingsView extends State<SettingsView> {
               ),
             ),
 
-            //End of all buttons
+          //End of all buttons
+
           ],
         ),
       ),
