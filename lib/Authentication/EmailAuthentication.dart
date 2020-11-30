@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:pos_it/ExternalCalls.dart';
 
 import '../Navibar.dart';
@@ -27,7 +27,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
       children: <Widget>[
         Scaffold(
           // resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0xff000080),
+          backgroundColor: Color(0xff131d47),
           body: SingleChildScrollView(
             child: Center(
             child: Column(
@@ -36,7 +36,7 @@ class _EmailAuthenticationState extends State<EmailAuthentication> {
                 SizedBox(height: 100),
                 Text("Thank you for creating an account with POS-IT!",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
+                style: TextStyle(color: Color(0xffDCFCDD), fontSize: 30,fontWeight: FontWeight.bold)),
                 Padding(padding: EdgeInsets.all(25),
                 child:Text("Please verify your email by typing in the six digit code received in your email inbox",
                     textAlign: TextAlign.center,

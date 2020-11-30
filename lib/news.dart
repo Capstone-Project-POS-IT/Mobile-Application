@@ -1,9 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class NewsView extends StatefulWidget {
   @override
@@ -12,10 +12,14 @@ class NewsView extends StatefulWidget {
 
 class _NewsView extends State<NewsView> {
   //articles per source
-  List<dynamic> mainHeadlineArticles = UserInformation.getNewsBasedOnTopic('headlines');
-  List<dynamic> usHeadlineArticles = UserInformation.getNewsBasedOnTopic('usheadlines');
-  List<dynamic> sportsHeadlineArticles = UserInformation.getNewsBasedOnTopic('sportHeadlines');
-  List<dynamic> healthHeadlineArticles = UserInformation.getNewsBasedOnTopic('healthHeadlines');
+  List<dynamic> mainHeadlineArticles =
+      UserInformation.getNewsBasedOnTopic('headlines');
+  List<dynamic> usHeadlineArticles =
+      UserInformation.getNewsBasedOnTopic('usheadlines');
+  List<dynamic> sportsHeadlineArticles =
+      UserInformation.getNewsBasedOnTopic('sportHeadlines');
+  List<dynamic> healthHeadlineArticles =
+      UserInformation.getNewsBasedOnTopic('healthHeadlines');
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class _NewsView extends State<NewsView> {
       child: Scaffold(
         backgroundColor: Color(0xff131d47),
         appBar: AppBar(
+          backgroundColor: Color(0xff131d47),
           title: new Text('News Reports'),
           bottom: TabBar(tabs: <Widget>[
             new Text('Top Stories',
@@ -51,7 +56,8 @@ class _NewsView extends State<NewsView> {
           //you can change the center widget to another widget that would
           //fit your need better.
           children: <Widget>[
-            Center(//child for the main headlines
+            Center(
+              //child for the main headlines
               child: ListView.builder(
                 itemCount: mainHeadlineArticles.length,
                 cacheExtent: 100,
@@ -60,7 +66,8 @@ class _NewsView extends State<NewsView> {
                 },
               ),
             ),
-            Center(//child for the us headlines
+            Center(
+              //child for the us headlines
               child: ListView.builder(
                 itemCount: usHeadlineArticles.length,
                 cacheExtent: 100,
@@ -69,7 +76,8 @@ class _NewsView extends State<NewsView> {
                 },
               ),
             ),
-            Center(//child for the health headlines
+            Center(
+              //child for the health headlines
               child: ListView.builder(
                 itemCount: healthHeadlineArticles.length,
                 cacheExtent: 100,
@@ -78,7 +86,8 @@ class _NewsView extends State<NewsView> {
                 },
               ),
             ),
-            Center(//child for the sports headlines
+            Center(
+              //child for the sports headlines
               child: ListView.builder(
                 itemCount: sportsHeadlineArticles.length,
                 cacheExtent: 100,
@@ -143,9 +152,10 @@ class _NewsCardState extends State<NewsCard> {
 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap:_launchArticleUrl,
-      onLongPress: changeCardSize,
+      onDoubleTap: _launchArticleUrl,
+      onLongPress: _changeCardSize,
       child: Container(
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         height: cardHeight,
         width: cardWidth,
         child: Card(
@@ -162,7 +172,18 @@ class _NewsCardState extends State<NewsCard> {
                     flex: 5,
                     child: Container(
                       margin: EdgeInsets.zero,
-                      child: Image.network(widget.articleUrlToImage),
+                      child: widget.articleUrlToImage != null
+                          ? Image.network(
+                              widget.articleUrlToImage,
+                              loadingBuilder: (context, child, progress) {
+                                return progress == null
+                                    ? child
+                                    : CircularProgressIndicator();
+                              },
+                            )
+                          : Text("No Image Available",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 24)),
                     ),
                   ),
                   Flexible(
@@ -180,7 +201,7 @@ class _NewsCardState extends State<NewsCard> {
                   Flexible(
                       flex: 1,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Row(
                             children: [
@@ -191,8 +212,10 @@ class _NewsCardState extends State<NewsCard> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.source),
-                              Text(widget.articleSource)
+                              Icon(Icons.desktop_windows),
+                              Text(widget.articleSource,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ],
                           )
                         ],
@@ -204,16 +227,16 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-  _launchArticleUrl()  async {
-    const url = 'https://flutter.dev';
-    if (canLaunch(url)!=null) {
+  _launchArticleUrl() async {
+    String url = widget.articleUrl;
+    if (await canLaunch(url)) {
       launch(url);
     } else {
       throw 'Could not launch $url';
     }
   }
 
-  Future<void> changeCardSize() {
+  Future<void> _changeCardSize() {
     setState(() {
       cardHeight = !isCardExpanded ? cardHeight * 1.5 : cardHeight / 1.5;
       isCardExpanded = !isCardExpanded;
@@ -265,7 +288,14 @@ class _NewsCardState extends State<NewsCard> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.black)),
                 TextSpan(
-                    text: widget.articleUrl,
+                    text: widget.articleUrl != null
+                        ? widget.articleUrl
+                        : "No Link Available",
+                    recognizer: widget.articleUrl != null
+                        ? (TapGestureRecognizer()
+                          ..onTap = () => _launchArticleUrl())
+                        : (TapGestureRecognizer()
+                          ..onTap = () => print("No article")),
                     style: TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline))
