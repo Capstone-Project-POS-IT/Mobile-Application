@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 
-import 'Authentication/Login.dart';
+import '../Authentication/Login.dart';
 
 class EditProfile extends StatefulWidget {
   @override

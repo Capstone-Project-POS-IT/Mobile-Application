@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:pos_it/creators.dart';
+import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/SettingsViews/Creators.dart';
 
 class ProvideFeedbackPage extends StatefulWidget {
   @override

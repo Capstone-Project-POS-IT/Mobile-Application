@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pos_it/Profile.dart';
-import 'package:pos_it/creators.dart';
-import 'package:pos_it/ProvideFeedback.dart';
+import 'package:pos_it/SettingsViews/Profile.dart';
+import 'package:pos_it/SettingsViews/Creators.dart';
+import 'Profile.dart';
+import 'ProvideFeedback.dart';
+import 'package:pos_it/SettingsViews/ProvideFeedback.dart';
 
 //TODO: fix buttons, bottom nav bar
 
@@ -122,10 +124,7 @@ class _SettingsView extends State<SettingsView> {
 
             GestureDetector(
               onTap: (){
-                //TODO
-                return MaterialApp(
-                  home: CreatorsPage(),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> CreatorsPage()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -148,8 +147,7 @@ class _SettingsView extends State<SettingsView> {
 
             GestureDetector(
               onTap: (){
-                //TODO
-                //print("Container clicked");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ProvideFeedbackPage()));
               },
               child: Container(
                 decoration: BoxDecoration(

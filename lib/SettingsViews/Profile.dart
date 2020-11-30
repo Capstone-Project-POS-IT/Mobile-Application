@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pos_it/creators.dart';
-import 'package:pos_it/ProvideFeedback.dart';
-import 'Authentication/Login.dart';
-import 'ExternalCalls.dart';
-import 'UserInfo/UserInformation.dart';
+import 'package:pos_it/SettingsViews/ProvideFeedback.dart';
+import 'package:pos_it/Authentication/AccountConfirmation.dart';
+import 'package:pos_it/Authentication/Login.dart';
+import 'package:pos_it/ExternalCalls.dart';
+import 'package:pos_it/UserInfo/UserInformation.dart';
 
 const IconData account_circle_rounded =
     IconData(0xf03e, fontFamily: 'MaterialIcons');

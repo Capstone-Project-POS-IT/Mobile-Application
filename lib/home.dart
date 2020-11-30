@@ -373,6 +373,9 @@ class _HomeView extends State<HomeView> {
                     )
                   ),
                 ),
+                Container(
+                  child: userStats(),
+                )
               ],
             )
         )
