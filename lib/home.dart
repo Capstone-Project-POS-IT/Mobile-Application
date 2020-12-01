@@ -31,24 +31,28 @@ class userStats extends StatelessWidget {
         children: [
           new Column(
             children: [
-              new Text('Current Month:'),
-              new Text('Previous Month:'),
+              new Text('Current Month:',
+                  style: TextStyle(color: Colors.white70)),
+              new Text('Previous Month:',
+                  style: TextStyle(color: Colors.white70)),
               new Divider(
-                color: Colors.black87,
+                color: Colors.white70,
               ),
-              new Text('Happiness Streak:'),
+              new Text('Happiness Streak:',
+                  style: TextStyle(color: Colors.white70)),
             ],
           ),
           new Column(
             children: [
               new Text(currentMonthAverage(),
-                  style: TextStyle(color: getColor(currentMonthAverage().toString()))),
+                  style: TextStyle(color: Colors.white70)),
               new Text(previousMonthAverage(),
-                  style: TextStyle(color: getColor(previousMonthAverage().toString()))),
+                  style: TextStyle(color: Colors.white70)),
               new Divider(
-                color: Colors.black87,
+                color: Colors.white70,
               ),
-              new Text(happyStreak()),
+              new Text(happyStreak(),
+                  style: TextStyle(color: Colors.white70)),
             ],
           ),
         ]

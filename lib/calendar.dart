@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:pos_it/ExternalCalls.dart';
 import 'package:intl/intl.dart';
+import 'package:pos_it/SettingsViews/Accessibility.dart';
 
 
 //mainCalendarView will be the view that shows the current day and allows the user to
@@ -17,7 +18,7 @@ class MainCalendarView extends StatefulWidget {
 
 class _MainCalendarView extends State<MainCalendarView> {
 
-  bool userAccessibility = true;
+  bool userAccessibility = getExplodedViewBool();
   String currentDateSentiment = 11.0.toString();
   CalendarController _controller;
   String globalSentiment;
@@ -193,7 +194,8 @@ class _MainCalendarView extends State<MainCalendarView> {
   }
 
   void explodedView(date, events, _) {
-    if(userAccessibility) {
+    print(userAccessibility);
+    if(userAccessibility == false) {
       _onDaySelected(date, events, _);
       updateCurrentSentiment();
     } else {
