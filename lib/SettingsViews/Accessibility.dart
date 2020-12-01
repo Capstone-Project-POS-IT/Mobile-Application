@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccessibilityView extends StatefulWidget {
   @override
@@ -46,12 +47,13 @@ class _AccessibilityView extends State<AccessibilityView> {
   }
   _explodedViewBoolChanged(bool newValue) => setState(() {
     explodedViewBool = newValue;
-    print(explodedViewBool);
+    addBoolToSF(explodedViewBool);
   });
 }
 
-getExplodedViewBool() {
-  return explodedViewBool;
+addBoolToSF(BoolValue) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('Accessibility', BoolValue);
 }
 
 
