@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:pos_it/SettingsViews/Profile.dart';
 import 'package:pos_it/SettingsViews/Creators.dart';
 import 'Profile.dart';
+import 'Accessibility.dart';
 import 'ProvideFeedback.dart';
 import 'package:pos_it/SettingsViews/ProvideFeedback.dart';
 
@@ -30,6 +31,7 @@ class _SettingsView extends State<SettingsView> {
               onTap: (){
                 //TODO
                 //print("Container clicked");
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> AccessibilityView()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -42,7 +44,7 @@ class _SettingsView extends State<SettingsView> {
                 child: Row(children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(15),
-                    child: Text("Text Size",
+                    child: Text("Accessibility",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Color(0xffFFFFFF), fontSize: 20, backgroundColor: Color(0xff1D2D6B))),
                   )

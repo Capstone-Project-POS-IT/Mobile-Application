@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/SettingsViews/Creators.dart';
-
+import 'package:pos_it/SettingsViews/Creators.dart';
 class ProvideFeedbackPage extends StatefulWidget {
   @override
   _ProvideFeedbackPage createState() => new _ProvideFeedbackPage();
@@ -259,7 +258,7 @@ class _Title extends State<Title> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Icon(
-                  Icons.arrow_back_rounded,
+                  Icons.arrow_back,
                   color: Colors.white,
                   size: 30,
                   semanticLabel: 'Account profile picture',
