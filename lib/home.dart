@@ -23,7 +23,6 @@ class WelcomeName extends StatelessWidget {
 class userStats extends StatelessWidget {
   Map<String, dynamic> map = UserInformation.getUserSentimentMap();
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,32 +30,54 @@ class userStats extends StatelessWidget {
         children: [
           new Column(
             children: [
-              new Text('Current Month:',
-                  style: TextStyle(color: Colors.white70)),
-              new Text('Previous Month:',
-                  style: TextStyle(color: Colors.white70)),
+              new Text('Current Month: ',
+                  style: TextStyle(color: Color(0xffDCFCDD), fontSize: 20, fontWeight: FontWeight.bold)),
+              new Text('Previous Month: ',
+                  style: TextStyle(color: Color(0xffDCFCDD), fontSize: 20, fontWeight: FontWeight.bold)),
               new Divider(
                 color: Colors.white70,
               ),
-              new Text('Happiness Streak:',
-                  style: TextStyle(color: Colors.white70)),
+              new Text('Happiness Streak: ',
+                  style: TextStyle(color: Color(0xffDCFCDD), fontSize: 20, fontWeight: FontWeight.bold)),
             ],
           ),
           new Column(
             children: [
               new Text(currentMonthAverage(),
-                  style: TextStyle(color: Colors.white70)),
+                  style: TextStyle(color: getColor(currentMonthAverage().toString()), fontSize: 20, backgroundColor: bgColorCurr())),
               new Text(previousMonthAverage(),
-                  style: TextStyle(color: Colors.white70)),
+                  style: TextStyle(color: getColor(previousMonthAverage().toString()), fontSize: 20, backgroundColor: bgColorPrev())),
               new Divider(
                 color: Colors.white70,
               ),
               new Text(happyStreak(),
-                  style: TextStyle(color: Colors.white70)),
+                  style: TextStyle(color: Color(0xffffffff), fontSize: 20)),
             ],
           ),
         ]
     );
+  }
+
+  Color bgColorCurr() {
+    Color textColorCurr = getColor(currentMonthAverage().toString());
+
+    if (textColorCurr == Color(0xfffffff)) {
+      return Color(0xff000000);
+    }
+    else if (textColorCurr == Color(0xff000000)) {
+      return Color(0xffffffff);
+    }
+  }
+
+  Color bgColorPrev() {
+    Color textColorPrev = getColor(previousMonthAverage().toString());
+
+    if (textColorPrev == Color(0xfffffff)) {
+      return Color(0xff000000);
+    }
+    else if (textColorPrev == Color(0xff000000)) {
+      return Color(0xffffffff);
+    }
   }
 
   /*
@@ -89,11 +110,11 @@ class userStats extends StatelessWidget {
         }
       });
     } else {
-      return 'No data availible.';
+      return 'No data available.';
     }
 
     if(average == 0) {
-      return 'No data availible.';
+      return 'No data available.';
     } else {
       average = average / count;
       return average.toStringAsFixed(0);
@@ -123,11 +144,11 @@ class userStats extends StatelessWidget {
         }
       });
     } else {
-      return 'No data availible.';
+      return 'No data available.';
     }
 
     if(average == 0) {
-      return 'No data availible.';
+      return 'No data available.';
     } else {
       average = average / count;
       return average.toStringAsFixed(0);
@@ -286,7 +307,7 @@ class userStats extends StatelessWidget {
     if(longestStreak > 0 && onStreak == true) {
       return longestStreak.toString();
     } else {
-      return 'No data availible';
+      return 'No data available';
     }
   }
 
@@ -298,7 +319,7 @@ class userStats extends StatelessWidget {
     if(average == 'null') {
       return Colors.black54;
     } else {
-      if(average == 'No data availible.') {
+      if(average == 'No data available.') {
         return Colors.black54;
       } else {
         mood = double.parse(average);
@@ -361,7 +382,7 @@ class _HomeView extends State<HomeView> {
                 Padding(
                   padding: EdgeInsets.all(40),
                   child: Container (
-                    width: 200,
+                    width: 300,
                     child: FutureBuilder<String> (
                         future: APICall.getInspirationalQuote(),
                         builder: (context, AsyncSnapshot<String> snapshot) {
@@ -396,18 +417,14 @@ class _Title extends State<Title> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Image.asset("lib/assets/images/posit_logo.png", height:150),
-          ]),
           Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.topLeft,
+            child: Image.asset("lib/assets/images/posit_logo.png", height:150),
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const IconData email = IconData(0xe6f3, fontFamily: 'MaterialIcons');
@@ -64,9 +65,13 @@ class _CreatorsPage extends State<CreatorsPage> {
                   color: Colors.white,
                   hoverColor: Colors.grey,
                   iconSize: 40,
-                  tooltip: 'Send Nathan an email',
+                  tooltip: "Copy Nathan's email address",
                   onPressed: () {
-                    //send email
+                    Clipboard.setData(ClipboardData(text: "nk8136a@student.american.edu")).then(
+                            (value) => {Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text("Email address copied"),
+                              duration: Duration(seconds: 5),
+                            ))});
                   },
                 ),
                 IconButton(
@@ -121,9 +126,13 @@ class _CreatorsPage extends State<CreatorsPage> {
                     color: Colors.white,
                     hoverColor: Colors.grey,
                     iconSize: 40,
-                    tooltip: 'Send Tami an email',
+                    tooltip: "Copy Tami's email address",
                     onPressed: () {
-                      //send email
+                      Clipboard.setData(ClipboardData(text: "yousafit@yahoo.com")).then(
+                              (value) => {Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text("Email address copied"),
+                                  duration: Duration(seconds: 5),
+                              ))});
                     },
                   ),
                   IconButton(
@@ -178,9 +187,13 @@ class _CreatorsPage extends State<CreatorsPage> {
                     color: Colors.white,
                     hoverColor: Colors.grey,
                     iconSize: 40,
-                    tooltip: 'Send Anthony an email',
+                    tooltip: "Copy Anthony's email address",
                     onPressed: () {
-                      //send email
+                      Clipboard.setData(ClipboardData(text: "ab1322a@student.american.edu")).then(
+                              (value) => {Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text("Email address copied"),
+                                duration: Duration(seconds: 5),
+                              ))});
                     },
                   ),
                   IconButton(
@@ -218,11 +231,13 @@ class _Title extends State<Title> {
           Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.arrow_back_rounded,
+                IconButton(
+                  icon: Icon(Icons.arrow_back_rounded),
                   color: Colors.white,
-                  size: 30,
-                  semanticLabel: 'Account profile picture',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  iconSize: 30,
                 ),
               ]),
           Align(

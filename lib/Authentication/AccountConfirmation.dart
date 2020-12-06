@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/SettingsViews/EditProfile.dart';
+import 'package:pos_it/SettingsViews/EditProfile.dart';
 import 'package:pos_it/ExternalCalls.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 import 'package:firebase_auth/firebase_auth.dart';

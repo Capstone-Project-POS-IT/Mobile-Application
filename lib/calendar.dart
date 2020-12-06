@@ -403,7 +403,7 @@ class _MainCalendarView extends State<MainCalendarView> {
   Color getColor(String event) {
     double mood = 0.0;
     if(event == 'null') {
-      return Colors.black54;
+      return Color(0xff000000);
     } else {
       mood = double.parse(event);
     }
@@ -438,15 +438,15 @@ class _MainCalendarView extends State<MainCalendarView> {
   Color getTextColor(String event) {
     double mood = 0.0;
     if(event == 'null') {
-      return Colors.white;
+      return Color(0xffffffff);
     } else {
       mood = double.parse(event);
     }
 
     if(mood <= 9.0) {
-      return Colors.white;
+      return Color(0xffffffff);
     } else {
-      return Colors.black45;
+      return Color(0xff000000);
     }
   }
 }
