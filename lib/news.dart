@@ -23,7 +23,6 @@ class _NewsView extends State<NewsView> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return DefaultTabController(
       //initialIndex: 1,
       length: 4,

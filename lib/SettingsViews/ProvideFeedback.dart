@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'file:///C:/Users/anton/AnthonyBaron/AU_School_Things/Capstone/Mobile-Application/lib/SettingsViews/Creators.dart';
+import 'package:pos_it/SettingsViews/Creators.dart';
+import 'package:pos_it/ExternalCalls.dart';
 
 class ProvideFeedbackPage extends StatefulWidget {
   @override
@@ -12,14 +12,15 @@ class ProvideFeedbackPage extends StatefulWidget {
 class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
   @override
 
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
-  final myController = TextEditingController();
+  // Create a text controller and use it to retrieve the current value of the TextField.
+  final myControllerSubject = TextEditingController();
+  final myControllerMessage = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    myControllerSubject.dispose();
+    myControllerMessage.dispose();
     super.dispose();
   }
 
@@ -30,98 +31,6 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
         child: Column(
           children: <Widget>[
             Title(),
-
-            //First Name
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-                  child: Text("First Name",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(color: Color(0xffffffff), fontSize: 20)),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                ),
-              ]
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-              child: TextField(
-                controller: myController,
-                style:
-                  new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'Enter',
-                  contentPadding: const EdgeInsets.only(
-                      left: 8.0, bottom: 8.0, top: 8.0, right: 8),
-                ),
-              ),
-            ),
-
-
-            //Last Name
-            Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-                    child: Text("Last Name",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Color(0xffffffff), fontSize: 20)),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                  ),
-                ]
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-              child: TextField(
-                style:
-                  new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'Enter',
-                  contentPadding: const EdgeInsets.only(
-                      left: 8.0, bottom: 8.0, top: 8.0, right: 8),
-                ),
-              ),
-            ),
-
-            //Email Address
-            Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-                    child: Text("Email Address",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Color(0xffffffff), fontSize: 20)),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                  ),
-                ]
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-              child: TextField(
-                style:
-                  new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'Enter',
-                  contentPadding: const EdgeInsets.only(
-                      left: 8.0, bottom: 8.0, top: 8.0, right: 8),
-                ),
-              ),
-            ),
 
             //Subject
             Row(
@@ -140,6 +49,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
+                controller: myControllerSubject,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
                 decoration: InputDecoration(
@@ -172,6 +82,7 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
               height: 200,
               padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
               child: TextField(
+                controller: myControllerMessage,
                 maxLines: null,
                 style:
                   new TextStyle(fontSize: 22.0, color: Color(0xFF000000)),
@@ -194,41 +105,15 @@ class _ProvideFeedbackPage extends State<ProvideFeedbackPage> {
                 child: FlatButton(
                   color: Color(0xffabd0a8),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CreatorsPage()),
-                    );
+                    APICall.sendUserFeedback(myControllerSubject.text, myControllerMessage.text);
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
                   ),
                   child: Text("Submit",
                       style: TextStyle(
-                          color: Color(0xff000080), fontSize: 20)),
+                          color: Color(0xff000000), fontSize: 20)),
                 )),
-
-            FloatingActionButton(
-              // When the user presses the button, show an alert dialog containing the
-              // text that the user has entered into the text field.
-              onPressed: () {
-                return showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      // Retrieve the text the user has entered by using the
-                      // TextEditingController.
-                      content: Text(myController.text),
-                    );
-                  },
-                );
-              },
-              tooltip: 'Show me the value!',
-              child: Icon(Icons.text_fields),
-            ),
-
-
-
-
 
 
 
@@ -258,11 +143,13 @@ class _Title extends State<Title> {
           Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.arrow_back_rounded,
+                IconButton(
+                  icon: Icon(Icons.arrow_back_rounded),
                   color: Colors.white,
-                  size: 30,
-                  semanticLabel: 'Account profile picture',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  iconSize: 30,
                 ),
               ]),
           Align(
