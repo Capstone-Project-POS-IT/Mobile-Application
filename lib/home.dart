@@ -35,7 +35,7 @@ class userStats extends StatelessWidget {
               new Text('Previous Month: ',
                   style: TextStyle(color: Color(0xffDCFCDD), fontSize: 20, fontWeight: FontWeight.bold)),
               new Divider(
-                color: Colors.black87,
+                color: Colors.white70,
               ),
               new Text('Happiness Streak: ',
                   style: TextStyle(color: Color(0xffDCFCDD), fontSize: 20, fontWeight: FontWeight.bold)),
@@ -48,7 +48,7 @@ class userStats extends StatelessWidget {
               new Text(previousMonthAverage(),
                   style: TextStyle(color: getColor(previousMonthAverage().toString()), fontSize: 20, backgroundColor: bgColorPrev())),
               new Divider(
-                color: Colors.black87,
+                color: Colors.white70,
               ),
               new Text(happyStreak(),
                   style: TextStyle(color: Color(0xffffffff), fontSize: 20)),

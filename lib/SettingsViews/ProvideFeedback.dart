@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:pos_it/SettingsViews/Creators.dart';
 import 'package:pos_it/ExternalCalls.dart';
-
 class ProvideFeedbackPage extends StatefulWidget {
   @override
   _ProvideFeedbackPage createState() => new _ProvideFeedbackPage();
