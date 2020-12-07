@@ -44,9 +44,9 @@ class userStats extends StatelessWidget {
           new Column(
             children: [
               new Text(currentMonthAverage(),
-                  style: TextStyle(color: getColor(currentMonthAverage().toString()), fontSize: 20, backgroundColor: bgColorCurr())),
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
               new Text(previousMonthAverage(),
-                  style: TextStyle(color: getColor(previousMonthAverage().toString()), fontSize: 20, backgroundColor: bgColorPrev())),
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
               new Divider(
                 color: Colors.white70,
               ),
@@ -56,28 +56,6 @@ class userStats extends StatelessWidget {
           ),
         ]
     );
-  }
-
-  Color bgColorCurr() {
-    Color textColorCurr = getColor(currentMonthAverage().toString());
-
-    if (textColorCurr == Color(0xfffffff)) {
-      return Color(0xff000000);
-    }
-    else if (textColorCurr == Color(0xff000000)) {
-      return Color(0xffffffff);
-    }
-  }
-
-  Color bgColorPrev() {
-    Color textColorPrev = getColor(previousMonthAverage().toString());
-
-    if (textColorPrev == Color(0xfffffff)) {
-      return Color(0xff000000);
-    }
-    else if (textColorPrev == Color(0xff000000)) {
-      return Color(0xffffffff);
-    }
   }
 
   /*
