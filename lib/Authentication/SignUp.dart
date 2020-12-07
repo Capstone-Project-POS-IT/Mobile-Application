@@ -18,6 +18,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool _isPasswordObscure;
+
+  @override
+  void initState() {
+    _isPasswordObscure = true;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +97,11 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.white,
                   child: TextField(
                     controller: _emailController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(5),
+                      hintText: "Account Email",
+                    ),
+                    cursorHeight: 35,
                     style:
                         TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
@@ -109,7 +121,18 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.white,
                   child: TextField(
                     controller: _passwordController,
-                    obscureText: false,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(5),
+                      hintText: "Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.remove_red_eye,
+                            color: _isPasswordObscure?Colors.blue:Colors.red,
+                          ),
+                          onPressed:()=> _changePasswordObscurity() ,
+                        )
+                    ),
+                    cursorHeight: 35,
+                    obscureText: _isPasswordObscure,
                     style:
                         TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
@@ -162,6 +185,13 @@ class _SignUpState extends State<SignUp> {
       ],
     );
   }
+
+  void _changePasswordObscurity(){
+    setState(() {
+      _isPasswordObscure = !_isPasswordObscure;
+    });
+  }
+
 }
 
 //Create the user account (currently based more on email)

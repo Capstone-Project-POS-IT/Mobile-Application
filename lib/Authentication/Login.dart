@@ -19,15 +19,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool userExists = true;
+  bool _isPasswordObscure;
 
   @override
   void initState() {
-    bool userExists = false;
+    _isPasswordObscure = true;
     Firebase.initializeApp().then((value) {
       if (FirebaseAuth.instance.currentUser != null) {
         showSigningInDialog(context);
-        userExists = true;
         FirebaseAuth.instance.currentUser.refreshToken;
         setAllUserInformation().whenComplete(
             () => Navigator.pushReplacement(
@@ -93,16 +92,15 @@ class _LoginState extends State<Login> {
                 Container(
                   alignment: Alignment.bottomLeft,
                   width: 350,
-                  height: 40,
+                  height: 35,
                   color: Colors.white,
                   child: TextField(
                     controller: _emailController,
                     decoration: new InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 4)),
+                      contentPadding: EdgeInsets.all(5),
                       hintText: "Account Email",
                     ),
-                    cursorHeight: 40,
+                    cursorHeight: 35,
                     style:
                         TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
@@ -122,6 +120,18 @@ class _LoginState extends State<Login> {
                   color: Colors.white,
                   child: TextField(
                     controller: _passwordController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(5),
+                      hintText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.remove_red_eye,
+                          color: _isPasswordObscure?Colors.blue:Colors.red,
+                        ),
+                        onPressed:()=> _changePasswordObscurity() ,
+                      )
+                    ),
+                    cursorHeight: 35,
+                    obscureText: _isPasswordObscure,
                     style:
                         TextStyle(fontSize: 17, height: 2, color: Colors.black),
                   ),
@@ -197,6 +207,12 @@ class _LoginState extends State<Login> {
             child: Image.asset("lib/assets/images/posit_logo.png"))
       ],
     );
+  }
+
+  void _changePasswordObscurity(){
+    setState(() {
+      _isPasswordObscure = !_isPasswordObscure;
+    });
   }
 }
 

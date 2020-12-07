@@ -17,7 +17,7 @@ class _PasswordResetState extends State<PasswordReset> {
   double _emailAuthOpacity, _passwordAuthOpacity;
   bool _emailTextFieldEnabled,
       _emailVerificationCodeTextFieldEnabled,
-      _passwordTextFieldEnabled;
+      _passwordTextFieldEnabled,_isPasswordObscure;
 
   void initState() {
     _passResetscrollController = new ScrollController();
@@ -26,6 +26,7 @@ class _PasswordResetState extends State<PasswordReset> {
     _emailTextFieldEnabled = true;
     _emailVerificationCodeTextFieldEnabled = false;
     _passwordTextFieldEnabled = false;
+    _isPasswordObscure = true;
     _emailController = new TextEditingController();
     _emailVerificationCodeController = new TextEditingController();
     _passwordController = new TextEditingController();
@@ -179,10 +180,21 @@ class _PasswordResetState extends State<PasswordReset> {
                                     child: TextField(
                                       enabled: _passwordTextFieldEnabled,
                                       controller: _passwordController,
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.all(5),
+                                          hintText: "New password",
+                                          suffixIcon: IconButton(
+                                            icon: Icon(Icons.remove_red_eye,
+                                              color: _isPasswordObscure?Colors.blue:Colors.red,
+                                            ),
+                                            onPressed:()=> _changePasswordObscurity() ,
+                                          )
+                                      ),
                                       style: TextStyle(
                                           fontSize: 17,
                                           height: 2,
                                           color: Colors.black),
+                                      obscureText: _isPasswordObscure,
                                     ),
                                   ),
                                   SizedBox(height: 30),
@@ -219,6 +231,13 @@ class _PasswordResetState extends State<PasswordReset> {
       ],
     );
   }
+
+  void _changePasswordObscurity(){
+    setState(() {
+      _isPasswordObscure = !_isPasswordObscure;
+    });
+  }
+
 
   void _sendEmailAuthCode() {
     String email = _emailController.text;
