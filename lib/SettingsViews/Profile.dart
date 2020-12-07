@@ -6,14 +6,12 @@ import 'package:pos_it/Authentication/Login.dart';
 import 'package:pos_it/ExternalCalls.dart';
 import 'package:pos_it/UserInfo/UserInformation.dart';
 
-const IconData account_circle_rounded =
-    IconData(0xf03e, fontFamily: 'MaterialIcons');
+const IconData account_circle_rounded = IconData(0xf03e, fontFamily: 'MaterialIcons');
 const IconData create_rounded = IconData(0xf145, fontFamily: 'MaterialIcons');
 const IconData email = IconData(0xe6f3, fontFamily: 'MaterialIcons');
 const IconData bookmark = IconData(0xe5f8, fontFamily: 'MaterialIcons');
 const IconData check_box = IconData(0xe64d, fontFamily: 'MaterialIcons');
-const IconData power_settings_new =
-    IconData(0xe949, fontFamily: 'MaterialIcons');
+const IconData power_settings_new = IconData(0xe949, fontFamily: 'MaterialIcons');
 
 class ProfileView extends StatefulWidget {
   @override
